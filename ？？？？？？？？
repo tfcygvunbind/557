@@ -1,5 +1,6 @@
 --如果你看到这条信息，大概我的脚本源码被泄露也是难免了
 
+
 -- 合规音效单次播放（请确保音效内容及用途符合平台规则）
 local soundId = "rbxassetid://88457346646245" -- 请确认此音效内容完全合规
 local Workspace = game:GetService("Workspace")
