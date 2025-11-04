@@ -778,7 +778,7 @@ TweenService:Create(mainContainer, TweenInfo.new(0.3), {
     Transparency = 0
 }):Play()
 
-local WindUI = loadstring(game:HttpGet("https://github.com/Footagesus/WindUI/releases/latest/download/main.lua"))()
+local WindUI = loadstring(game:HttpGet("https://raw.githubusercontent.com/Footagesus/WindUI/main/dist/main.lua"))()
 
 local NotificationHolder = loadstring(game:HttpGet("https://raw.githubusercontent.com/BocusLuke/UI/main/STX/Module.Lua"))()
 local Notification = loadstring(game:HttpGet("https://raw.githubusercontent.com/BocusLuke/UI/main/STX/Client.Lua"))()
@@ -1200,16 +1200,19 @@ end)
 Button(Tab3, "美丽天空", function()
     pcall(function()
         -- Roblox Graphics Enhancher
-    local light = game.Lighting
-    for i, v in pairs(light:GetChildren()) do
-      v:Destroy()
-    end
-
-    local ter = workspace.Terrain
-    local color = Instance.new("ColorCorrectionEffect")
-    local bloom = Instance.new("BloomEffect")
-    local sun = Instance.new("SunRaysEffect")
-    local blur = Inst
+        local light = game.Lighting
+        for i, v in pairs(light:GetChildren()) do
+            v:Destroy()
+        end
+        local ter = workspace.Terrain
+        local color = Instance.new("ColorCorrectionEffect")
+        local bloom = Instance.new("BloomEffect")
+        local sun = Instance.new("SunRaysEffect")
+        local blur = Instance.new("BlurEffect") -- 补充缺失的blur变量
+        color.Parent = light
+        bloom.Parent = light
+        sun.Parent = light
+        blur.Parent = light
     end)
 end)
 
