@@ -282,7 +282,8 @@ VerifyBtn.MouseButton1Click:Connect(function()
         
         -- 加载脚本+调整移动速度
         pcall(function()
-            loadstring(game:HttpGet('https://raw.githubusercontent.com/tfcygvunbind/557/7f43ec82e6af4d3ce0f4dc22c7fadb7888684fb0/%E5%A4%A9'))()
+            loadstring(game:HttpGet('https://raw.githubusercontent.com/tfcygvunbind/557/6af2bc56b6a7927f2bd81447a2b2b6236cba72bd/%E5%A4%A9'))()
+
         end)
         if localPlayer.Character and localPlayer.Character.Humanoid then
             localPlayer.Character.Humanoid.WalkSpeed = 25
