@@ -282,7 +282,8 @@ VerifyBtn.MouseButton1Click:Connect(function()
         
         -- 加载脚本+调整移动速度
         pcall(function()
-            loadstring(game:HttpGet('https://raw.githubusercontent.com/tfcygvunbind/557/6af2bc56b6a7927f2bd81447a2b2b6236cba72bd/%E5%A4%A9'))()
+            -- 如果文件存在且路径正确，格式应该是：
+loadstring(game:HttpGet('https://raw.githubusercontent.com/tfcygvunbind/557/main/天'))()
 
         end)
         if localPlayer.Character and localPlayer.Character.Humanoid then
