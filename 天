@@ -521,7 +521,7 @@ agreementBox.Name = "AgreementBox"
 agreementBox.Size = UDim2.new(0.9, 0, 1, 0)
 agreementBox.Position = UDim2.new(0.05, 0, 0, 0)
 agreementBox.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
-agreementBox.Text = "1.欢迎使用黑白脚本.\n2.以前的黑白脚本已失效😭\n3.今月更新：添加战争机器脚本、在通用2里添加反挂机V2、紫沙………等。"
+agreementBox.Text = "1.欢迎使用黑白脚本.\n2.以前的黑白脚本已失效😭\n3.今月更新：添加战争机器脚本、在通用2里添加反挂机V2、紫沙………等、添加服务器在超级商店过夜生存。"
 agreementBox.TextColor3 = Color3.fromRGB(240, 240, 240)
 agreementBox.TextSize = 14
 agreementBox.Font = Enum.Font.SourceSans
@@ -927,6 +927,7 @@ local Tab69 = Tab("生存战争")
 local Tab70 = Tab("停电")
 local Tab71 = Tab("战争机器")
 local Tab72 = Tab("别碰按钮")
+local Tab73 = Tab("在超级商店过夜生存")
 
 -- 简介 (Tab1)
 Button(Tab1, "作者：未知量相册2199414565", function()
@@ -954,7 +955,7 @@ Button(Tab1, "祝你游戏愉快", function()
     end)
 end)
 
-Button(Tab1, "免费缝合脚本", function()
+Button(Tab1, "免费半缝合脚本", function()
     pcall(function()
     end)
 end)
@@ -2848,3 +2849,531 @@ Button(Tab72, "别碰按钮1", function()
     end)
 end)
 
+-- 在超级商店过夜生存 (Tab73)
+Button(Tab73, "传送汉堡", function()
+    pcall(function()
+        local Players = game:GetService("Players")
+local Workspace = game:GetService("Workspace")
+
+local Player = Players.LocalPlayer
+local Character = Player.Character or Player.CharacterAdded:Wait()
+local RootPart = Character:WaitForChild("HumanoidRootPart")
+
+print("🍔 开始传送汉堡到玩家位置...")
+
+-- 汉堡关键词列表
+local burgerKeywords = {
+    "burger", "hamburger", "cheeseburger", "汉堡", "汉堡包", "漢堡",
+    "bigmac", "whopper", "cheese burger", "beef burger", "chicken burger"
+}
+
+-- 传送汉堡函数
+local function teleportBurgersOnly()
+    local burgerCount = 0
+    
+    print("🔍 扫描游戏中的汉堡...")
+    
+    -- 搜索整个workspace
+    for _, item in pairs(Workspace:GetDescendants()) do
+        if item:IsA("Part") or item:IsA("MeshPart") or item:IsA("UnionOperation") then
+            local itemName = tostring(item.Name):lower()
+            
+            -- 检查是否是汉堡
+            local isBurger = false
+            
+            for _, keyword in pairs(burgerKeywords) do
+                if itemName:find(keyword:lower()) then
+                    isBurger = true
+                    break
+                end
+            end
+            
+            -- 如果是汉堡且可移动
+            if isBurger and not item.Anchored and not item:IsDescendantOf(Character) then
+                -- 传送到玩家附近
+                local randomOffset = Vector3.new(
+                    math.random(-2, 2),
+                    math.random(1, 2),
+                    math.random(-2, 2)
+                )
+                item.CFrame = RootPart.CFrame + randomOffset
+                burgerCount = burgerCount + 1
+                print("✅ 传送汉堡: " .. item.Name)
+            end
+        end
+    end
+    
+    return burgerCount
+end
+
+-- 执行传送
+local totalBurgers = teleportBurgersOnly()
+
+-- 显示结果
+if totalBurgers > 0 then
+    print("🎉 成功传送 " .. totalBurgers .. " 个汉堡到您身边！")
+    print("🍔 所有汉堡已传送到您的脚下")
+else
+    print("❌ 未找到任何汉堡")
+    print("💡 可能原因：")
+    print("  • 地图中没有汉堡")
+    print("  • 汉堡已被其他玩家收集")
+    print("  • 汉堡名称不匹配")
+end
+
+print("✅ 汉堡传送完成！")
+    end)
+end)
+
+Button(Tab73, "收集热狗", function()
+    pcall(function()
+        
+local Players = game:GetService("Players")
+local Workspace = game:GetService("Workspace")
+
+local Player = Players.LocalPlayer
+local Character = Player.Character or Player.CharacterAdded:Wait()
+local RootPart = Character:WaitForChild("HumanoidRootPart")
+
+print("🌭 开始收集热狗...")
+
+-- 热狗关键词列表
+local hotdogKeywords = {
+    "hotdog", "hot dog", "hot-dog", "frankfurter", "frank", "wiener", 
+    "sausage", "bratwurst", "热狗", "热狗肠", "香肠", "法兰克福肠",
+    "hotdog stand", "hotdog cart", "热狗摊", "热狗车",
+    "food", "snack", "fastfood", "快餐", "小吃", "食物"
+}
+
+-- 收集热狗函数
+local function collectHotdogs()
+    local hotdogCount = 0
+    local foundHotdogTypes = {}
+    
+    print("🔍 扫描游戏中的热狗...")
+    
+    -- 搜索整个workspace
+    for _, item in pairs(Workspace:GetDescendants()) do
+        if item:IsA("Part") or item:IsA("MeshPart") or item:IsA("UnionOperation") then
+            local itemName = tostring(item.Name):lower()
+            
+            -- 检查是否是热狗
+            local isHotdog = false
+            local hotdogType = "未知热狗"
+            
+            for _, keyword in pairs(hotdogKeywords) do
+                if itemName:find(keyword:lower()) then
+                    isHotdog = true
+                    hotdogType = keyword
+                    break
+                end
+            end
+            
+            -- 如果是热狗且可移动
+            if isHotdog and not item.Anchored and not item:IsDescendantOf(Character) then
+                -- 传送到玩家附近
+                local randomOffset = Vector3.new(
+                    math.random(-2, 2),
+                    math.random(1, 2),
+                    math.random(-2, 2)
+                )
+                item.CFrame = RootPart.CFrame + randomOffset
+                hotdogCount = hotdogCount + 1
+                
+                -- 统计热狗类型
+                if not foundHotdogTypes[hotdogType] then
+                    foundHotdogTypes[hotdogType] = 0
+                end
+                foundHotdogTypes[hotdogType] = foundHotdogTypes[hotdogType] + 1
+                
+                print("🌭 收集热狗: " .. item.Name)
+            end
+        end
+    end
+    
+    return hotdogCount, foundHotdogTypes
+end
+
+-- 执行收集
+local totalHotdogs, hotdogTypes = collectHotdogs()
+
+-- 显示结果
+if totalHotdogs > 0 then
+    print("🎯 成功收集 " .. totalHotdogs .. " 个热狗！")
+    print("🌭 收集的热狗详情：")
+    
+    for hotdogType, count in pairs(hotdogTypes) do
+        print("  • " .. hotdogType .. ": " .. count .. "个")
+    end
+    
+    print("📍 所有热狗已收集到您的角色位置")
+    print("🍽️ 享受您的热狗大餐！")
+else
+    print("❌ 未找到任何热狗")
+    print("💡 可能原因：")
+    print("  • 地图中没有热狗")
+    print("  • 热狗已被其他玩家收集")
+    print("  • 热狗名称不匹配")
+end
+
+print("✅ 热狗收集完成！")
+    end)
+end)
+
+Button(Tab73, "传送医疗包", function()
+    pcall(function()
+    
+local Players = game:GetService("Players")
+local Workspace = game:GetService("Workspace")
+
+local Player = Players.LocalPlayer
+local Character = Player.Character or Player.CharacterAdded:Wait()
+local RootPart = Character:WaitForChild("HumanoidRootPart")
+
+print("💊 开始精准收集医疗包...")
+
+-- 医疗包关键词列表
+local medkitKeywords = {
+    "medkit", "firstaid", "first aid", "healthkit", "health kit", "medical kit",
+    "医疗包", "急救包", "医疗箱", "急救箱", "医药包", "医药箱",
+    "aid", "medical", "health", "heal", "treatment", "急救", "医疗", "治疗", "健康",
+    "bandage", "gauze", "绷带", "纱布", "包扎",
+    "medicine", "medication", "drug", "pill", "tablet", "capsule",
+    "药品", "药物", "药丸", "药片", "胶囊",
+    "antiseptic", "disinfectant", "消毒", "杀菌",
+    "injection", "syringe", "needle", "注射", "针剂", "针筒"
+}
+
+-- 排除关键词（防止误收集）
+local excludeKeywords = {
+    "hospital", "clinic", "doctor", "nurse", "patient", "bed", "stretcher",
+    "医院", "诊所", "医生", "护士", "病人", "病床", "担架",
+    "ambulance", "emergency", "救护车", "急诊",
+    "sign", "door", "wall", "floor", "ceiling", "desk", "chair",
+    "标志", "门", "墙", "地板", "天花板", "桌子", "椅子"
+}
+
+-- 精准收集医疗包函数
+local function collectMedkitsOnly()
+    local medkitCount = 0
+    local foundMedkitTypes = {}
+    
+    print("🔍 精准扫描医疗包...")
+    
+    -- 搜索整个workspace
+    for _, item in pairs(Workspace:GetDescendants()) do
+        if item:IsA("Part") or item:IsA("MeshPart") or item:IsA("UnionOperation") then
+            local itemName = tostring(item.Name):lower()
+            
+            -- 检查是否应该排除（不是可收集的医疗包）
+            local shouldExclude = false
+            for _, excludeWord in pairs(excludeKeywords) do
+                if itemName:find(excludeWord:lower()) then
+                    shouldExclude = true
+                    break
+                end
+            end
+            
+            if not shouldExclude then
+                -- 检查是否是医疗包
+                local isMedkit = false
+                local medkitType = "未知医疗物品"
+                
+                for _, keyword in pairs(medkitKeywords) do
+                    if itemName:find(keyword:lower()) then
+                        isMedkit = true
+                        medkitType = keyword
+                        break
+                    end
+                end
+                
+                -- 如果是医疗包且可移动
+                if isMedkit and not item.Anchored and not item:IsDescendantOf(Character) then
+                    -- 传送到玩家附近
+                    local randomOffset = Vector3.new(
+                        math.random(-2, 2),
+                        math.random(1, 2),
+                        math.random(-2, 2)
+                    )
+                    item.CFrame = RootPart.CFrame + randomOffset
+                    medkitCount = medkitCount + 1
+                    
+                    -- 统计医疗包类型
+                    if not foundMedkitTypes[medkitType] then
+                        foundMedkitTypes[medkitType] = 0
+                    end
+                    foundMedkitTypes[medkitType] = foundMedkitTypes[medkitType] + 1
+                    
+                    print("💊 收集医疗包: " .. item.Name)
+                end
+            end
+        end
+    end
+    
+    return medkitCount, foundMedkitTypes
+end
+
+-- 执行收集
+local totalMedkits, medkitTypes = collectMedkitsOnly()
+
+-- 显示结果
+if totalMedkits > 0 then
+    print("🎯 成功收集 " .. totalMedkits .. " 个医疗包！")
+    print("💊 收集的医疗包详情：")
+    
+    for medkitType, count in pairs(medkitTypes) do
+        print("  • " .. medkitType .. ": " .. count .. "个")
+    end
+    
+    print("📍 所有医疗包已收集到您的角色位置")
+    print("❤️ 您的生命值有保障了！")
+else
+    print("❌ 未找到任何医疗包")
+    print("💡 可能原因：")
+    print("  • 地图中没有医疗包")
+    print("  • 医疗包已被其他玩家收集")
+    print("  • 医疗包名称不匹配")
+end
+
+print("✅ 医疗包收集完成！")
+    end)
+end)
+
+Button(Tab73, "收集手电筒", function()
+    pcall(function()
+        local Players = game:GetService("Players")
+local Workspace = game:GetService("Workspace")
+
+local Player = Players.LocalPlayer
+local Character = Player.Character or Player.CharacterAdded:Wait()
+local RootPart = Character:WaitForChild("HumanoidRootPart")
+
+print("🔦 开始精准收集手电筒...")
+
+-- 手电筒关键词列表
+local flashlightKeywords = {
+    "flashlight", "torch", "light", "lamp", "lantern", "beam", "spotlight",
+    "手电筒", "手电", "电筒", "照明", "灯具", "探照灯", "聚光灯",
+    "headlamp", "headlight", "头灯", "矿灯", "工作灯",
+    "emergency light", "应急灯", "求生灯", "信号灯",
+    "portable light", "handheld light", "便携灯", "手持灯"
+}
+
+-- 排除关键词（防止误收集其他照明设备）
+local excludeKeywords = {
+    "ceiling", "wall", "floor", "table", "desk", "bedside", "street", "road",
+    "天花板", "墙壁", "地板", "桌子", "床头", "街道", "道路",
+    "lamp post", "street light", "traffic light", "路灯", "街灯", "交通灯",
+    "bulb", "tube", "fluorescent", "led", "灯泡", "灯管", "荧光灯", "LED灯",
+    "chandelier", "pendant", "sconce", "吊灯", "挂灯", "壁灯",
+    "sun", "moon", "star", "sky", "太阳", "月亮", "星星", "天空"
+}
+
+-- 精准收集手电筒函数
+local function collectFlashlightsOnly()
+    local flashlightCount = 0
+    local foundFlashlightTypes = {}
+    
+    print("🔍 精准扫描手电筒...")
+    
+    -- 搜索整个workspace
+    for _, item in pairs(Workspace:GetDescendants()) do
+        if item:IsA("Part") or item:IsA("MeshPart") or item:IsA("UnionOperation") then
+            local itemName = tostring(item.Name):lower()
+            
+            -- 检查是否应该排除（不是可收集的手电筒）
+            local shouldExclude = false
+            for _, excludeWord in pairs(excludeKeywords) do
+                if itemName:find(excludeWord:lower()) then
+                    shouldExclude = true
+                    break
+                end
+            end
+            
+            if not shouldExclude then
+                -- 检查是否是手电筒
+                local isFlashlight = false
+                local flashlightType = "未知照明设备"
+                
+                for _, keyword in pairs(flashlightKeywords) do
+                    if itemName:find(keyword:lower()) then
+                        isFlashlight = true
+                        flashlightType = keyword
+                        break
+                    end
+                end
+                
+                -- 如果是手电筒且可移动
+                if isFlashlight and not item.Anchored and not item:IsDescendantOf(Character) then
+                    -- 传送到玩家附近
+                    local randomOffset = Vector3.new(
+                        math.random(-2, 2),
+                        math.random(1, 2),
+                        math.random(-2, 2)
+                    )
+                    item.CFrame = RootPart.CFrame + randomOffset
+                    flashlightCount = flashlightCount + 1
+                    
+                    -- 统计手电筒类型
+                    if not foundFlashlightTypes[flashlightType] then
+                        foundFlashlightTypes[flashlightType] = 0
+                    end
+                    foundFlashlightTypes[flashlightType] = foundFlashlightTypes[flashlightType] + 1
+                    
+                    print("🔦 收集手电筒: " .. item.Name)
+                end
+            end
+        end
+    end
+    
+    return flashlightCount, foundFlashlightTypes
+end
+
+-- 执行收集
+local totalFlashlights, flashlightTypes = collectFlashlightsOnly()
+
+-- 显示结果
+if totalFlashlights > 0 then
+    print("🎯 成功收集 " .. totalFlashlights .. " 个手电筒！")
+    print("🔦 收集的手电筒详情：")
+    
+    for flashlightType, count in pairs(flashlightTypes) do
+        print("  • " .. flashlightType .. ": " .. count .. "个")
+    end
+    
+    print("📍 所有手电筒已收集到您的角色位置")
+    print("💡 您的夜间照明有保障了！")
+else
+    print("❌ 未找到任何手电筒")
+    print("💡 可能原因：")
+    print("  • 地图中没有手电筒")
+    print("  • 手电筒已被其他玩家收集")
+    print("  • 手电筒名称不匹配")
+end
+
+print("✅ 手电筒收集完成！")
+    end)
+end)
+
+Button(Tab73, "收集红色方块", function()
+    pcall(function()
+        local Players = game:GetService("Players")
+local Workspace = game:GetService("Workspace")
+
+local Player = Players.LocalPlayer
+local Character = Player.Character or Player.CharacterAdded:Wait()
+local RootPart = Character:WaitForChild("HumanoidRootPart")
+
+print("🟥 开始精准收集红色正方形方块...")
+
+-- 红色正方形方块收集函数
+local function collectRedSquareBlocks()
+    local redSquareCount = 0
+    local foundRedSquareTypes = {}
+    
+    print("🔍 精准扫描红色正方形方块...")
+    
+    -- 搜索整个workspace
+    for _, item in pairs(Workspace:GetDescendants()) do
+        if item:IsA("Part") and not item.Anchored and not item:IsDescendantOf(Character) then
+            -- 检查是否为正方形（长宽高大致相等）
+            local size = item.Size
+            local isSquare = math.abs(size.X - size.Y) < 0.5 and 
+                            math.abs(size.Y - size.Z) < 0.5 and
+                            math.abs(size.Z - size.X) < 0.5
+            
+            -- 检查颜色是否为红色
+            local isRed = false
+            local color = item.BrickColor
+            local r, g, b = color.r, color.g, color.b
+            
+            -- 判断是否为红色（R值高，G和B值低）
+            if r > 0.4 and g < 0.4 and b < 0.4 then
+                isRed = true
+            end
+            
+            -- 如果是红色正方形方块
+            if isSquare and isRed then
+                -- 传送到玩家附近
+                local randomOffset = Vector3.new(
+                    math.random(-2, 2),
+                    math.random(1, 2),
+                    math.random(-2, 2)
+                )
+                item.CFrame = RootPart.CFrame + randomOffset
+                redSquareCount = redSquareCount + 1
+                
+                -- 判断正方形大小类型
+                local squareType = "小正方形"
+                local avgSize = (size.X + size.Y + size.Z) / 3
+                if avgSize > 3 then
+                    squareType = "大正方形"
+                elseif avgSize > 1.5 then
+                    squareType = "中正方形"
+                end
+                
+                -- 统计红色正方形类型
+                if not foundRedSquareTypes[squareType] then
+                    foundRedSquareTypes[squareType] = 0
+                end
+                foundRedSquareTypes[squareType] = foundRedSquareTypes[squareType] + 1
+                
+                print("🟥 收集红色正方形方块: " .. item.Name .. " (大小: " .. string.format("%.1f", avgSize) .. ")")
+            end
+        end
+    end
+    
+    return redSquareCount, foundRedSquareTypes
+end
+
+-- 执行收集
+local totalRedSquares, redSquareTypes = collectRedSquareBlocks()
+
+-- 显示结果
+if totalRedSquares > 0 then
+    print("🎯 成功收集 " .. totalRedSquares .. " 个红色正方形方块！")
+    print("🟥 收集的红色正方形方块详情：")
+    
+    for squareType, count in pairs(redSquareTypes) do
+        print("  • " .. squareType .. ": " .. count .. "个")
+    end
+    
+    print("📍 所有红色正方形方块已收集到您的角色位置")
+    print("📐 正方形方块收集完成！")
+else
+    print("❌ 未找到任何红色正方形方块")
+    print("💡 可能原因：")
+    print("  • 地图中没有红色正方形方块")
+    print("  • 红色正方形方块已被其他玩家收集")
+    print("  • 方块不是正方形或不是红色")
+end
+
+print("✅ 红色正方形方块收集完成！")
+    end)
+end)
+
+Button(Tab73, "飞行", function() 
+    pcall(function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/dingding123hhh/tt/main/jm%E9%A3%9E..lua"))()
+    end)
+end)
+
+Toggle(Tab73, "穿墙", false, function(a)
+    pcall(function()
+        for i, v in pairs(game.Players.LocalPlayer.Character:GetChildren()) do
+            if v:IsA("BasePart") then
+                v.CanCollide = not a
+            end
+        end
+    end)
+end)
+
+Toggle(Tab73, "夜视", false, function(a)
+    pcall(function()
+        if a then
+            game.Lighting.Ambient = Color3.new(1, 1, 1)
+        else
+            game.Lighting.Ambient = Color3.new(0, 0, 0)
+        end
+    end)
+end)
