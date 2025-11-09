@@ -263,7 +263,7 @@ local attempts = 0
 local maxAttempts = 3
 VerifyBtn.MouseButton1Click:Connect(function()
     local key = Input.Text
-    if key == "HB_XiaoXu exactly Gay" then
+    if key == "HB_LinLinBright" then
         Msg.Text = "验证成功，启动中..."
         Msg.TextColor3 = Color3.fromRGB(80, 200, 80)
         task.wait(1)
