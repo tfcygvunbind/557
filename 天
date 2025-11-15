@@ -79,7 +79,7 @@ local CONFIG = {
     PRIMARY_COLOR = Color3.fromRGB(200, 200, 200),
     SECONDARY_COLOR = Color3.fromRGB(100, 100, 100),
     LOGO_IMAGE = "rbxassetid://6954167216",
-    LOGO_TEXT = "作者：未知量相册",
+    LOGO_TEXT = "作者：未知量黑白",
     MAIN_BG_COLOR = Color3.fromRGB(15, 15, 15),
     MAIN_BORDER_COLOR = Color3.fromRGB(200, 200, 200),
     TEXT_COLOR = Color3.fromRGB(255, 255, 255),
@@ -521,7 +521,7 @@ agreementBox.Name = "AgreementBox"
 agreementBox.Size = UDim2.new(0.9, 0, 1, 0)
 agreementBox.Position = UDim2.new(0.05, 0, 0, 0)
 agreementBox.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
-agreementBox.Text = "1.欢迎使用黑白脚本.\n2.以前的黑白脚本已失效😭\n3.今月更新：添加战争机器脚本、在通用2里添加反挂机V2、紫沙………等、添加服务器在超级商店过夜生存。"
+agreementBox.Text = "1.欢迎使用黑白脚本.\n2.以前的黑白脚本已失效😭\n3.今月更新：添加FE拥抱、FE滚球。"
 agreementBox.TextColor3 = Color3.fromRGB(240, 240, 240)
 agreementBox.TextSize = 14
 agreementBox.Font = Enum.Font.SourceSans
@@ -930,7 +930,7 @@ local Tab72 = Tab("别碰按钮")
 local Tab73 = Tab("在超级商店过夜生存")
 
 -- 简介 (Tab1)
-Button(Tab1, "作者：未知量相册2199414565", function()
+Button(Tab1, "作者：未知量黑白2199414565", function()
     pcall(function()
     end)
 end)
@@ -1707,6 +1707,15 @@ Button(Tab5, "黄脚本", function()
     end)
 end)
 
+Button(Tab5, "挽脚本1.2.2", function()
+    pcall(function()
+    -- 饿死也不圈钱！！
+-- 支持通用全家桶 力量 极速 战争大亨 自然灾害
+-- 全复制都可以
+loadstring(game:HttpGet('https://raw.githubusercontent.com/XxwanhexxX/UN/refs/heads/main/lua'))()
+    end)
+end)
+
 -- FE (Tab6)
 Button(Tab6, "爬行", function()
     pcall(function()
@@ -1771,6 +1780,18 @@ end)
 Button(Tab6, "FE变大变小（有些服务器用不了）", function()
     pcall(function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/tfcygvunbind/Apple/492dc6092ca66e8de1ed30a7ce8880c12f05c1e6/%EF%BC%9F%EF%BC%81%EF%BC%9F%EF%BC%81"))()
+    end)
+end)
+
+Button(Tab6, "FE滚球", function()
+    pcall(function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/KaterHub-Inc/scripts/refs/heads/main/unofficial-Projects/FEHamsterBall.lua"))()
+    end)
+end)
+
+Button(Tab6, "FE拥抱", function()
+    pcall(function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/ExploitFin/Animations/refs/heads/main/Front%20and%20Back%20Hug%20Tool"))()
     end)
 end)
 
