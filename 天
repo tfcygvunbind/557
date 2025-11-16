@@ -807,20 +807,25 @@ game:GetService("Players").LocalPlayer.Idled:connect(function()
 end)
 
 local Window = WindUI:CreateWindow({
-    Title = "黑白脚本测试版",
-    Icon = "door-open",
-    Author = "",
-    Folder = "CloudHub",
-    Size = UDim2.fromOffset(560, 360),
-    Transparent = true,
+    Title = '<font color="#00FF00">黑白脚本</font>',  
+    Icon = "check",
+    Author = "作者:未知量黑白",
+    Folder = "WindUI_Example",
+    Size = UDim2.fromOffset(300, 350),
     Theme = "Dark",
     User = {
         Enabled = true,
-        Callback = function() 
-            print("clicked") 
-        end,
-        wuckdfs = true
+        Anonymous = false,
+        Callback = function()
+            WindUI:Notify({
+                Title = "点这干啥",
+                Content = "点了没有用",
+                Duration = 3
+            })
+        end
     },
+    SideBarWidth = 220,
+    ScrollBarEnabled = true
 })
 
 Window:EditOpenButton({
@@ -854,6 +859,103 @@ end
 function Dropdown(a, b, c, d, e)
     return a:Dropdown({Title = b, Values = c, Value = d, Callback = e})
 end
+
+Window:Tag({
+    Title = "1.0.8",
+    Color = Color3.fromHex("#30ff6a")
+})
+
+Window:Tag({
+    Title = "测试",
+    Color = Color3.fromHex("#FFD700")  -- 金色标签
+})
+
+Window:Tag({
+    Title = "诞生日期2025年暑假",
+    Color = Color3.fromHex("#FFD700")  -- 金色标签
+})
+
+Window:CreateTopbarButton("theme-switcher", "moon", function()
+    WindUI:SetTheme(WindUI:GetCurrentTheme() == "Dark" and "GoldenTheme" or "Dark")
+    WindUI:Notify({
+        Title = "主题已更改",
+        Content = "当前主题: "..WindUI:GetCurrentTheme(),
+        Duration = 2
+    })
+end, 990)
+
+local Tabs = {
+    Settings = Window:Section({ Title = "界面", Opened = false }),
+}
+
+local TabHandles = {
+    Appearance = Tabs.Settings:Tab({ Title = "颜色", Icon = "brush" }),
+}
+
+TabHandles.Appearance:Paragraph({
+    Title = "自定义界面",
+    Desc = "个性化您的体验",
+    Image = "palette",
+    ImageSize = 20,
+    Color = "White"
+})
+
+local themes = {}
+for themeName, _ in pairs(WindUI:GetThemes()) do
+    table.insert(themes, themeName)
+end
+table.sort(themes)
+
+local themeDropdown = TabHandles.Appearance:Dropdown({
+    Title = "颜色",
+    Values = themes,
+    Value = "Dark",
+    Callback = function(theme)
+        WindUI:SetTheme(theme)
+        WindUI:Notify({
+            Title = "主题已应用",
+            Content = theme,
+            Icon = "crown",
+            Duration = 2
+        })
+    end
+})
+
+local transparencySlider = TabHandles.Appearance:Slider({
+    Title = "透明度",
+    Value = { 
+        Min = 0,
+        Max = 1,
+        Default = 0.2,
+    },
+    Step = 0.1,
+    Callback = function(value)
+        Window:ToggleTransparency(tonumber(value) > 0)
+        WindUI.TransparencyValue = tonumber(value)
+    end
+})
+
+TabHandles.Appearance:Toggle({
+    Title = "启用深色模式",
+    Desc = "使用深色配色方案",
+    Value = true,
+    Callback = function(state)
+        WindUI:SetTheme(state and "GoldenTheme" or "Light")
+        themeDropdown:Select(state and "GoldenTheme" or "Light")
+    end
+})
+
+local TabHandles = {
+    Appearance = Tabs.Settings:Tab({ Title = "说明", Icon = "brush" }),
+}
+
+TabHandles.Appearance:Paragraph({
+    Title = "使用该脚本说明",
+    Desc = "对于因使用本脚本而产生的任何账号风险（包括但不限于封禁、数据异常）、权益损失，脚本开发者及分发者不承担任何法律与民事责任。使用者需明确：使用本脚本的行为系个人自主选择，相关后果由使用者自行承担。",
+    Image = "palette",
+    ImageSize = 20,
+    Color = "White"
+})
 
 local Tab1 = Tab("简介")
 local Tab2 = Tab("通用")
@@ -930,13 +1032,53 @@ local Tab72 = Tab("别碰按钮")
 local Tab73 = Tab("在超级商店过夜生存")
 
 -- 简介 (Tab1)
-Button(Tab1, "作者：未知量黑白2199414565", function()
+Button(Tab1, "作者：未知量黑白2199414565\n\n点击复制", function()
     pcall(function()
+        local authorInfo = "2199414565" -- 要复制的内容
+        -- 执行复制（适配Roblox环境）
+        if setclipboard then
+            setclipboard(authorInfo)
+            -- 复制成功通知
+            WindUI:Notify({
+                Title = "复制成功",
+                Content = "作者QQ号已复制到剪贴板",
+                Icon = "crown",
+                Duration = 3
+            })
+        else
+            -- 复制功能不可用提示
+            WindUI:Notify({
+                Title = "复制失败",
+                Content = "剪贴板功能不可用",
+                Icon = "crown",
+                Duration = 3
+            })
+        end
     end)
 end)
 
-Button(Tab1, "黑白脚本QQ群：946671668", function()
+Button(Tab1, "黑白脚本QQ群：946671668\n\n点击复制", function()
     pcall(function()
+        -- 仅添加复制QQ群号功能
+        local qqGroup = "946671668"
+        if setclipboard then
+            setclipboard(qqGroup)
+            -- 复制成功通知
+            WindUI:Notify({
+                Title = "复制成功",
+                Content = "群聊QQ号已复制到剪贴板",
+                Icon = "crown",
+                Duration = 3
+            })
+        else
+            -- 复制功能不可用提示
+            WindUI:Notify({
+                Title = "复制失败",
+                Content = "剪贴板功能不可用",
+                Icon = "crown",
+                Duration = 3
+            })
+        end
     end)
 end)
 
@@ -1123,130 +1265,495 @@ Button(Tab3, "阿尔宙斯V3.0 UI", function()
     end)
 end)
 
-Button(Tab3, "撸鸡r6", function()
+-- 修复：撸鸡r6（补全语法+链接容错）
+Button(Tab3, "撸鸡r6\n\n不知道", function()
     pcall(function()
-         loadstring(game:HttpGet("https://pastefy.app/wa3v2Vgm/raw"))()
-    end)
-end)
-
-Button(Tab3, "撸鸡R15", function()
-    pcall(function()
-         loadstring(game:HttpGet("https://pastefy.app/YZoglOyJ/raw"))()
-    end)
-end)
-
-Button(Tab3, "半隐身", function()
-    pcall(function()
-    loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Invisible-35376"))()
-    end)
-end)
-
-Button(Tab3, "上帝模式", function()
-    pcall(function()
-         loadstring(game:HttpGet("https://raw.githubusercontent.com/zephyr10101/ignore-touchinterests/main/main",true))()
-    end)
-end)
-
-Button(Tab3, "r15变r6", function()
-    pcall(function()
-         loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-R6-Animations-on-R15-16865"))()
-    end)
-end)
-
-Button(Tab3, "聊天绕过", function()
-    pcall(function()
-         loadstring(game:HttpGet("https://raw.githubusercontent.com/BingusWR/Fechatbypassroblox/refs/heads/main/Fe%20Roblox%20ChatBypass"))()
-    end)
-end)
-
-Button(Tab3, "聊天框画画脚本", function()
-    pcall(function()
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/ocfi/_/refs/heads/main/a"))()
-    end)
-end)
-
-Button(Tab3, "偷别人物品栏道具", function()
-    pcall(function()
-    --Copy And Paste:
-for i,v in pairs (game.Players:GetChildren()) do
-wait()
-for i,b in pairs (v.Backpack:GetChildren()) do
-b.Parent = game.Players.LocalPlayer.Backpack
-end
-end
-    end)
-end)
-
-Button(Tab3, "超广角设置", function()
-    pcall(function()
-		Workspace.CurrentCamera.FieldOfView = Value
-    end)
-end)
-
-Button(Tab3, "自动弹钢琴", function()
-    pcall(function()
-    loadstring(game:HttpGet("https://rawscripts.net/raw/Tac's-Piano-Stuff-Talentless-script-made-by-hellohellohell012321-44088"))()
-    end)
-end)
-
-Button(Tab3, "伪VP", function()
-    pcall(function()
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/randomstring0/Qwerty/refs/heads/main/qwerty45.lua"))()
-    end)
-end)
-
-Button(Tab3, "爬墙", function()
-    pcall(function()
-    loadstring(game:HttpGet("https://pastebin.com/raw/zXk4Rq2r"))()
-    end)
-end)
-
-Button(Tab3, "美丽天空", function()
-    pcall(function()
-        -- Roblox Graphics Enhancher
-        local light = game.Lighting
-        for i, v in pairs(light:GetChildren()) do
-            v:Destroy()
+        -- 双重pcall捕获HttpGet和loadstring异常
+        local success, scriptContent = pcall(function()
+            return game:HttpGet("https://pastefy.app/wa3v2Vgm/raw")
+        end)
+        if success and scriptContent then
+            loadstring(scriptContent)()
+            WindUI:Notify({
+                Title = "撸鸡r6",
+                Content = "已开启（请遵守平台规则）",
+                Icon = "crown",
+                Duration = 3
+            })
+        else
+            WindUI:Notify({
+                Title = "撸鸡r6",
+                Content = "加载失败，链接可能失效",
+                Icon = "crown",
+                Duration = 3
+            })
         end
-        local ter = workspace.Terrain
+    end)
+end)
+
+-- 修复：撸鸡R15（补全语法+链接容错）
+Button(Tab3, "撸鸡R15\n\n不知道", function()
+    pcall(function()
+        local success, scriptContent = pcall(function()
+            return game:HttpGet("https://pastefy.app/YZoglOyJ/raw")
+        end)
+        if success and scriptContent then
+            loadstring(scriptContent)()
+            WindUI:Notify({
+                Title = "撸鸡R15",
+                Content = "已开启（请遵守平台规则）",
+                Icon = "crown",
+                Duration = 3
+            })
+        else
+            WindUI:Notify({
+                Title = "撸鸡R15",
+                Content = "加载失败，链接可能失效",
+                Icon = "crown",
+                Duration = 3
+            })
+        end
+    end)
+end)
+
+-- 修复：半隐身（补全语法+链接容错）
+Button(Tab3, "半隐身\n\n暗黑马克😱", function()
+    pcall(function()
+        local success, scriptContent = pcall(function()
+            return game:HttpGet("https://rawscripts.net/raw/Universal-Script-Invisible-35376")
+        end)
+        if success and scriptContent then
+            loadstring(scriptContent)()
+            WindUI:Notify({
+                Title = "半隐身",
+                Content = "已开启（请遵守平台规则）",
+                Icon = "crown",
+                Duration = 3
+            })
+        else
+            WindUI:Notify({
+                Title = "半隐身",
+                Content = "加载失败，链接可能失效",
+                Icon = "crown",
+                Duration = 3
+            })
+        end
+    end)
+end)
+
+-- 修复：上帝模式（补全语法+链接容错）
+Button(Tab3, "上帝模式\n\n一关就死", function()
+    pcall(function()
+        local success, scriptContent = pcall(function()
+            return game:HttpGet("https://raw.githubusercontent.com/zephyr10101/ignore-touchinterests/main/main", true)
+        end)
+        if success and scriptContent then
+            loadstring(scriptContent)()
+            WindUI:Notify({
+                Title = "上帝模式",
+                Content = "已开启（请遵守平台规则）",
+                Icon = "crown",
+                Duration = 3
+            })
+        else
+            WindUI:Notify({
+                Title = "上帝模式",
+                Content = "加载失败，链接可能失效",
+                Icon = "crown",
+                Duration = 3
+            })
+        end
+    end)
+end)
+
+-- 修复：r15变r6（补全语法+链接容错）
+Button(Tab3, "r15变r6\n\n机甲变身，宫锁千钧！", function()
+    pcall(function()
+        local success, scriptContent = pcall(function()
+            return game:HttpGet("https://rawscripts.net/raw/Universal-Script-R6-Animations-on-R15-16865")
+        end)
+        if success and scriptContent then
+            loadstring(scriptContent)()
+            WindUI:Notify({
+                Title = "r15变r6",
+                Content = "已开启（请遵守平台规则）",
+                Icon = "crown",
+                Duration = 3
+            })
+        else
+            WindUI:Notify({
+                Title = "r15变r6",
+                Content = "加载失败，链接可能失效",
+                Icon = "crown",
+                Duration = 3
+            })
+        end
+    end)
+end)
+
+-- 修复：聊天绕过（添加链接容错+结果验证）
+Button(Tab3, "聊天绕过\n\n小心封号", function()
+    pcall(function()
+        local success, result = pcall(function()
+            return game:HttpGet("https://raw.githubusercontent.com/BingusWR/Fechatbypassroblox/refs/heads/main/Fe%20Roblox%20ChatBypass")
+        end)
+        if success and result then
+            loadstring(result)()
+            WindUI:Notify({
+                Title = "聊天绕过",
+                Content = "已开启（请遵守平台规则）",
+                Icon = "crown",
+                Duration = 3
+            })
+        else
+            WindUI:Notify({
+                Title = "聊天绕过",
+                Content = "加载失败，链接可能失效",
+                Icon = "crown",
+                Duration = 3
+            })
+        end
+    end)
+end)
+
+-- 修复：聊天框画画脚本（添加链接容错）
+Button(Tab3, "聊天框画画脚本\n\n太牛了", function()
+    pcall(function()
+        local success, result = pcall(function()
+            return game:HttpGet("https://raw.githubusercontent.com/ocfi/_/refs/heads/main/a")
+        end)
+        if success and result then
+            loadstring(result)()
+            WindUI:Notify({
+                Title = "聊天框画画脚本",
+                Content = "已开启",
+                Icon = "crown",
+                Duration = 3
+            })
+        else
+            WindUI:Notify({
+                Title = "聊天框画画脚本",
+                Content = "加载失败，链接可能失效",
+                Icon = "crown",
+                Duration = 3
+            })
+        end
+    end)
+end)
+
+-- 修复：偷别人物品栏道具（添加延迟+空值判断+防检测）
+Button(Tab3, "偷别人物品栏道具\n\n小偷👍", function()
+    pcall(function()
+        local localPlayer = game.Players.LocalPlayer
+        for _, player in pairs(game.Players:GetChildren()) do
+            if player ~= localPlayer and player:IsDescendantOf(game.Players) then
+                -- 等待0.2秒，避免瞬时操作被检测
+                task.wait(0.2)
+                -- 判断玩家角色和背包是否存在
+                local backpack = player:FindFirstChild("Backpack")
+                if backpack then
+                    for _, item in pairs(backpack:GetChildren()) do
+                        -- 只偷可拾取物品（过滤核心组件）
+                        if item:IsA("Tool") or item:IsA("HopperBin") then
+                            item.Parent = localPlayer.Backpack
+                        end
+                    end
+                end
+            end
+        end
+        WindUI:Notify({
+            Title = "偷别人物品栏道具",
+            Content = "已执行（部分物品可能受保护）",
+            Icon = "crown",
+            Duration = 3
+        })
+    end)
+end)
+
+-- 修复：超广角设置（定义合理FOV值+边界限制）
+Button(Tab3, "超广角设置\n\n超级大广角", function()
+    pcall(function()
+        local camera = workspace.CurrentCamera
+        if camera then
+            -- 合理超广角值（正常70，最大120，避免画面畸变）
+            local wideFOV = 100
+            -- 限制FOV范围（10-120）
+            wideFOV = math.clamp(wideFOV, 10, 120)
+            camera.FieldOfView = wideFOV
+            WindUI:Notify({
+                Title = "超广角设置",
+                Content = "已开启（FOV: " .. wideFOV .. "）",
+                Icon = "crown",
+                Duration = 3
+            })
+        else
+            WindUI:Notify({
+                Title = "超广角设置",
+                Content = "相机未找到",
+                Icon = "crown",
+                Duration = 3
+            })
+        end
+    end)
+end)
+
+-- 修复：自动弹钢琴（添加链接容错）
+Button(Tab3, "自动弹钢琴\n\n解放双手👍", function()
+    pcall(function()
+        local success, result = pcall(function()
+            return game:HttpGet("https://rawscripts.net/raw/Tac's-Piano-Stuff-Talentless-script-made-by-hellohellohell012321-44088")
+        end)
+        if success and result then
+            loadstring(result)()
+            WindUI:Notify({
+                Title = "自动弹钢琴",
+                Content = "已开启",
+                Icon = "crown",
+                Duration = 3
+            })
+        else
+            WindUI:Notify({
+                Title = "自动弹钢琴",
+                Content = "加载失败，链接可能失效",
+                Icon = "crown",
+                Duration = 3
+            })
+        end
+    end)
+end)
+
+-- 修复：伪VP（添加链接容错）
+Button(Tab3, "伪VP\n\n伪个VP", function()
+    pcall(function()
+        local success, result = pcall(function()
+            return game:HttpGet("https://raw.githubusercontent.com/randomstring0/Qwerty/refs/heads/main/qwerty45.lua")
+        end)
+        if success and result then
+            loadstring(result)()
+            WindUI:Notify({
+                Title = "伪VP",
+                Content = "已开启",
+                Icon = "crown",
+                Duration = 3
+            })
+        else
+            WindUI:Notify({
+                Title = "伪VP",
+                Content = "加载失败，链接可能失效",
+                Icon = "crown",
+                Duration = 3
+            })
+        end
+    end)
+end)
+
+-- 修复：爬墙（语法错误+链接容错）
+Button(Tab3, "爬墙\n\n蜘蛛侠😱😱😱", function()
+    pcall(function()
+        local success, result = pcall(function()
+            return game:HttpGet("https://pastebin.com/raw/zXk4Rq2r")
+        end)
+        if success and result then
+            loadstring(result)() -- 修复：去掉多余的括号
+            WindUI:Notify({
+                Title = "爬墙",
+                Content = "已开启",
+                Icon = "crown",
+                Duration = 3
+            })
+        else
+            WindUI:Notify({
+                Title = "爬墙",
+                Content = "加载失败，链接可能失效",
+                Icon = "crown",
+                Duration = 3
+            })
+        end
+    end)
+end)
+
+-- 修复：美丽天空（保留核心光照+添加参数优化）
+Button(Tab3, "美丽天空\n\n真好看", function()
+    pcall(function()
+        local light = game.Lighting
+        -- 只删除特效类子对象，保留基础光照（避免全黑）
+        for _, v in pairs(light:GetChildren()) do
+            if v:IsA("ColorCorrectionEffect") or v:IsA("BloomEffect") or v:IsA("SunRaysEffect") or v:IsA("BlurEffect") then
+                v:Destroy()
+            end
+        end
+        -- 重新创建优化后的特效
         local color = Instance.new("ColorCorrectionEffect")
-        local bloom = Instance.new("BloomEffect")
-        local sun = Instance.new("SunRaysEffect")
-        local blur = Instance.new("BlurEffect") -- 补充缺失的blur变量
+        color.Brightness = 0.1
+        color.Contrast = 1.2
+        color.Saturation = 0.8
         color.Parent = light
+
+        local bloom = Instance.new("BloomEffect")
+        bloom.Intensity = 0.5
+        bloom.Size = 10
+        bloom.Threshold = 0.2
         bloom.Parent = light
+
+        local sun = Instance.new("SunRaysEffect")
+        sun.Intensity = 0.3
+        sun.Spread = 15
         sun.Parent = light
+
+        local blur = Instance.new("BlurEffect")
+        blur.Size = 2
         blur.Parent = light
+
+        WindUI:Notify({
+            Title = "美丽天空",
+            Content = "已开启（优化光照参数）",
+            Icon = "crown",
+            Duration = 3
+        })
     end)
 end)
 
-Button(Tab3, "玩家进入提示", function()
+-- 修复：玩家进入提示（添加链接容错+本地备份逻辑）
+Button(Tab3, "玩家进入提示\n\n某某退了，某某进了", function()
     pcall(function()
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/boyscp/scriscriptsc/main/bbn.lua"))()
+        local success, result = pcall(function()
+            return game:HttpGet("https://raw.githubusercontent.com/boyscp/scriscriptsc/main/bbn.lua")
+        end)
+        if success and result then
+            loadstring(result)()
+            WindUI:Notify({
+                Title = "玩家进入提示",
+                Content = "已开启",
+                Icon = "crown",
+                Duration = 3
+            })
+        else
+            -- 本地备份逻辑（基础提示功能）
+            local Players = game:GetService("Players")
+            Players.PlayerAdded:Connect(function(player)
+                WindUI:Notify({
+                    Title = "玩家提示",
+                    Content = player.Name .. " 进入了服务器",
+                    Icon = "crown",
+                    Duration = 3
+                })
+            end)
+            Players.PlayerRemoving:Connect(function(player)
+                WindUI:Notify({
+                    Title = "玩家提示",
+                    Content = player.Name .. " 退出了服务器",
+                    Icon = "crown",
+                    Duration = 3
+                })
+            end)
+            WindUI:Notify({
+                Title = "玩家进入提示",
+                Content = "已开启（本地备份模式）",
+                Icon = "crown",
+                Duration = 3
+            })
+        end
     end)
 end)
 
-Button(Tab3, "替身", function()
+-- 修复：替身（添加链接容错）
+Button(Tab3, "替身\n\n不知道", function()
     pcall(function()
-    loadstring(game:HttpGet(('https://raw.githubusercontent.com/SkrillexMe/SkrillexLoader/main/SkrillexLoadMain')))()
+        local success, result = pcall(function()
+            return game:HttpGet("https://raw.githubusercontent.com/SkrillexMe/SkrillexLoader/main/SkrillexLoadMain")
+        end)
+        if success and result then
+            loadstring(result)()
+            WindUI:Notify({
+                Title = "替身",
+                Content = "已开启",
+                Icon = "crown",
+                Duration = 3
+            })
+        else
+            WindUI:Notify({
+                Title = "替身",
+                Content = "加载失败，链接可能失效",
+                Icon = "crown",
+                Duration = 3
+            })
+        end
     end)
 end)
 
-Button(Tab3, "传送位置", function()
+-- 修复：传送位置（添加链接容错）
+Button(Tab3, "传送位置\n\n保存位置，就能传送位置", function()
     pcall(function()
-    loadstring(game:HttpGet('https://raw.githubusercontent.com/tfcygvunbind/557/e60a0d8126aac063076ffbd19e0c79c2c82211e5/%EF%BC%81'))()
+        local success, result = pcall(function()
+            return game:HttpGet("https://raw.githubusercontent.com/tfcygvunbind/557/e60a0d8126aac063076ffbd19e0c79c2c82211e5/%EF%BC%81")
+        end)
+        if success and result then
+            loadstring(result)()
+            WindUI:Notify({
+                Title = "传送位置",
+                Content = "已开启",
+                Icon = "crown",
+                Duration = 3
+            })
+        else
+            WindUI:Notify({
+                Title = "传送位置",
+                Content = "加载失败，链接可能失效",
+                Icon = "crown",
+                Duration = 3
+            })
+        end
     end)
 end)
 
-Button(Tab3, "传送玩家", function()
+-- 修复：传送玩家（添加链接容错+空值判断）
+Button(Tab3, "传送玩家\n\n传送当前的服务器玩家", function()
     pcall(function()
-    loadstring(game:HttpGet('https://raw.githubusercontent.com/tfcygvunbind/557/1bd994773a5f2e34c81611a5903c0773c97d2b99/%EF%BC%9F'))()
+        local success, result = pcall(function()
+            return game:HttpGet("https://raw.githubusercontent.com/tfcygvunbind/557/1bd994773a5f2e34c81611a5903c0773c97d2b99/%EF%BC%9F")
+        end)
+        if success and result then
+            loadstring(result)()
+            WindUI:Notify({
+                Title = "传送玩家",
+                Content = "已开启",
+                Icon = "crown",
+                Duration = 3
+            })
+        else
+            WindUI:Notify({
+                Title = "传送玩家",
+                Content = "加载失败，链接可能失效",
+                Icon = "crown",
+                Duration = 3
+            })
+        end
     end)
 end)
 
-Button(Tab3, "反挂机V2", function()
+Button(Tab3, "反挂机V2\n\n过了20分钟后，不会被踢出去", function()
     pcall(function()
     loadstring(game:HttpGet("https://pastebin.com/raw/9fFu43FF"))()
+            -- 添加通知（补全所有闭合符号）
+        WindUI:Notify({
+            Title = "反挂机V2",
+            Content = "已开启",
+            Icon = "crown",
+            Duration = 3
+        })
+    end)
+end)
+
+Button(Tab3, "防坠落\n\n安全防护，避免坠落伤害", function()
+    pcall(function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/liuliuqiang404-code/-/refs/heads/main/%E9%98%B2%E5%9D%A0%E8%90%BD2"))()
+        -- 添加通知（补全所有闭合符号）
+        WindUI:Notify({
+            Title = "防坠落",
+            Content = "已开启",
+            Icon = "crown",
+            Duration = 3
+        })
     end)
 end)
 
@@ -3397,4 +3904,15 @@ Toggle(Tab73, "夜视", false, function(a)
             game.Lighting.Ambient = Color3.new(0, 0, 0)
         end
     end)
+end)
+
+Window:OnClose(function()
+    print("窗口已关闭")
+    
+    if ConfigManager and configFile then
+        configFile:Set("playerData", MyPlayerData)
+        configFile:Set("lastSave", os.date("%Y-%m-%d %H:%M:%S"))
+        configFile:Save()
+        print("配置已在关闭时自动保存")
+    end
 end)
