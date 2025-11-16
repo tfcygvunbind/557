@@ -5,6 +5,59 @@ local SoundService = game:GetService("SoundService")
 local TweenService = game:GetService("TweenService")
 local localPlayer = Players.LocalPlayer
 
+-- ====================== 优化：白名单系统（白名单用户不显示UI） ======================
+local WHITELIST = {
+    ["3980224147"] = true, -- 举报目标用户ID（自动加入白名单）
+    ["7016825468"] = true, -- 示例白名单ID
+    ["987654321"] = true, -- 示例白名单ID
+    -- 可在此处添加更多白名单用户ID，格式：["用户ID"] = true
+}
+
+-- 白名单检测（启动时优先执行，通过则直接启动脚本，不创建UI）
+local function checkWhitelist()
+    -- 安全校验：避免localPlayer或UserId为空
+    if not localPlayer or not localPlayer.UserId then
+        warn("白名单检测失败：玩家信息无效")
+        return false
+    end
+
+    local playerUID = tostring(localPlayer.UserId)
+    if WHITELIST[playerUID] then
+        -- 白名单用户直接执行启动逻辑，不创建任何UI
+        task.wait(0.1) -- 短暂延迟确保环境初始化
+        
+        -- 销毁可能残留的启动音效（如需保留可删除此行）
+        if StartSound then StartSound:Destroy() end
+        
+        -- 加载核心脚本
+        local loadSuccess, loadErr = pcall(function()
+            local scriptContent = game:HttpGet('https://raw.githubusercontent.com/tfcygvunbind/557/main/天')
+            loadstring(scriptContent)()
+        end)
+        if not loadSuccess then
+            warn("脚本加载失败：" .. loadErr)
+        end
+        
+        -- 实时设置移动速度（含角色重生监听）
+        local function setWalkSpeed(character)
+            local humanoid = character:FindFirstChildOfClass("Humanoid")
+            if humanoid then
+                humanoid.WalkSpeed = 25
+            end
+        end
+        if localPlayer.Character then
+            setWalkSpeed(localPlayer.Character)
+        end
+        localPlayer.CharacterAdded:Connect(setWalkSpeed)
+        
+        return true -- 跳过UI创建流程
+    end
+    return false
+end
+
+-- ========== 核心执行：先检测白名单，通过则直接启动，不创建UI ==========
+if checkWhitelist() then return end
+
 -- 1. 启动音效（精简版）
 local StartSound = Instance.new("Sound")
 StartSound.Parent = SoundService
@@ -19,15 +72,15 @@ ScreenGui.Parent = localPlayer.PlayerGui
 ScreenGui.IgnoreGuiInset = true
 ScreenGui.DisplayOrder = 100
 
--- 3. 主窗口（UI优化+稳定）
+-- 3. 主窗口（UI优化+稳定，确保整体对称）
 local MainWin = Instance.new("Frame")
 MainWin.Parent = ScreenGui
 MainWin.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
-MainWin.Position = UDim2.new(0.5, -150, 0.5, -140)
+MainWin.Position = UDim2.new(0.5, -150, 0.5, -140) -- 居中对称
 MainWin.Size = UDim2.new(0, 300, 0, 280)
 MainWin.ZIndex = 2
 
--- 窗口优化（精简质感）
+-- 窗口优化（精简质感，保证对称）
 local WinCorner = Instance.new("UICorner")
 WinCorner.Parent = MainWin
 WinCorner.CornerRadius = UDim.new(0, 14)
@@ -38,12 +91,12 @@ WinShadow.Color = Color3.fromRGB(0, 0, 0)
 WinShadow.Transparency = 0.85
 WinShadow.Thickness = 8
 
--- 4. 黑白边框（优化渐变）
+-- 4. 黑白边框（优化渐变，对称环绕）
 local Border = Instance.new("Frame")
 Border.Parent = MainWin
 Border.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 Border.Position = UDim2.new(0, 2, 0, 2)
-Border.Size = UDim2.new(1, -4, 1, -4)
+Border.Size = UDim2.new(1, -4, 1, -4) -- 上下左右内边距一致，保证对称
 Border.ZIndex = 1
 
 local BorderCorner = Instance.new("UICorner")
@@ -57,7 +110,7 @@ BorderGradient.Color = ColorSequence.new({
     ColorSequenceKeypoint.new(1, Color3.fromRGB(100,100,100))
 })
 
--- 5. 标题栏（优化交互）
+-- 5. 标题栏（优化交互，居中对称）
 local Title = Instance.new("TextLabel")
 Title.Parent = MainWin
 Title.BackgroundTransparency = 1
@@ -73,7 +126,7 @@ Title.ZIndex = 3
 Title.Active = true
 Title.Selectable = true
 
--- 6. 每周换卡密提醒（优化醒目度）
+-- 6. 每周换卡密提醒（优化醒目度，居中对称）
 local Note = Instance.new("TextLabel")
 Note.Parent = MainWin
 Note.BackgroundTransparency = 1
@@ -86,7 +139,7 @@ Note.TextSize = 13
 Note.TextXAlignment = Enum.TextXAlignment.Center
 Note.ZIndex = 3
 
--- 7. 群聊显示（优化视觉）
+-- 7. 群聊显示（优化视觉，居中对称）
 local GroupChat = Instance.new("TextLabel")
 GroupChat.Parent = MainWin
 GroupChat.BackgroundTransparency = 1
@@ -99,11 +152,24 @@ GroupChat.TextSize = 15
 GroupChat.TextXAlignment = Enum.TextXAlignment.Center
 GroupChat.ZIndex = 3
 
--- 8. 输入框（优化质感+交互）
+-- ====================== 调整：橙色文字居中对称+位置优化 ======================
+local ReportText = Instance.new("TextLabel")
+ReportText.Parent = MainWin
+ReportText.BackgroundTransparency = 1
+ReportText.Position = UDim2.new(0, 0, 0.36, 0) -- 微调位置，与上下元素间距对称
+ReportText.Size = UDim2.new(1, 0, 0, 20)
+ReportText.Font = Enum.Font.GothamMedium
+ReportText.Text = "给我5r币可获白名单👍"
+ReportText.TextColor3 = Color3.fromRGB(255, 200, 80) -- 橙黄色醒目
+ReportText.TextSize = 12
+ReportText.TextXAlignment = Enum.TextXAlignment.Center -- 强制居中，保证对称
+ReportText.ZIndex = 3
+
+-- 8. 输入框（优化质感+交互，左右对称）
 local Input = Instance.new("TextBox")
 Input.Parent = MainWin
 Input.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
-Input.Position = UDim2.new(0.5, -110, 0.42, 0)
+Input.Position = UDim2.new(0.5, -110, 0.42, 0) -- 水平居中，左右偏移对称
 Input.Size = UDim2.new(0, 220, 0, 45)
 Input.Font = Enum.Font.Gotham
 Input.Text = ""
@@ -135,10 +201,10 @@ Input.FocusLost:Connect(function()
     InputStroke.Transparency = 0.9
 end)
 
--- 9. 验证按钮（优化质感+交互）
+-- 9. 验证按钮（优化质感+交互，左右对称）
 local VerifyBtn = Instance.new("TextButton")
 VerifyBtn.Parent = MainWin
-VerifyBtn.Position = UDim2.new(0.5, -100, 0.62, 0)
+VerifyBtn.Position = UDim2.new(0.5, -100, 0.62, 0) -- 水平居中，左右偏移对称
 VerifyBtn.Size = UDim2.new(0, 200, 0, 50)
 VerifyBtn.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
 VerifyBtn.Font = Enum.Font.GothamBold
@@ -167,7 +233,7 @@ VerifyBtn.MouseButton1Up:Connect(function()
     VerifyBtn.BackgroundColor3 = Color3.fromRGB(80, 80, 80)
 end)
 
--- 10. 提示信息
+-- 10. 提示信息（居中对称）
 local Msg = Instance.new("TextLabel")
 Msg.Parent = MainWin
 Msg.BackgroundTransparency = 1
@@ -180,7 +246,7 @@ Msg.TextSize = 14
 Msg.TextXAlignment = Enum.TextXAlignment.Center
 Msg.ZIndex = 3
 
--- 11. 关闭按钮（优化质感+添加消失动画）
+-- 11. 关闭按钮（优化质感+添加消失动画，位置对称）
 local CloseBtn = Instance.new("TextButton")
 CloseBtn.Parent = MainWin
 CloseBtn.Position = UDim2.new(1, -45, 0.05, 0)
@@ -207,7 +273,7 @@ CloseBtn.MouseLeave:Connect(function()
     CloseBtn.TextColor3 = Color3.fromRGB(200,200,200)
 end)
 
--- ========== 从小到大动画（稳定版） ==========
+-- ========== 从小到大动画（稳定版，对称缩放） ==========
 MainWin.Size = UDim2.new(0, 0, 0, 0)
 TweenService:Create(MainWin, TweenInfo.new(0.3, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
     Size = UDim2.new(0, 300, 0, 280)
@@ -244,16 +310,18 @@ UserInputService.InputEnded:Connect(function(input)
 end)
 
 -- ========== 核心功能 ==========
+-- 先执行白名单检测，通过则直接启动
+if checkWhitelist() then return end
+
 -- 关闭按钮（添加从大到小消失动画）
 CloseBtn.MouseButton1Click:Connect(function()
-    -- 关闭时执行相同的缩小消失动画
     local closeTween = TweenService:Create(
         MainWin,
         TweenInfo.new(0.3, Enum.EasingStyle.Back, Enum.EasingDirection.In),
         { Size = UDim2.new(0, 0, 0, 0), Transparency = 1 }
     )
     closeTween:Play()
-    closeTween.Completed:Wait() -- 等待动画结束后销毁资源
+    closeTween.Completed:Wait()
     ScreenGui:Destroy()
     StartSound:Destroy()
 end)
@@ -263,12 +331,11 @@ local attempts = 0
 local maxAttempts = 3
 VerifyBtn.MouseButton1Click:Connect(function()
     local key = Input.Text
-    if key == "HB_LinLinBright" then
+    if key == "HB_XiaXu&LnLiGayp̶̠͔̎u̵̬͓̎n̸̡̙̉̀ì̴̩̑s̸̟̈́ḧ̷͖̹́Tri§ix" then
         Msg.Text = "验证成功，启动中..."
         Msg.TextColor3 = Color3.fromRGB(80, 200, 80)
         task.wait(1)
         
-        -- 验证成功时的缩小消失动画
         local closeTween = TweenService:Create(
             MainWin,
             TweenInfo.new(0.3, Enum.EasingStyle.Back, Enum.EasingDirection.In),
@@ -280,11 +347,8 @@ VerifyBtn.MouseButton1Click:Connect(function()
         ScreenGui:Destroy()
         StartSound:Destroy()
         
-        -- 加载脚本+调整移动速度
         pcall(function()
-            -- 如果文件存在且路径正确，格式应该是：
-loadstring(game:HttpGet('https://raw.githubusercontent.com/tfcygvunbind/557/main/天'))()
-
+            loadstring(game:HttpGet('https://raw.githubusercontent.com/tfcygvunbind/557/main/天'))()
         end)
         if localPlayer.Character and localPlayer.Character.Humanoid then
             localPlayer.Character.Humanoid.WalkSpeed = 25
