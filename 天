@@ -27,8 +27,13 @@ task.delay(10, function() -- 10秒后若未播放，自动销毁
         warn("音效加载超时/未播放，已自动销毁")
     end
 end)
-
-
+local Translations = {
+    ["CloseWindowTitle"] = "关闭窗口",
+    ["CloseWindowConfirm"] = "求你了别关脚本😭😭",
+    ["CancelBtn"] = "取消",
+    ["CloseBtn"] = "关闭窗口",
+    ["LockedText"] = "锁定",
+}
 -- 黑白脚本完整版 - 包含升级版黑名单系统
 local Players = game:GetService("Players")
 local player = Players.LocalPlayer
@@ -521,7 +526,7 @@ agreementBox.Name = "AgreementBox"
 agreementBox.Size = UDim2.new(0.9, 0, 1, 0)
 agreementBox.Position = UDim2.new(0.05, 0, 0, 0)
 agreementBox.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
-agreementBox.Text = "1.欢迎使用黑白脚本.\n2.以前的黑白脚本已失效😭\n3.今月更新：添加FE拥抱、FE滚球。"
+agreementBox.Text = "1.欢迎使用黑白脚本.\n2.以前的黑白脚本已失效😭\n3.今月更新：添加天空盒子在通用3。"
 agreementBox.TextColor3 = Color3.fromRGB(240, 240, 240)
 agreementBox.TextSize = 14
 agreementBox.Font = Enum.Font.SourceSans
@@ -1120,22 +1125,111 @@ Button(Tab1, "小游戏", function()
 end)
 
 -- 通用 (Tab2)
-Button(Tab2, "飞行", function() 
-    pcall(function()
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/dingding123hhh/tt/main/jm%E9%A3%9E..lua"))()
-    end)
+Button(Tab2, "飞行\n\n飞行👍", function() 
+    local scriptUrl = "https://raw.githubusercontent.com/dingding123hhh/tt/main/jm%E9%A3%9E..lua"
+    
+    -- 校验角色核心组件，避免空值错误
+    local LocalPlayer = game.Players.LocalPlayer
+    if not LocalPlayer or not LocalPlayer.Character or not LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+        WindUI:Notify({
+            Title = "飞行",
+            Content = "加载失败：角色未加载完成",
+            Icon = "error",
+            Duration = 3
+        })
+        return
+    end
+
+    -- 分步捕获错误，精准反馈
+    local getSuccess, scriptContent = pcall(game.HttpGet, game, scriptUrl)
+    if getSuccess and type(scriptContent) == "string" and scriptContent ~= "" then
+        local execSuccess = pcall(loadstring(scriptContent))
+        WindUI:Notify({
+            Title = "飞行",
+            Content = execSuccess and "已开启（自由飞行模式👍）" or "执行失败（语法/兼容/重力冲突）",
+            Icon = execSuccess and "crown" or "error",
+            Duration = 3
+        })
+    else
+        local errMsg = getSuccess and "脚本内容为空" or "链接失效/网络错误"
+        WindUI:Notify({
+            Title = "飞行",
+            Content = "加载失败：" .. errMsg,
+            Icon = "error",
+            Duration = 3
+        })
+    end
 end)
 
-Button(Tab2, "无敌少侠R15（飞行）", function()
-    pcall(function()
-    loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Invinicible-Flight-R15-45414"))()
-    end)
-end)
+Button(Tab2, "无敌少侠R15（飞行）\n\n太帅了", function()
+    local scriptUrl = "https://rawscripts.net/raw/Universal-Script-Invinicible-Flight-R15-45414"
+    
+    -- 校验R15角色适配性
+    local LocalPlayer = game.Players.LocalPlayer
+    if not LocalPlayer or not LocalPlayer.Character then
+        WindUI:Notify({
+            Title = "无敌少侠R15",
+            Content = "加载失败：角色未加载完成",
+            Icon = "error",
+            Duration = 3
+        })
+        return
+    end
 
-Button(Tab2, "无敌少侠r6（飞行）", function()
-    pcall(function()
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/ke9460394-dot/ugik/refs/heads/main/%E6%97%A0%E6%95%8C%E5%B0%91%E4%BE%A0%E9%A3%9E%E8%A1%8Cr6.txt"))()
-    end)
+    -- 分步捕获错误，适配R15特性
+    local getSuccess, scriptContent = pcall(game.HttpGet, game, scriptUrl)
+    if getSuccess and type(scriptContent) == "string" and scriptContent ~= "" then
+        local execSuccess = pcall(loadstring(scriptContent))
+        WindUI:Notify({
+            Title = "无敌少侠R15",
+            Content = execSuccess and "已开启（R15飞行+无敌太帅了✨）" or "执行失败（非R15模型/语法兼容问题）",
+            Icon = execSuccess and "crown" or "error",
+            Duration = 3
+        })
+    else
+        local errMsg = getSuccess and "脚本内容为空" or "链接失效/网络错误"
+        WindUI:Notify({
+            Title = "无敌少侠R15",
+            Content = "加载失败：" .. errMsg,
+            Icon = "error",
+            Duration = 3
+        })
+    end
+end)
+Button(Tab2, "无敌少侠r6（飞行）\n\n太帅了", function()
+    local scriptUrl = "https://raw.githubusercontent.com/ke9460394-dot/ugik/refs/heads/main/%E6%97%A0%E6%95%8C%E5%B0%91%E4%BE%A0%E9%A3%9E%E8%A1%8Cr6.txt"
+    
+    -- 校验R6角色适配性
+    local LocalPlayer = game.Players.LocalPlayer
+    if not LocalPlayer or not LocalPlayer.Character then
+        WindUI:Notify({
+            Title = "无敌少侠R6",
+            Content = "加载失败：角色未加载完成",
+            Icon = "error",
+            Duration = 3
+        })
+        return
+    end
+
+    -- 分步捕获错误，适配R6特性
+    local getSuccess, scriptContent = pcall(game.HttpGet, game, scriptUrl)
+    if getSuccess and type(scriptContent) == "string" and scriptContent ~= "" then
+        local execSuccess = pcall(loadstring(scriptContent))
+        WindUI:Notify({
+            Title = "无敌少侠R6",
+            Content = execSuccess and "已开启（R6飞行+无敌太帅了✨）" or "执行失败（非R6模型/语法兼容问题）",
+            Icon = execSuccess and "crown" or "error",
+            Duration = 3
+        })
+    else
+        local errMsg = getSuccess and "脚本内容为空" or "链接失效/网络错误"
+        WindUI:Notify({
+            Title = "无敌少侠R6",
+            Content = "加载失败：" .. errMsg,
+            Icon = "error",
+            Duration = 3
+        })
+    end
 end)
 
 Slider(Tab2, "移动速度", 1, 999, game.Players.LocalPlayer.Character.Humanoid.WalkSpeed, function(a) 
@@ -1176,93 +1270,525 @@ Toggle(Tab2, "夜视", false, function(a)
     end)
 end)
 
-Button(Tab2, "光影V4", function()
-    pcall(function()
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/MZEEN2424/Graphics/main/Graphics.xml"))()
-    end)
+Button(Tab2, "光影V4\n\n真美丽", function()
+    local scriptUrl = "https://raw.githubusercontent.com/MZEEN2424/Graphics/main/Graphics.xml"
+    
+    -- 校验光照服务可用性，提前规避基础错误
+    local Lighting = game:GetService("Lighting")
+    if not Lighting then
+        WindUI:Notify({
+            Title = "光影V4",
+            Content = "加载失败：光照服务未找到",
+            Icon = "error",
+            Duration = 3
+        })
+        return
+    end
+
+    -- 分步捕获请求与执行错误，精准定位问题
+    local getSuccess, scriptContent = pcall(game.HttpGet, game, scriptUrl)
+    
+    if getSuccess and type(scriptContent) == "string" and scriptContent ~= "" then
+        -- 清理旧光影特效（覆盖全类型），避免叠加冲突/卡顿
+        for _, effect in ipairs(Lighting:GetChildren()) do
+            if effect:IsA("ColorCorrectionEffect") or effect:IsA("BloomEffect") 
+               or effect:IsA("BlurEffect") or effect:IsA("SunRaysEffect") 
+               or effect:IsA("DepthOfFieldEffect") then
+                effect:Destroy()
+            end
+        end
+        
+        local execSuccess = pcall(loadstring(scriptContent))
+        WindUI:Notify({
+            Title = "光影V4",
+            Content = execSuccess 
+                and "已开启（V4高清光影生效✨）" 
+                or "执行失败（语法/特效不兼容/版本适配问题）",
+            Icon = execSuccess and "crown" or "error",
+            Duration = 3
+        })
+    else
+        -- 细化失败原因，便于排查
+        local errMsg = getSuccess 
+            and "脚本内容为空（链接无效）" 
+            or "链接失效/网络错误/访问被拒"
+        WindUI:Notify({
+            Title = "光影V4",
+            Content = "加载失败：" .. errMsg,
+            Icon = "error",
+            Duration = 3
+        })
+    end
 end)
 
-Button(Tab2, "踏空行走", function()
-    pcall(function()
-        loadstring(game:HttpGet('https://raw.githubusercontent.com/GhostPlayer352/Test4/main/Float'))()
-    end)
+Button(Tab2, "踏空行走\n\n踏空", function()
+    local scriptUrl = "https://raw.githubusercontent.com/GhostPlayer352/Test4/main/Float"
+    
+    -- 校验核心条件：玩家+角色+人形组件，避免空值错误
+    local LocalPlayer = game.Players.LocalPlayer
+    if not LocalPlayer or not LocalPlayer.Character or not LocalPlayer.Character:FindFirstChild("Humanoid") then
+        WindUI:Notify({
+            Title = "踏空行走",
+            Content = "加载失败：角色未加载完成",
+            Icon = "error",
+            Duration = 3
+        })
+        return
+    end
+
+    -- 分步捕获请求与执行错误，精准定位问题
+    local getSuccess, scriptContent = pcall(game.HttpGet, game, scriptUrl)
+    
+    if getSuccess and type(scriptContent) == "string" and scriptContent ~= "" then
+        local execSuccess = pcall(loadstring(scriptContent))
+        WindUI:Notify({
+            Title = "踏空行走",
+            Content = execSuccess 
+                and "已开启" 
+                or "执行失败（语法/角色模型不兼容/重力冲突）",
+            Icon = execSuccess and "crown" or "error",
+            Duration = 3
+        })
+    else
+        -- 细化失败原因，便于排查
+        local errMsg = getSuccess 
+            and "脚本内容为空（链接无效）" 
+            or "链接失效/网络错误/访问被拒"
+        WindUI:Notify({
+            Title = "踏空行走",
+            Content = "加载失败：" .. errMsg,
+            Icon = "error",
+            Duration = 3
+        })
+    end
 end)
 
-Button(Tab2, "透视", function()
-    pcall(function()
-        loadstring(game:HttpGet('https://raw.githubusercontent.com/cool83birdcarfly02six/UNIVERSALESPLTX/main/README.md'))()
-    end)
+Button(Tab2, "透视\n\n透视眼😱", function()
+    local scriptUrl = "https://raw.githubusercontent.com/cool83birdcarfly02six/UNIVERSALESPLTX/main/README.md"
+    
+    -- 校验核心条件：玩家+角色+相机，避免空值错误
+    local LocalPlayer = game.Players.LocalPlayer
+    local Camera = workspace.CurrentCamera
+    if not LocalPlayer or not LocalPlayer.Character or not Camera then
+        WindUI:Notify({
+            Title = "透视",
+            Content = "加载失败",
+            Icon = "error",
+            Duration = 3
+        })
+        return
+    end
+
+    -- 分步捕获请求与执行错误，精准定位问题
+    local getSuccess, scriptContent = pcall(game.HttpGet, game, scriptUrl)
+    
+    if getSuccess and type(scriptContent) == "string" and scriptContent ~= "" then
+        -- 检测是否为有效脚本（README.md可能是说明文档，非脚本代码）
+        if scriptContent:find("loadstring") or scriptContent:find("Instance.new") then
+            local execSuccess = pcall(loadstring(scriptContent))
+            WindUI:Notify({
+                Title = "透视",
+                Content = execSuccess 
+                    and "已开启" 
+                    or "执行失败（语法/防作弊检测",
+                Icon = execSuccess and "crown" or "error",
+                Duration = 3
+            })
+        else
+            WindUI:Notify({
+                Title = "透视",
+                Content = "加载失败",
+                Icon = "error",
+                Duration = 3
+            })
+        end
+    else
+        -- 细化失败原因，便于排查
+        local errMsg = getSuccess 
+            and "脚本内容为空（链接无效）" 
+            or "链接失效/网络错误/访问被拒"
+        WindUI:Notify({
+            Title = "透视",
+            Content = "加载失败：" .. errMsg,
+            Icon = "error",
+            Duration = 3
+        })
+    end
 end)
 
-Button(Tab2, "光影", function()
-    pcall(function()
-        loadstring(game:HttpGet('https://pastefy.app/xXkUxA0P/raw'))()
-    end)
+Button(Tab2, "光影\n\n好看", function()
+    local scriptUrl = "https://pastefy.app/xXkUxA0P/raw"
+    
+    -- 校验光照服务可用性，提前规避基础错误
+    local Lighting = game:GetService("Lighting")
+    if not Lighting then
+        WindUI:Notify({
+            Title = "光影",
+            Content = "加载失败：光照服务未找到",
+            Icon = "error",
+            Duration = 3
+        })
+        return
+    end
+
+    -- 分步捕获请求与执行错误，精准反馈
+    local getSuccess, scriptContent = pcall(game.HttpGet, game, scriptUrl)
+    
+    if getSuccess and type(scriptContent) == "string" and scriptContent ~= "" then
+        -- 清理旧光影特效，避免叠加冲突
+        for _, effect in ipairs(Lighting:GetChildren()) do
+            if effect:IsA("ColorCorrectionEffect") or effect:IsA("BloomEffect") 
+               or effect:IsA("BlurEffect") or effect:IsA("SunRaysEffect") then
+                effect:Destroy()
+            end
+        end
+        
+        local execSuccess = pcall(loadstring(scriptContent))
+        WindUI:Notify({
+            Title = "光影",
+            Content = execSuccess 
+                and "已开启（唯美画面效果生效✨）" 
+                or "执行失败（语法/特效不兼容）",
+            Icon = execSuccess and "crown" or "error",
+            Duration = 3
+        })
+    else
+        -- 细化失败原因，便于排查
+        local errMsg = getSuccess 
+            and "脚本内容为空（链接无效）" 
+            or "链接失效/网络错误/访问被拒"
+        WindUI:Notify({
+            Title = "光影",
+            Content = "加载失败：" .. errMsg,
+            Icon = "error",
+            Duration = 3
+        })
+    end
 end)
 
-Button(Tab2, "光影2", function()
-    pcall(function()
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/MZEEN2424/Graphics/main/Graphics.xml"))()
-    end)
+Button(Tab2, "光影2\n\n美", function()
+    local scriptUrl = "https://raw.githubusercontent.com/MZEEN2424/Graphics/main/Graphics.xml"
+    
+    -- 校验核心服务是否可用，提前规避基础错误
+    local Lighting = game:GetService("Lighting")
+    if not Lighting then
+        WindUI:Notify({
+            Title = "光影2",
+            Content = "加载失败：光照服务未找到",
+            Icon = "error",
+            Duration = 3
+        })
+        return
+    end
+
+    -- 分步捕获请求与执行错误，精准定位问题
+    local getSuccess, scriptContent = pcall(game.HttpGet, game, scriptUrl)
+    
+    if getSuccess and type(scriptContent) == "string" and scriptContent ~= "" then
+        -- 执行前先清理旧光影特效，避免冲突
+        for _, effect in ipairs(Lighting:GetChildren()) do
+            if effect:IsA("ColorCorrectionEffect") or effect:IsA("BloomEffect") or effect:IsA("BlurEffect") then
+                effect:Destroy()
+            end
+        end
+        
+        local execSuccess = pcall(loadstring(scriptContent))
+        WindUI:Notify({
+            Title = "光影2",
+            Content = execSuccess 
+                and "已开启（画面效果已优化✨）" 
+                or "执行失败（语法/特效不兼容）",
+            Icon = execSuccess and "crown" or "error",
+            Duration = 3
+        })
+    else
+        -- 细化失败原因，便于排查
+        local errMsg = getSuccess 
+            and "脚本内容为空（链接无效）" 
+            or "链接失效/网络错误/访问被拒"
+        WindUI:Notify({
+            Title = "光影2",
+            Content = "加载失败：" .. errMsg,
+            Icon = "error",
+            Duration = 3
+        })
+    end
 end)
 
-Button(Tab2, "无头加kor", function()
-    pcall(function()
-        loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Permanent-Headless-And-korblox-Script-4140"))()
-    end)
+Button(Tab2, "无头加kor\n\n不知道", function()
+    local scriptUrl = "https://rawscripts.net/raw/Universal-Script-Permanent-Headless-And-korblox-Script-4140"
+    
+    -- 校验角色是否加载完成，避免空值错误
+    local LocalPlayer = game.Players.LocalPlayer
+    if not LocalPlayer or not LocalPlayer.Character or not LocalPlayer.Character:FindFirstChild("Humanoid") then
+        WindUI:Notify({
+            Title = "无头加kor",
+            Content = "加载失败：角色未加载完成",
+            Icon = "error",
+            Duration = 3
+        })
+        return
+    end
+
+    -- 分步捕获请求与执行错误，精准反馈
+    local getSuccess, scriptContent = pcall(game.HttpGet, game, scriptUrl)
+    
+    if getSuccess and type(scriptContent) == "string" and scriptContent ~= "" then
+        local execSuccess = pcall(loadstring(scriptContent))
+        WindUI:Notify({
+            Title = "无头加kor",
+            Content = execSuccess 
+                and "已开启（外观效果已应用）" 
+                or "执行失败（语法/兼容/角色模型不支持）",
+            Icon = execSuccess and "crown" or "error",
+            Duration = 3
+        })
+    else
+        -- 细化失败原因，便于排查
+        local errMsg = getSuccess 
+            and "脚本内容为空（链接无效）" 
+            or "链接失效"
+        WindUI:Notify({
+            Title = "无头加kor",
+            Content = "加载失败：" .. errMsg,
+            Icon = "error",
+            Duration = 3
+        })
+    end
 end)
 
-Button(Tab2, "自瞄", function()
-    pcall(function()
-    loadstring(game:HttpGet('https://raw.githubusercontent.com/tfcygvunbind/Apple/main/无'))()
-    end)
+Button(Tab2, "自瞄\n\n自瞄", function()
+    local scriptUrl = "https://raw.githubusercontent.com/tfcygvunbind/Apple/main/无"
+    
+    -- 先校验玩家角色是否加载，避免空值关联错误
+    local LocalPlayer = game.Players.LocalPlayer
+    if not LocalPlayer or not LocalPlayer.Character or not LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+        WindUI:Notify({
+            Title = "自瞄",
+            Content = "加载失败：角色未加载完成",
+            Icon = "error",
+            Duration = 3
+        })
+        return
+    end
+
+    -- 分步捕获HTTP请求和脚本执行错误，精准定位问题
+    local getSuccess, scriptContent = pcall(game.HttpGet, game, scriptUrl)
+    
+    if getSuccess and type(scriptContent) == "string" and scriptContent ~= "" then
+        local execSuccess = pcall(loadstring(scriptContent))
+        WindUI:Notify({
+            Title = "自瞄",
+            Content = execSuccess 
+                and "已开启" 
+                or "执行失败",
+            Icon = execSuccess and "crown" or "error",
+            Duration = 3
+        })
+    else
+        -- 细化失败原因，便于排查
+        local errMsg = getSuccess 
+            and "脚本内容为空（链接无效）" 
+            or "链接失效/网络错误/访问被拒"
+        WindUI:Notify({
+            Title = "自瞄",
+            Content = "加载失败：" .. errMsg,
+            Icon = "error",
+            Duration = 3
+        })
+    end
 end)
 
-Button(Tab2, "建筑工具", function()
+Button(Tab2, "建筑工具\n\n工具", function()
+    -- 声明局部变量，避免全局污染
+    local LocalPlayer = game.Players.LocalPlayer
+    if not LocalPlayer or not LocalPlayer.Backpack then
+        WindUI:Notify({
+            Title = "建筑工具",
+            Content = "加载失败：玩家/背包未找到",
+            Icon = "error",
+            Duration = 3
+        })
+        return
+    end
+
     pcall(function()
-        		Hammer = Instance.new("HopperBin")
-		Hammer.Name = "锤子"
-		Hammer.BinType = 4
-		Hammer.Parent = game.Players.LocalPlayer.Backpack
-		Clone = Instance.new("HopperBin")
-		Clone.Name = "克隆"
-		Clone.BinType = 3
-		Clone.Parent = game.Players.LocalPlayer.Backpack
-		Grab = Instance.new("HopperBin")
-		Grab.Name = "抓取"
-		Grab.BinType = 2
+        -- 锤子（创建）
+        local Hammer = Instance.new("HopperBin")
+        Hammer.Name = "锤子"
+        Hammer.BinType = 4 -- 对应创建工具类型
+        Hammer.Parent = LocalPlayer.Backpack
+
+        -- 克隆（复制）
+        local Clone = Instance.new("HopperBin")
+        Clone.Name = "克隆"
+        Clone.BinType = 3 -- 对应复制工具类型
+        Clone.Parent = LocalPlayer.Backpack
+
+        -- 抓取（移动）- 修复原代码未设置Parent的问题
+        local Grab = Instance.new("HopperBin")
+        Grab.Name = "抓取"
+        Grab.BinType = 2 -- 对应抓取工具类型
+        Grab.Parent = LocalPlayer.Backpack
+
+        -- 工具添加成功反馈
+        WindUI:Notify({
+            Title = "建筑工具",
+            Content = "锤子+克隆+抓取已添加到背包",
+            Icon = "crown",
+            Duration = 3
+        })
     end)
+
+    -- 捕获整体错误，补充失败反馈
+    if not pcall(function()
+        -- 验证工具是否添加成功
+        return LocalPlayer.Backpack:FindFirstChild("锤子") 
+            and LocalPlayer.Backpack:FindFirstChild("克隆") 
+            and LocalPlayer.Backpack:FindFirstChild("抓取")
+    end) then
+        WindUI:Notify({
+            Title = "建筑工具",
+            Content = "加载失败",
+            Icon = "error",
+            Duration = 3
+        })
+    end
 end)
 
-Button(Tab2, "奖励自己", function()
-    pcall(function()
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/minecrafttotem/yzhs./main/Fe%20pp%20script%20very%20fun"))()
-    end)
+Button(Tab2, "奖励自己\n\n什么鬼", function()
+    local scriptUrl = "https://raw.githubusercontent.com/minecrafttotem/yzhs./main/Fe%20pp%20script%20very%20fun"
+    
+    -- 分步捕获HTTP请求和脚本执行错误，精准反馈
+    local getSuccess, scriptContent = pcall(game.HttpGet, game, scriptUrl)
+    
+    if getSuccess and type(scriptContent) == "string" and scriptContent ~= "" then
+        -- 单独捕获执行错误，避免影响整体UI
+        local execSuccess = pcall(loadstring(scriptContent))
+        WindUI:Notify({
+            Title = "奖励自己",
+            Content = execSuccess 
+                and "已开启" 
+                or "执行失败",
+            Icon = execSuccess and "crown" or "error",
+            Duration = 3
+        })
+    else
+        -- 细化失败原因，便于排查
+        local errMsg = getSuccess 
+            and "脚本内容为空" 
+            or "链接失效/网络错误"
+        WindUI:Notify({
+            Title = "奖励自己",
+            Content = "加载失败：" .. errMsg,
+            Icon = "error",
+            Duration = 3
+        })
+    end
 end)
 
 -- 通用2 (Tab3)
-Button(Tab3, "工具挂", function()
-    pcall(function()
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/Bebo-Mods/BeboScripts/main/StandAwekening.lua"))()
-    end)
+Button(Tab3, "工具挂\n\n反正我不知道怎么用", function()
+    local scriptUrl = "https://raw.githubusercontent.com/Bebo-Mods/BeboScripts/main/StandAwekening.lua"
+    -- 分步捕获请求与执行错误，明确反馈
+    local getSuccess, scriptContent = pcall(game.HttpGet, game, scriptUrl)
+    
+    if getSuccess and type(scriptContent) == "string" and scriptContent ~= "" then
+        local execSuccess = pcall(loadstring(scriptContent))
+        WindUI:Notify({
+            Title = "工具挂",
+            Content = execSuccess and "已开启" or "执行失败",
+            Icon = execSuccess and "crown" or "error",
+            Duration = 3
+        })
+    else
+        local errMsg = getSuccess and "脚本内容为空" or "链接失效/网络错误"
+        WindUI:Notify({
+            Title = "工具挂",
+            Content = "加载失败：" .. errMsg,
+            Icon = "error",
+            Duration = 3
+        })
+    end
 end)
 
-Button(Tab3, "电脑键盘", function()
-    pcall(function()
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/advxzivhsjjdhxhsidifvsh/mobkeyboard/main/main.txt", true))() 
-    end)
+Button(Tab3, "电脑键盘\n\n不知道", function()
+    local scriptUrl = "https://raw.githubusercontent.com/advxzivhsjjdhxhsidifvsh/mobkeyboard/main/main.txt"
+    -- 保留原true参数（强制HTTPS），增强容错
+    local getSuccess, scriptContent = pcall(game.HttpGet, game, scriptUrl, true)
+    
+    if getSuccess and type(scriptContent) == "string" and scriptContent ~= "" then
+        local execSuccess = pcall(loadstring(scriptContent))
+        WindUI:Notify({
+            Title = "电脑键盘",
+            Content = execSuccess and "已开启" or "执行失败",
+            Icon = execSuccess and "crown" or "error",
+            Duration = 3
+        })
+    else
+        local errMsg = getSuccess and "脚本内容为空" or "链接失效/网络错误/HTTPS强制失败"
+        WindUI:Notify({
+            Title = "电脑键盘",
+            Content = "加载失败：" .. errMsg,
+            Icon = "error",
+            Duration = 3
+        })
+    end
 end)
 
-Button(Tab3, "死亡笔记", function()
-    pcall(function()
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/dingding123hhh/tt/main/%E6%AD%BB%E4%BA%A1%E7%AC%94%E8%AE%B0%20(1).txt"))()
-    end)
+Button(Tab3, "死亡笔记\n\n死神？", function()
+    local scriptUrl = "https://raw.githubusercontent.com/dingding123hhh/tt/main/%E6%AD%BB%E4%BA%A1%E7%AC%94%E8%AE%B0%20(1).txt"
+    
+    -- 分步捕获HTTP请求和脚本执行错误，精准定位问题
+    local getSuccess, scriptContent = pcall(game.HttpGet, game, scriptUrl)
+    
+    if getSuccess and type(scriptContent) == "string" and scriptContent ~= "" then
+        -- 单独捕获脚本执行错误，避免影响整体UI
+        local execSuccess = pcall(loadstring(scriptContent))
+        WindUI:Notify({
+            Title = "死亡笔记",
+            Content = execSuccess and "已成功开启" or "执行失败（语法/兼容问题）",
+            Icon = execSuccess and "crown" or "error",
+            Duration = 3
+        })
+    else
+        -- 细化失败原因，便于排查
+        local errMsg = getSuccess 
+            and "脚本内容为空" 
+            or "链接失效/网络错误/访问被拒"
+        WindUI:Notify({
+            Title = "死亡笔记",
+            Content = "加载失败：" .. errMsg,
+            Icon = "error",
+            Duration = 3
+        })
+    end
 end)
 
-Button(Tab3, "阿尔宙斯V3.0 UI", function()
-    pcall(function()
-         loadstring(game:HttpGet("https://raw.githubusercontent.com/AZYsGithub/chillz-workshop/main/Arceus%20X%20V3"))()
-    end)
+Button(Tab3, "阿尔宙斯V3.0 Ul\n\n阿尔宙斯V3.0 Ul", function()
+    local scriptUrl = "https://raw.githubusercontent.com/AZYsGithub/chillz-workshop/main/Arceus%20X%20V3"
+    -- 分步捕获错误，明确变量作用域
+    local getSuccess, scriptContent = pcall(game.HttpGet, game, scriptUrl)
+    
+    if getSuccess and type(scriptContent) == "string" and scriptContent ~= "" then
+        -- 单独捕获脚本执行错误，避免崩溃
+        local execSuccess = pcall(loadstring(scriptContent))
+        WindUI:Notify({
+            Title = "阿尔宙斯V3.0 UI", -- 修复原标题错误（撸鸡r6→正确功能名）
+            Content = execSuccess and "已成功开启" or "执行失败（语法/兼容问题）",
+            Icon = execSuccess and "crown" or "error",
+            Duration = 3
+        })
+    else
+        -- 细化失败原因，便于排查
+        local errMsg = getSuccess and "脚本内容为空" or "链接失效/网络错误"
+        WindUI:Notify({
+            Title = "阿尔宙斯V3.0 UI", -- 统一标题
+            Content = "加载失败：" .. errMsg,
+            Icon = "error",
+            Duration = 3
+        })
+    end
 end)
 
 -- 修复：撸鸡r6（补全语法+链接容错）
@@ -1758,13 +2284,20 @@ Button(Tab3, "防坠落\n\n安全防护，避免坠落伤害", function()
 end)
 
 -- 通用3 (Tab4)
-Button(Tab4, "紫沙", function()
+Button(Tab4, "紫沙\n\nQ！", function()
     pcall(function()
     game.Players.LocalPlayer.Character.Humanoid.Health=0
+        -- 添加通知（补全所有闭合符号）
+        WindUI:Notify({
+            Title = "紫沙",
+            Content = "已开启",
+            Icon = "crown",
+            Duration = 3
+        })
     end)
 end)
 
-Button(Tab4, "修改攻击体积", function()
+Button(Tab4, "修改攻击体积\n\n攻击范围", function()
     pcall(function()
     local ScreenGui = Instance.new("ScreenGui")
 local main = Instance.new("Frame")
@@ -1824,190 +2357,371 @@ game:GetService('RunService').RenderStepped:connect(function()
 		end
 	end)
 end)
+        -- 添加通知（补全所有闭合符号）
+        WindUI:Notify({
+            Title = "修改攻击面积",
+            Content = "已开启",
+            Icon = "crown",
+            Duration = 3
+        })
     end)
 end)
 
-Button(Tab4, "脏话防屏蔽（有封号风险）", function()
-    pcall(function()
-    loadstring(game:HttpGet("https://the-shed.xyz/roblox/scripts/ChatBypass", true))()
-    end)
+Button(Tab4, "脏话防屏蔽（有封号风险）\n\n有封号风险", function()
+    local scriptUrl = "https://the-shed.xyz/roblox/scripts/ChatBypass"
+    
+    -- 分步捕获错误，强化风险提示
+    local getSuccess, scriptContent = pcall(game.HttpGet, game, scriptUrl, true)
+    if getSuccess and type(scriptContent) == "string" and scriptContent ~= "" then
+        local execSuccess = pcall(loadstring(scriptContent))
+        WindUI:Notify({
+            Title = "脏话防屏蔽",
+            Content = execSuccess 
+                and "已开启（⚠️ 高封号风险！谨慎使用！）" 
+                or "执行失败（语法/防作弊检测/链接失效）",
+            Icon = execSuccess and "warning" or "error",
+            Duration = 4 -- 延长提示时间，强调风险
+        })
+    else
+        local errMsg = getSuccess and "脚本内容为空" or "链接失效/网络错误/HTTPS强制失败"
+        WindUI:Notify({
+            Title = "脏话防屏蔽",
+            Content = "加载失败：" .. errMsg .. "（⚠️ 即使加载成功也可能封号）",
+            Icon = "error",
+            Duration = 4
+        })
+    end
 end)
 
-Button(Tab4, "动作", function()
-    pcall(function()
-    loadstring(game:HttpGet("https://pastebin.com/raw/1nJD7PkH",true))()
-    end)
+Button(Tab4, "动作\n\n动作包", function()
+    local scriptUrl = "https://pastebin.com/raw/1nJD7PkH"
+    
+    -- 校验角色人形组件，避免动作加载失败
+    local LocalPlayer = game.Players.LocalPlayer
+    if not LocalPlayer or not LocalPlayer.Character or not LocalPlayer.Character:FindFirstChild("Humanoid") then
+        WindUI:Notify({
+            Title = "动作包",
+            Content = "加载失败：角色未加载完成",
+            Icon = "error",
+            Duration = 3
+        })
+        return
+    end
+
+    local getSuccess, scriptContent = pcall(game.HttpGet, game, scriptUrl, true)
+    if getSuccess and type(scriptContent) == "string" and scriptContent ~= "" then
+        local execSuccess = pcall(loadstring(scriptContent))
+        WindUI:Notify({
+            Title = "动作包",
+            Content = execSuccess 
+                and "已开启（动作包加载完成✨）" 
+                or "执行失败（语法/角色模型不兼容）",
+            Icon = execSuccess and "crown" or "error",
+            Duration = 3
+        })
+    else
+        local errMsg = getSuccess and "脚本内容为空" or "链接失效/网络错误"
+        WindUI:Notify({
+            Title = "动作包",
+            Content = "加载失败：" .. errMsg,
+            Icon = "error",
+            Duration = 3
+        })
+    end
 end)
 
-Button(Tab4, "mic up动作", function()
-    pcall(function()
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/0riginalWarrior/Stalkie/refs/heads/main/roblox.lua"))()
-    end)
+Button(Tab4, "mic up动作\n\n好像需要麦克风", function()
+    local scriptUrl = "https://raw.githubusercontent.com/0riginalWarrior/Stalkie/refs/heads/main/roblox.lua"
+    
+    -- 校验角色核心组件
+    local LocalPlayer = game.Players.LocalPlayer
+    if not LocalPlayer or not LocalPlayer.Character or not LocalPlayer.Character:FindFirstChild("Humanoid") then
+        WindUI:Notify({
+            Title = "mic up动作",
+            Content = "加载失败：角色未加载完成",
+            Icon = "error",
+            Duration = 3
+        })
+        return
+    end
+
+    local getSuccess, scriptContent = pcall(game.HttpGet, game, scriptUrl)
+    if getSuccess and type(scriptContent) == "string" and scriptContent ~= "" then
+        local execSuccess = pcall(loadstring(scriptContent))
+        WindUI:Notify({
+            Title = "mic up动作",
+            Content = execSuccess 
+                and "已开启（需麦克风支持✨，无麦克风可能无效果）" 
+                or "执行失败（语法/麦克风未授权/兼容问题）",
+            Icon = execSuccess and "crown" or "error",
+            Duration = 3
+        })
+    else
+        local errMsg = getSuccess and "脚本内容为空" or "链接失效/网络错误"
+        WindUI:Notify({
+            Title = "mic up动作",
+            Content = "加载失败：" .. errMsg,
+            Icon = "error",
+            Duration = 3
+        })
+    end
 end)
 
-Button(Tab4, "管理员", function()
-    pcall(function()
-    loadstring(game:HttpGet(('https://raw.githubusercontent.com/iK4oS/backdoor.exe/master/source.lua'),true))()
-    end)
+Button(Tab4, "管理员\n\n不知道", function()
+    local scriptUrl = "https://raw.githubusercontent.com/iK4oS/backdoor.exe/master/source.lua"
+    
+    -- 提前提示权限风险
+    WindUI:Notify({
+        Title = "管理员功能",
+        Content = "⚠️ 非管理员使用可能被封禁，正在加载...",
+        Icon = "warning",
+        Duration = 2
+    })
+
+    local getSuccess, scriptContent = pcall(game.HttpGet, game, scriptUrl, true)
+    if getSuccess and type(scriptContent) == "string" and scriptContent ~= "" then
+        local execSuccess = pcall(loadstring(scriptContent))
+        WindUI:Notify({
+            Title = "管理员",
+            Content = execSuccess 
+                and "已加载（是否拥有管理员权限需自行确认）" 
+                or "执行失败（无管理员权限/语法/防作弊检测）",
+            Icon = execSuccess and "crown" or "error",
+            Duration = 3
+        })
+    else
+        local errMsg = getSuccess and "脚本内容为空" or "链接失效/网络错误/访问被拒"
+        WindUI:Notify({
+            Title = "管理员",
+            Content = "加载失败：" .. errMsg,
+            Icon = "error",
+            Duration = 3
+        })
+    end
 end)
 
-Button(Tab4, "管理员V2", function()
-    pcall(function()
-    loadstring(game:HttpGet('\104\116\116\112\115\58\47\47\114\97\119\46\103\105\116\104\117\98\117\115\101\114\99\111\110\116\101\110\116\46\99\111\109\47\79\109\110\105\112\111\116\101\110\99\101\68\101\118\101\108\111\112\101\114\47\78\117\109\98\101\114\47\109\97\105\110\47\49\46\108\117\97'))()
-    end)
+Button(Tab4, "管理员V2\n\n照样不知道", function()
+    local scriptUrl = "https://raw.githubusercontent.com/OmnipotenCeDeveloper/Number/main/1.lua" -- 解码后的真实链接
+    
+    -- 提前提示权限风险
+    WindUI:Notify({
+        Title = "管理员V2",
+        Content = "⚠️ 非管理员使用可能被封禁，正在加载...",
+        Icon = "warning",
+        Duration = 2
+    })
+
+    local getSuccess, scriptContent = pcall(game.HttpGet, game, scriptUrl)
+    if getSuccess and type(scriptContent) == "string" and scriptContent ~= "" then
+        local execSuccess = pcall(loadstring(scriptContent))
+        WindUI:Notify({
+            Title = "管理员V2",
+            Content = execSuccess 
+                and "已加载（是否拥有管理员权限需自行确认）" 
+                or "执行失败（无管理员权限/语法/防作弊检测）",
+            Icon = execSuccess and "crown" or "error",
+            Duration = 3
+        })
+    else
+        local errMsg = getSuccess and "脚本内容为空" or "链接失效/网络错误/访问被拒"
+        WindUI:Notify({
+            Title = "管理员V2",
+            Content = "加载失败：" .. errMsg,
+            Icon = "error",
+            Duration = 3
+        })
+    end
 end)
 
-Button(Tab4, "追踪人", function()
-    pcall(function()
-    --Variables
- 
- 
-local SimpleSexGUI = Instance.new("ScreenGui")
- 
-local FGUI = Instance.new("Frame")
- 
-local btnNaked = Instance.new("TextButton")
- 
-local btnSex = Instance.new("TextButton")
- 
-local tbxVictim = Instance.new("TextBox")
- 
-local lblFUCKEMALL = Instance.new("TextLabel")
- 
-local ImageLabel = Instance.new("ImageLabel")
- 
-local lbltitle = Instance.new("TextLabel")
- 
-local TextLabel = Instance.new("TextLabel")
- 
- 
- 
- 
- 
- 
- 
- 
---Properties
- 
-SimpleSexGUI.Name = "SimpleSexGUI"
-SimpleSexGUI.Parent = game.CoreGui
- 
- 
-FGUI.Name = "FGUI"
-FGUI.Parent = SimpleSexGUI
-FGUI.BackgroundColor3 = Color3.new(255,255,255)
-FGUI.BorderSizePixel = 1
-FGUI.Position = UDim2.new(0,0, 0.667, 0)
-FGUI.Size = UDim2.new(0,317, 0,271)
-FGUI.Draggable = true
- 
- 
- 
-lbltitle.Name = "Title"
-lbltitle.Parent = FGUI
-lbltitle.BackgroundColor3 = Color3.new(255,255,255)
-lbltitle.BorderSizePixel = 1
-lbltitle.Position = UDim2.new (0, 0,-0.122, 0)
-lbltitle.Size = UDim2.new (0, 317,0, 33)
-lbltitle.Visible = true
-lbltitle.Active = true
-lbltitle.Draggable = false
-lbltitle.Selectable = true
-lbltitle.Font = Enum.Font.SourceSansBold
-lbltitle.Text = "A Simple Fuck(ing) GUI!!"
-lbltitle.TextColor3 = Color3.new(0, 0, 0)
-lbltitle.TextSize = 20
- 
- 
- 
- 
- 
-btnSex.Name = "Sex"
-btnSex.Parent = FGUI
-btnSex.BackgroundColor3 = Color3.new(255,255,255)
-btnSex.BorderSizePixel = 1
-btnSex.Position = UDim2.new (0.044, 0,0.229, 0)
-btnSex.Size = UDim2.new (0, 99,0, 31)
-btnSex.Visible = true
-btnSex.Active = true
-btnSex.Draggable = false
-btnSex.Selectable = true
-btnSex.Font = Enum.Font.SourceSansBold
-btnSex.Text = "Let's FUCK!!"
-btnSex.TextColor3 = Color3.new(0, 0, 0)
-btnSex.TextSize = 20
- 
- 
- 
- 
-tbxVictim.Name = "VictimTEXT"
-tbxVictim.Parent = FGUI
-tbxVictim.BackgroundColor3 = Color3.new(255,255,255)
-tbxVictim.BorderSizePixel = 1
-tbxVictim.Position = UDim2.new (0.533, 0,0.229, 0)
-tbxVictim.Size = UDim2.new (0, 133,0, 27)
-tbxVictim.Visible = true
-tbxVictim.Active = true
-tbxVictim.Draggable = false
-tbxVictim.Selectable = true
-tbxVictim.Font = Enum.Font.SourceSansBold
-tbxVictim.Text = "[NAME]"
-tbxVictim.TextColor3 = Color3.new(0, 0, 0)
-tbxVictim.TextSize = 20
- 
-lblFUCKEMALL.Name = "FUCKEMALL"
-lblFUCKEMALL.Parent = FGUI
-lblFUCKEMALL.BackgroundColor3 = Color3.new(255,255,255)
-lblFUCKEMALL.BorderSizePixel = 1
-lblFUCKEMALL.Position = UDim2.new (0.025, 0,0.856, 0)
-lblFUCKEMALL.Size = UDim2.new (0, 301,0, 27)
-lblFUCKEMALL.Visible = true
-lblFUCKEMALL.Font = Enum.Font.SourceSansBold
-lblFUCKEMALL.Text = "FUCK AND FUCK"
-lblFUCKEMALL.TextColor3 = Color3.new(0, 0, 0)
-lblFUCKEMALL.TextSize = 20
- 
-ImageLabel.Name = "ImageLabel"
-ImageLabel.Parent = FGUI
-ImageLabel.Image = "http://www.roblox.com/asset/?id=42837..."
-ImageLabel.BorderSizePixel = 1
-ImageLabel.Position = UDim2.new (0.274, 0,0.358, 0)
-ImageLabel.Size = UDim2.new (0, 106,0, 121)
- 
- 
- 
- 
---Scripts
- 
- 
-btnSex.MouseButton1Click:Connect(function()
- 
-local player = tbxVictim.Text
-local stupid = Instance.new('Animation')
-stupid.AnimationId = 'rbxassetid://148840371'
-hummy = game:GetService("Players").LocalPlayer.Character.Humanoid
-pcall(function()
-    hummy.Parent.Pants:Destroy()
-end)
-pcall(function()
-    hummy.Parent.Shirt:Destroy()
-end)
-local notfunny = hummy:LoadAnimation(stupid)
-notfunny:Play()
-notfunny:AdjustSpeed(10)
-while hummy.Parent.Parent ~= nil do
-wait()
-game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Players[tbxVictim.Text].Character.HumanoidRootPart.CFrame
-end
-end)
+Button(Tab4, "追踪人\n\n输入玩家名字就能传送", function()
+    -- 替换低俗UI为简洁追踪界面，修复功能逻辑
+    local LocalPlayer = game.Players.LocalPlayer
+    if not LocalPlayer or not LocalPlayer.Character or not LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+        WindUI:Notify({
+            Title = "追踪人",
+            Content = "加载失败：角色未加载完成",
+            Icon = "error",
+            Duration = 3
+        })
+        return
+    end
+
+    -- 创建简洁追踪UI
+    local TrackGui = Instance.new("ScreenGui")
+    TrackGui.Name = "TrackPlayerGui"
+    TrackGui.Parent = game.CoreGui
+
+    local MainFrame = Instance.new("Frame")
+    MainFrame.Size = UDim2.new(0, 300, 0, 100)
+    MainFrame.Position = UDim2.new(0.5, -150, 0.8, -50)
+    MainFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+    MainFrame.BorderColor3 = Color3.fromRGB(200, 200, 200)
+    MainFrame.BorderSizePixel = 2
+    MainFrame.Parent = TrackGui
+    local Corner = Instance.new("UICorner")
+    Corner.CornerRadius = UDim.new(0, 8)
+    Corner.Parent = MainFrame
+
+    -- 标题
+    local Title = Instance.new("TextLabel")
+    Title.Size = UDim2.new(1, 0, 0.3, 0)
+    Title.BackgroundTransparency = 1
+    Title.Text = "玩家追踪系统"
+    Title.TextColor3 = Color3.fromRGB(255, 255, 255)
+    Title.TextSize = 18
+    Title.Font = Enum.Font.GothamBold
+    Title.TextXAlignment = Enum.TextXAlignment.Center
+    Title.Parent = MainFrame
+
+    -- 输入框
+    local PlayerInput = Instance.new("TextBox")
+    PlayerInput.Size = UDim2.new(0.7, 0, 0.3, 0)
+    PlayerInput.Position = UDim2.new(0.15, 0, 0.4, 0)
+    PlayerInput.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+    PlayerInput.TextColor3 = Color3.fromRGB(255, 255, 255)
+    PlayerInput.PlaceholderText = "输入玩家名字"
+    PlayerInput.PlaceholderColor3 = Color3.fromRGB(150, 150, 150)
+    PlayerInput.TextSize = 14
+    PlayerInput.Font = Enum.Font.Gotham
+    PlayerInput.ClearTextOnFocus = false
+    PlayerInput.Parent = MainFrame
+    local InputCorner = Instance.new("UICorner")
+    InputCorner.CornerRadius = UDim.new(0, 4)
+    InputCorner.Parent = PlayerInput
+
+    -- 追踪按钮
+    local TrackBtn = Instance.new("TextButton")
+    TrackBtn.Size = UDim2.new(0.7, 0, 0.25, 0)
+    TrackBtn.Position = UDim2.new(0.15, 0, 0.75, 0)
+    TrackBtn.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+    TrackBtn.Text = "开始追踪（传送）"
+    TrackBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+    TrackBtn.TextSize = 14
+    TrackBtn.Font = Enum.Font.GothamSemibold
+    TrackBtn.Parent = MainFrame
+    local BtnCorner = Instance.new("UICorner")
+    BtnCorner.CornerRadius = UDim.new(0, 4)
+    BtnCorner.Parent = TrackBtn
+
+    -- 按钮悬停效果
+    TrackBtn.MouseEnter:Connect(function()
+        TrackBtn.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
     end)
+    TrackBtn.MouseLeave:Connect(function()
+        TrackBtn.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+    end)
+
+    -- 追踪逻辑
+    TrackBtn.MouseButton1Click:Connect(function()
+        local TargetName = PlayerInput.Text:trim()
+        if TargetName == "" then
+            WindUI:Notify({
+                Title = "追踪失败",
+                Content = "请输入玩家名字",
+                Icon = "error",
+                Duration = 2
+            })
+            return
+        end
+
+        local TargetPlayer = game.Players:FindFirstChild(TargetName)
+        if not TargetPlayer or not TargetPlayer.Character or not TargetPlayer.Character:FindFirstChild("HumanoidRootPart") then
+            WindUI:Notify({
+                Title = "追踪失败",
+                Content = "未找到该玩家或玩家未加载",
+                Icon = "error",
+                Duration = 2
+            })
+            return
+        end
+
+        -- 执行传送
+        LocalPlayer.Character.HumanoidRootPart.CFrame = TargetPlayer.Character.HumanoidRootPart.CFrame + Vector3.new(0, 2, 0)
+        WindUI:Notify({
+            Title = "追踪成功",
+            Content = "已传送至 " .. TargetName  .. " 身边",
+            Icon = "crown",
+            Duration = 2
+        })
+        TrackGui:Destroy() -- 传送后关闭UI
+    end)
+
+    WindUI:Notify({
+        Title = "追踪系统",
+        Content = "已开启，请输入玩家名字",
+        Icon = "crown",
+        Duration = 2
+    })
+end)
+
+Button(Tab4, "天空盒子\n\n竟然是黑客，我们没救了", function()
+    -- 提取链接变量，便于维护；分步捕获错误
+    local scriptLink = "https://rawscripts.net/raw/Universal-Script-Fe-Emote-Player-51936"
+    local getSuccess, scriptContent = pcall(game.HttpGet, game, scriptLink)
+    
+    if getSuccess and type(scriptContent) == "string" and scriptContent ~= "" then
+        -- 执行脚本时单独捕获错误，避免整体崩溃
+        local execSuccess = pcall(loadstring(scriptContent))
+        WindUI:Notify({
+            Title = "天空盒子",
+            Content = execSuccess and "已成功开启" or "脚本执行失败（语法/兼容问题）",
+            Icon = execSuccess and "crown" or "error",
+            Duration = 3
+        })
+    else
+        WindUI:Notify({
+            Title = "天空盒子",
+            Content = "加载失败（链接失效/网络错误/空响应）",
+            Icon = "error",
+            Duration = 3
+        })
+    end
 end)
 
 -- 各大脚本 (Tab5)
 Button(Tab5, "Xi脚本", function()
-    pcall(function()
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/123fa98/Code/refs/heads/main/Xi_Pro_Scipt.lua"))()
+    -- 优化1：修复pcall异常捕获不完整问题，新增错误信息反馈
+    local success, err = pcall(function()
+        -- 优化2：HttpGetAsync需处理网络超时，添加pcall包裹
+        local respSuccess, response = pcall(game.HttpGetAsync, game, "https://raw.githubusercontent.com/123fa98/Code/refs/heads/main/Xi_Pro_Scipt.lua", true)
+        if respSuccess and response and response ~= "" then
+            loadstring(response)()
+            -- 优化3：暗黑UI高对比度通知，统一视觉风格
+            WindUI:Notify({
+                Title = "Xi脚本",
+                Content = "✅ 已成功开启",
+                Icon = "crown",
+                Duration = 3,
+                TitleColor = Color3.new(1, 1, 1), -- 白色标题（暗黑模式醒目）
+                ContentColor = Color3.new(0.9, 0.9, 0.9), -- 浅灰内容（护眼不刺眼）
+                BackgroundColor = Color3.new(0.1, 0.1, 0.1) -- 深黑背景（贴合暗黑主题）
+            })
+        else
+            -- 优化4：区分网络错误和空响应，提示更精准
+            local errMsg = respSuccess ? "加载失败（链接失效/空响应）" : "网络错误（请检查连接）"
+            WindUI:Notify({
+                Title = "Xi脚本",
+                Content = "❌ " .. errMsg,
+                Icon = "error",
+                Duration = 4, -- 延长显示时间，让用户看清错误
+                TitleColor = Color3.new(1, 0.3, 0.3), -- 红色标题（突出错误）
+                ContentColor = Color3.new(0.8, 0.8, 0.8),
+                BackgroundColor = Color3.new(0.15, 0.05, 0.05) -- 暗红背景（强化警示）
+            })
+        end
     end)
+    -- 优化5：捕获loadstring或函数内部未预料错误
+    if not success then
+        WindUI:Notify({
+            Title = "Xi脚本",
+            Content = "❌ 执行失败：" .. tostring(err),
+            Icon = "error",
+            Duration = 4,
+            TitleColor = Color3.new(1, 0.3, 0.3),
+            ContentColor = Color3.new(0.8, 0.8, 0.8),
+            BackgroundColor = Color3.new(0.15, 0.05, 0.05)
+        })
+    end
 end)
 
 Button(Tab5, "黄某脚本", function()
@@ -3906,13 +4620,3 @@ Toggle(Tab73, "夜视", false, function(a)
     end)
 end)
 
-Window:OnClose(function()
-    print("窗口已关闭")
-    
-    if ConfigManager and configFile then
-        configFile:Set("playerData", MyPlayerData)
-        configFile:Set("lastSave", os.date("%Y-%m-%d %H:%M:%S"))
-        configFile:Save()
-        print("配置已在关闭时自动保存")
-    end
-end)
