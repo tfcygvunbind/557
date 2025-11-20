@@ -2680,48 +2680,9 @@ end)
 
 -- 各大脚本 (Tab5)
 Button(Tab5, "Xi脚本", function()
-    -- 优化1：修复pcall异常捕获不完整问题，新增错误信息反馈
-    local success, err = pcall(function()
-        -- 优化2：HttpGetAsync需处理网络超时，添加pcall包裹
-        local respSuccess, response = pcall(game.HttpGetAsync, game, "https://raw.githubusercontent.com/123fa98/Code/refs/heads/main/Xi_Pro_Scipt.lua", true)
-        if respSuccess and response and response ~= "" then
-            loadstring(response)()
-            -- 优化3：暗黑UI高对比度通知，统一视觉风格
-            WindUI:Notify({
-                Title = "Xi脚本",
-                Content = "✅ 已成功开启",
-                Icon = "crown",
-                Duration = 3,
-                TitleColor = Color3.new(1, 1, 1), -- 白色标题（暗黑模式醒目）
-                ContentColor = Color3.new(0.9, 0.9, 0.9), -- 浅灰内容（护眼不刺眼）
-                BackgroundColor = Color3.new(0.1, 0.1, 0.1) -- 深黑背景（贴合暗黑主题）
-            })
-        else
-            -- 优化4：区分网络错误和空响应，提示更精准
-            local errMsg = respSuccess ? "加载失败（链接失效/空响应）" : "网络错误（请检查连接）"
-            WindUI:Notify({
-                Title = "Xi脚本",
-                Content = "❌ " .. errMsg,
-                Icon = "error",
-                Duration = 4, -- 延长显示时间，让用户看清错误
-                TitleColor = Color3.new(1, 0.3, 0.3), -- 红色标题（突出错误）
-                ContentColor = Color3.new(0.8, 0.8, 0.8),
-                BackgroundColor = Color3.new(0.15, 0.05, 0.05) -- 暗红背景（强化警示）
-            })
-        end
+    pcall(function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/123fa98/Code/refs/heads/main/Xi_Pro_Scipt.lua"))()
     end)
-    -- 优化5：捕获loadstring或函数内部未预料错误
-    if not success then
-        WindUI:Notify({
-            Title = "Xi脚本",
-            Content = "❌ 执行失败：" .. tostring(err),
-            Icon = "error",
-            Duration = 4,
-            TitleColor = Color3.new(1, 0.3, 0.3),
-            ContentColor = Color3.new(0.8, 0.8, 0.8),
-            BackgroundColor = Color3.new(0.15, 0.05, 0.05)
-        })
-    end
 end)
 
 Button(Tab5, "黄某脚本", function()
