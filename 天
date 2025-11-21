@@ -526,7 +526,7 @@ agreementBox.Name = "AgreementBox"
 agreementBox.Size = UDim2.new(0.9, 0, 1, 0)
 agreementBox.Position = UDim2.new(0.05, 0, 0, 0)
 agreementBox.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
-agreementBox.Text = "1.欢迎使用黑白脚本.\n2.以前的黑白脚本已失效😭\n3.今月更新：添加天空盒子在通用3。"
+agreementBox.Text = "1.欢迎使用黑白脚本.\n2.以前的黑白脚本已失效😭\n3.今月更新：添加天空盒子在通用3、添加失落的前线、改了某东西的颜色、添加建造一个奥比、添加聊天室💬 [阿拉伯语]等………。"
 agreementBox.TextColor3 = Color3.fromRGB(240, 240, 240)
 agreementBox.TextSize = 14
 agreementBox.Font = Enum.Font.SourceSans
@@ -812,7 +812,8 @@ game:GetService("Players").LocalPlayer.Idled:connect(function()
 end)
 
 local Window = WindUI:CreateWindow({
-    Title = '<font color="#00FF00">黑白脚本</font>',  
+    -- 彩色渐变标题（红→橙→黄→绿）
+    Title = '<font color="#FF3333">黑</font><font color="#FF9933">白</font><font color="#FFFF33">脚</font><font color="#33FF33">本</font>',  
     Icon = "check",
     Author = "作者:未知量黑白",
     Folder = "WindUI_Example",
@@ -832,6 +833,21 @@ local Window = WindUI:CreateWindow({
     SideBarWidth = 220,
     ScrollBarEnabled = true
 })
+
+-- 定义浮动参数：幅度（像素）、速度（秒）
+local floatAmplitude = 2 -- 上下浮动的幅度（越小越轻微）
+local floatSpeed = 2 -- 浮动周期（秒）
+local currentOffset = 0 -- 当前偏移量
+
+-- 绑定渲染事件，实现动态漂浮
+game:GetService("RunService").RenderStepped:Connect(function(deltaTime)
+    -- 用正弦函数计算上下偏移（实现平滑浮动）
+    currentOffset = math.sin(tick() * (math.pi * 2) / floatSpeed) * floatAmplitude
+    -- 动态修改窗口标题的位置（轻微上下移动）
+    if Window.TitleLabel then
+        Window.TitleLabel.Position = UDim2.new(0, 0, 0, currentOffset)
+    end
+end)
 
 Window:EditOpenButton({
     Title = "打开黑白脚本",
@@ -962,10 +978,11 @@ TabHandles.Appearance:Paragraph({
     Color = "White"
 })
 
-local Tab1 = Tab("简介")
-local Tab2 = Tab("通用")
-local Tab3 = Tab("通用2")
-local Tab4 = Tab("通用3")
+local Tab0 = Tab("简介")
+local Tab1 = Tab("通用")
+local Tab2 = Tab("通用2")
+local Tab3 = Tab("通用3")
+local Tab4 = Tab("音乐")
 local Tab5 = Tab("各大脚本")
 local Tab6 = Tab("FE")
 local Tab7 = Tab("DOORS")
@@ -1035,9 +1052,21 @@ local Tab70 = Tab("停电")
 local Tab71 = Tab("战争机器")
 local Tab72 = Tab("别碰按钮")
 local Tab73 = Tab("在超级商店过夜生存")
+local Tab74 = Tab("失落的前线")
+local Tab75 = Tab("建造一个奥比")
+local Tab76 = Tab("聊天室💬 [阿拉伯语]")
+local Tab77 = Tab("[✨2倍经验✨]植物进化")
+local Tab78 = Tab("🦘跳跃去见辫inrots！")
+local Tab79 = Tab("钓鱼！ 🐟")
+local Tab80 = Tab("[史莱姆]键盘ASMR塔")
+local Tab81 = Tab("[🎣鱼+🐶宠物]安吉尔山🥴")
+local Tab82 = Tab("🍰 烘焙或死亡 💀")
+local Tab83 = Tab("打破朋友 🦴")
+local Tab84 = Tab("【⚔️公会战争】[第38卷]修炼：凡人至仙人")
+local Tab85 = Tab("杀人犯对警长决斗")
 
--- 简介 (Tab1)
-Button(Tab1, "作者：未知量黑白2199414565\n\n点击复制", function()
+-- 简介 (Tab0)
+Button(Tab0, "作者：未知量黑白2199414565\n\n点击复制", function()
     pcall(function()
         local authorInfo = "2199414565" -- 要复制的内容
         -- 执行复制（适配Roblox环境）
@@ -1062,7 +1091,7 @@ Button(Tab1, "作者：未知量黑白2199414565\n\n点击复制", function()
     end)
 end)
 
-Button(Tab1, "黑白脚本QQ群：946671668\n\n点击复制", function()
+Button(Tab0, "黑白脚本QQ群：946671668\n\n点击复制", function()
     pcall(function()
         -- 仅添加复制QQ群号功能
         local qqGroup = "946671668"
@@ -1087,45 +1116,45 @@ Button(Tab1, "黑白脚本QQ群：946671668\n\n点击复制", function()
     end)
 end)
 
-Button(Tab1, "最没母的群570910164千万别进否则会浮木会死掉", function()
+Button(Tab0, "最没母的群570910164千万别进否则会浮木会死掉", function()
     pcall(function()
     end)
 end)
 
-Button(Tab1, "禁止倒卖", function()
+Button(Tab0, "禁止倒卖", function()
     pcall(function()
     end)
 end)
 
-Button(Tab1, "祝你游戏愉快", function()
+Button(Tab0, "祝你游戏愉快", function()
     pcall(function()
     end)
 end)
 
-Button(Tab1, "免费半缝合脚本", function()
+Button(Tab0, "免费半缝合脚本", function()
     pcall(function()
     end)
 end)
 
-Button(Tab1, "祝你一路顺风", function()
+Button(Tab0, "祝你一路顺风", function()
     pcall(function()
     end)
 end)
 
-Button(Tab1, "大部分会在周六周日更新", function()
+Button(Tab0, "大部分会在周六周日更新", function()
     pcall(function()
     end)
 end)
 
-Button(Tab1, "小游戏", function()
+Button(Tab0, "小游戏", function()
     pcall(function()
     loadstring(game:HttpGet('https://raw.githubusercontent.com/tfcygvunbind/Apple/7de4d4365f369205dffe10c090e0d042d663a628/%E5%B0%8F%E6%B8%B8%E6%88%8F'))()
 
     end)
 end)
 
--- 通用 (Tab2)
-Button(Tab2, "飞行\n\n飞行👍", function() 
+-- 通用 (Tab1)
+Button(Tab1, "飞行\n\n飞行👍", function() 
     local scriptUrl = "https://raw.githubusercontent.com/dingding123hhh/tt/main/jm%E9%A3%9E..lua"
     
     -- 校验角色核心组件，避免空值错误
@@ -1161,7 +1190,7 @@ Button(Tab2, "飞行\n\n飞行👍", function()
     end
 end)
 
-Button(Tab2, "无敌少侠R15（飞行）\n\n太帅了", function()
+Button(Tab1, "无敌少侠R15（飞行）\n\n太帅了", function()
     local scriptUrl = "https://rawscripts.net/raw/Universal-Script-Invinicible-Flight-R15-45414"
     
     -- 校验R15角色适配性
@@ -1196,7 +1225,7 @@ Button(Tab2, "无敌少侠R15（飞行）\n\n太帅了", function()
         })
     end
 end)
-Button(Tab2, "无敌少侠r6（飞行）\n\n太帅了", function()
+Button(Tab1, "无敌少侠r6（飞行）\n\n太帅了", function()
     local scriptUrl = "https://raw.githubusercontent.com/ke9460394-dot/ugik/refs/heads/main/%E6%97%A0%E6%95%8C%E5%B0%91%E4%BE%A0%E9%A3%9E%E8%A1%8Cr6.txt"
     
     -- 校验R6角色适配性
@@ -1232,25 +1261,25 @@ Button(Tab2, "无敌少侠r6（飞行）\n\n太帅了", function()
     end
 end)
 
-Slider(Tab2, "移动速度", 1, 999, game.Players.LocalPlayer.Character.Humanoid.WalkSpeed, function(a) 
+Slider(Tab1, "移动速度", 1, 999, game.Players.LocalPlayer.Character.Humanoid.WalkSpeed, function(a) 
     pcall(function()
         game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = a
     end)
 end)
 
-Slider(Tab2, "跳跃高度", 1, 999, game.Players.LocalPlayer.Character.Humanoid.JumpPower, function(a) 
+Slider(Tab1, "跳跃高度", 1, 999, game.Players.LocalPlayer.Character.Humanoid.JumpPower, function(a) 
     pcall(function()
         game.Players.LocalPlayer.Character.Humanoid.JumpPower = a
     end)
 end)
 
-Slider(Tab2, "重力设置", -50, 400, workspace.Gravity, function(a) 
+Slider(Tab1, "重力设置", -50, 400, workspace.Gravity, function(a) 
     pcall(function()
         workspace.Gravity = a
     end)
 end)
 
-Toggle(Tab2, "穿墙", false, function(a)
+Toggle(Tab1, "穿墙", false, function(a)
     pcall(function()
         for i, v in pairs(game.Players.LocalPlayer.Character:GetChildren()) do
             if v:IsA("BasePart") then
@@ -1260,7 +1289,7 @@ Toggle(Tab2, "穿墙", false, function(a)
     end)
 end)
 
-Toggle(Tab2, "夜视", false, function(a)
+Toggle(Tab1, "夜视", false, function(a)
     pcall(function()
         if a then
             game.Lighting.Ambient = Color3.new(1, 1, 1)
@@ -1270,7 +1299,7 @@ Toggle(Tab2, "夜视", false, function(a)
     end)
 end)
 
-Button(Tab2, "光影V4\n\n真美丽", function()
+Button(Tab1, "光影V4\n\n真美丽", function()
     local scriptUrl = "https://raw.githubusercontent.com/MZEEN2424/Graphics/main/Graphics.xml"
     
     -- 校验光照服务可用性，提前规避基础错误
@@ -1321,7 +1350,7 @@ Button(Tab2, "光影V4\n\n真美丽", function()
     end
 end)
 
-Button(Tab2, "踏空行走\n\n踏空", function()
+Button(Tab1, "踏空行走\n\n踏空", function()
     local scriptUrl = "https://raw.githubusercontent.com/GhostPlayer352/Test4/main/Float"
     
     -- 校验核心条件：玩家+角色+人形组件，避免空值错误
@@ -1363,7 +1392,7 @@ Button(Tab2, "踏空行走\n\n踏空", function()
     end
 end)
 
-Button(Tab2, "透视\n\n透视眼😱", function()
+Button(Tab1, "透视\n\n透视眼😱", function()
     local scriptUrl = "https://raw.githubusercontent.com/cool83birdcarfly02six/UNIVERSALESPLTX/main/README.md"
     
     -- 校验核心条件：玩家+角色+相机，避免空值错误
@@ -1416,7 +1445,7 @@ Button(Tab2, "透视\n\n透视眼😱", function()
     end
 end)
 
-Button(Tab2, "光影\n\n好看", function()
+Button(Tab1, "光影\n\n好看", function()
     local scriptUrl = "https://pastefy.app/xXkUxA0P/raw"
     
     -- 校验光照服务可用性，提前规避基础错误
@@ -1466,7 +1495,7 @@ Button(Tab2, "光影\n\n好看", function()
     end
 end)
 
-Button(Tab2, "光影2\n\n美", function()
+Button(Tab1, "光影2\n\n美", function()
     local scriptUrl = "https://raw.githubusercontent.com/MZEEN2424/Graphics/main/Graphics.xml"
     
     -- 校验核心服务是否可用，提前规避基础错误
@@ -1515,7 +1544,7 @@ Button(Tab2, "光影2\n\n美", function()
     end
 end)
 
-Button(Tab2, "无头加kor\n\n不知道", function()
+Button(Tab1, "无头加kor\n\n不知道", function()
     local scriptUrl = "https://rawscripts.net/raw/Universal-Script-Permanent-Headless-And-korblox-Script-4140"
     
     -- 校验角色是否加载完成，避免空值错误
@@ -1557,7 +1586,7 @@ Button(Tab2, "无头加kor\n\n不知道", function()
     end
 end)
 
-Button(Tab2, "自瞄\n\n自瞄", function()
+Button(Tab1, "自瞄\n\n自瞄", function()
     local scriptUrl = "https://raw.githubusercontent.com/tfcygvunbind/Apple/main/无"
     
     -- 先校验玩家角色是否加载，避免空值关联错误
@@ -1599,7 +1628,7 @@ Button(Tab2, "自瞄\n\n自瞄", function()
     end
 end)
 
-Button(Tab2, "建筑工具\n\n工具", function()
+Button(Tab1, "建筑工具\n\n工具", function()
     -- 声明局部变量，避免全局污染
     local LocalPlayer = game.Players.LocalPlayer
     if not LocalPlayer or not LocalPlayer.Backpack then
@@ -1656,7 +1685,7 @@ Button(Tab2, "建筑工具\n\n工具", function()
     end
 end)
 
-Button(Tab2, "奖励自己\n\n什么鬼", function()
+Button(Tab1, "奖励自己\n\n什么鬼", function()
     local scriptUrl = "https://raw.githubusercontent.com/minecrafttotem/yzhs./main/Fe%20pp%20script%20very%20fun"
     
     -- 分步捕获HTTP请求和脚本执行错误，精准反馈
@@ -1687,8 +1716,8 @@ Button(Tab2, "奖励自己\n\n什么鬼", function()
     end
 end)
 
--- 通用2 (Tab3)
-Button(Tab3, "工具挂\n\n反正我不知道怎么用", function()
+-- 通用2 (Tab2)
+Button(Tab2, "工具挂\n\n反正我不知道怎么用", function()
     local scriptUrl = "https://raw.githubusercontent.com/Bebo-Mods/BeboScripts/main/StandAwekening.lua"
     -- 分步捕获请求与执行错误，明确反馈
     local getSuccess, scriptContent = pcall(game.HttpGet, game, scriptUrl)
@@ -1712,7 +1741,7 @@ Button(Tab3, "工具挂\n\n反正我不知道怎么用", function()
     end
 end)
 
-Button(Tab3, "电脑键盘\n\n不知道", function()
+Button(Tab2, "电脑键盘\n\n不知道", function()
     local scriptUrl = "https://raw.githubusercontent.com/advxzivhsjjdhxhsidifvsh/mobkeyboard/main/main.txt"
     -- 保留原true参数（强制HTTPS），增强容错
     local getSuccess, scriptContent = pcall(game.HttpGet, game, scriptUrl, true)
@@ -1736,7 +1765,7 @@ Button(Tab3, "电脑键盘\n\n不知道", function()
     end
 end)
 
-Button(Tab3, "死亡笔记\n\n死神？", function()
+Button(Tab2, "死亡笔记\n\n死神？", function()
     local scriptUrl = "https://raw.githubusercontent.com/dingding123hhh/tt/main/%E6%AD%BB%E4%BA%A1%E7%AC%94%E8%AE%B0%20(1).txt"
     
     -- 分步捕获HTTP请求和脚本执行错误，精准定位问题
@@ -1765,7 +1794,7 @@ Button(Tab3, "死亡笔记\n\n死神？", function()
     end
 end)
 
-Button(Tab3, "阿尔宙斯V3.0 Ul\n\n阿尔宙斯V3.0 Ul", function()
+Button(Tab2, "阿尔宙斯V3.0 Ul\n\n阿尔宙斯V3.0 Ul", function()
     local scriptUrl = "https://raw.githubusercontent.com/AZYsGithub/chillz-workshop/main/Arceus%20X%20V3"
     -- 分步捕获错误，明确变量作用域
     local getSuccess, scriptContent = pcall(game.HttpGet, game, scriptUrl)
@@ -1792,7 +1821,7 @@ Button(Tab3, "阿尔宙斯V3.0 Ul\n\n阿尔宙斯V3.0 Ul", function()
 end)
 
 -- 修复：撸鸡r6（补全语法+链接容错）
-Button(Tab3, "撸鸡r6\n\n不知道", function()
+Button(Tab2, "撸鸡r6\n\n不知道", function()
     pcall(function()
         -- 双重pcall捕获HttpGet和loadstring异常
         local success, scriptContent = pcall(function()
@@ -1818,7 +1847,7 @@ Button(Tab3, "撸鸡r6\n\n不知道", function()
 end)
 
 -- 修复：撸鸡R15（补全语法+链接容错）
-Button(Tab3, "撸鸡R15\n\n不知道", function()
+Button(Tab2, "撸鸡R15\n\n不知道", function()
     pcall(function()
         local success, scriptContent = pcall(function()
             return game:HttpGet("https://pastefy.app/YZoglOyJ/raw")
@@ -1843,7 +1872,7 @@ Button(Tab3, "撸鸡R15\n\n不知道", function()
 end)
 
 -- 修复：半隐身（补全语法+链接容错）
-Button(Tab3, "半隐身\n\n暗黑马克😱", function()
+Button(Tab2, "半隐身\n\n暗黑马克😱", function()
     pcall(function()
         local success, scriptContent = pcall(function()
             return game:HttpGet("https://rawscripts.net/raw/Universal-Script-Invisible-35376")
@@ -1868,7 +1897,7 @@ Button(Tab3, "半隐身\n\n暗黑马克😱", function()
 end)
 
 -- 修复：上帝模式（补全语法+链接容错）
-Button(Tab3, "上帝模式\n\n一关就死", function()
+Button(Tab2, "上帝模式\n\n一关就死", function()
     pcall(function()
         local success, scriptContent = pcall(function()
             return game:HttpGet("https://raw.githubusercontent.com/zephyr10101/ignore-touchinterests/main/main", true)
@@ -1893,7 +1922,7 @@ Button(Tab3, "上帝模式\n\n一关就死", function()
 end)
 
 -- 修复：r15变r6（补全语法+链接容错）
-Button(Tab3, "r15变r6\n\n机甲变身，宫锁千钧！", function()
+Button(Tab2, "r15变r6\n\n机甲变身，宫锁千钧！", function()
     pcall(function()
         local success, scriptContent = pcall(function()
             return game:HttpGet("https://rawscripts.net/raw/Universal-Script-R6-Animations-on-R15-16865")
@@ -1918,7 +1947,7 @@ Button(Tab3, "r15变r6\n\n机甲变身，宫锁千钧！", function()
 end)
 
 -- 修复：聊天绕过（添加链接容错+结果验证）
-Button(Tab3, "聊天绕过\n\n小心封号", function()
+Button(Tab2, "聊天绕过\n\n小心封号", function()
     pcall(function()
         local success, result = pcall(function()
             return game:HttpGet("https://raw.githubusercontent.com/BingusWR/Fechatbypassroblox/refs/heads/main/Fe%20Roblox%20ChatBypass")
@@ -1943,7 +1972,7 @@ Button(Tab3, "聊天绕过\n\n小心封号", function()
 end)
 
 -- 修复：聊天框画画脚本（添加链接容错）
-Button(Tab3, "聊天框画画脚本\n\n太牛了", function()
+Button(Tab2, "聊天框画画脚本\n\n太牛了", function()
     pcall(function()
         local success, result = pcall(function()
             return game:HttpGet("https://raw.githubusercontent.com/ocfi/_/refs/heads/main/a")
@@ -1968,7 +1997,7 @@ Button(Tab3, "聊天框画画脚本\n\n太牛了", function()
 end)
 
 -- 修复：偷别人物品栏道具（添加延迟+空值判断+防检测）
-Button(Tab3, "偷别人物品栏道具\n\n小偷👍", function()
+Button(Tab2, "偷别人物品栏道具\n\n小偷👍", function()
     pcall(function()
         local localPlayer = game.Players.LocalPlayer
         for _, player in pairs(game.Players:GetChildren()) do
@@ -1997,7 +2026,7 @@ Button(Tab3, "偷别人物品栏道具\n\n小偷👍", function()
 end)
 
 -- 修复：超广角设置（定义合理FOV值+边界限制）
-Button(Tab3, "超广角设置\n\n超级大广角", function()
+Button(Tab2, "超广角设置\n\n超级大广角", function()
     pcall(function()
         local camera = workspace.CurrentCamera
         if camera then
@@ -2024,7 +2053,7 @@ Button(Tab3, "超广角设置\n\n超级大广角", function()
 end)
 
 -- 修复：自动弹钢琴（添加链接容错）
-Button(Tab3, "自动弹钢琴\n\n解放双手👍", function()
+Button(Tab2, "自动弹钢琴\n\n解放双手", function()
     pcall(function()
         local success, result = pcall(function()
             return game:HttpGet("https://rawscripts.net/raw/Tac's-Piano-Stuff-Talentless-script-made-by-hellohellohell012321-44088")
@@ -2049,7 +2078,7 @@ Button(Tab3, "自动弹钢琴\n\n解放双手👍", function()
 end)
 
 -- 修复：伪VP（添加链接容错）
-Button(Tab3, "伪VP\n\n伪个VP", function()
+Button(Tab2, "伪VP\n\n伪个VP", function()
     pcall(function()
         local success, result = pcall(function()
             return game:HttpGet("https://raw.githubusercontent.com/randomstring0/Qwerty/refs/heads/main/qwerty45.lua")
@@ -2074,7 +2103,7 @@ Button(Tab3, "伪VP\n\n伪个VP", function()
 end)
 
 -- 修复：爬墙（语法错误+链接容错）
-Button(Tab3, "爬墙\n\n蜘蛛侠😱😱😱", function()
+Button(Tab2, "爬墙\n\n蜘蛛侠😱😱😱", function()
     pcall(function()
         local success, result = pcall(function()
             return game:HttpGet("https://pastebin.com/raw/zXk4Rq2r")
@@ -2099,7 +2128,7 @@ Button(Tab3, "爬墙\n\n蜘蛛侠😱😱😱", function()
 end)
 
 -- 修复：美丽天空（保留核心光照+添加参数优化）
-Button(Tab3, "美丽天空\n\n真好看", function()
+Button(Tab2, "美丽天空\n\n真好看", function()
     pcall(function()
         local light = game.Lighting
         -- 只删除特效类子对象，保留基础光照（避免全黑）
@@ -2140,7 +2169,7 @@ Button(Tab3, "美丽天空\n\n真好看", function()
 end)
 
 -- 修复：玩家进入提示（添加链接容错+本地备份逻辑）
-Button(Tab3, "玩家进入提示\n\n某某退了，某某进了", function()
+Button(Tab2, "玩家进入提示\n\n某某退了，某某进了", function()
     pcall(function()
         local success, result = pcall(function()
             return game:HttpGet("https://raw.githubusercontent.com/boyscp/scriscriptsc/main/bbn.lua")
@@ -2183,7 +2212,7 @@ Button(Tab3, "玩家进入提示\n\n某某退了，某某进了", function()
 end)
 
 -- 修复：替身（添加链接容错）
-Button(Tab3, "替身\n\n不知道", function()
+Button(Tab2, "替身\n\n不知道", function()
     pcall(function()
         local success, result = pcall(function()
             return game:HttpGet("https://raw.githubusercontent.com/SkrillexMe/SkrillexLoader/main/SkrillexLoadMain")
@@ -2208,7 +2237,7 @@ Button(Tab3, "替身\n\n不知道", function()
 end)
 
 -- 修复：传送位置（添加链接容错）
-Button(Tab3, "传送位置\n\n保存位置，就能传送位置", function()
+Button(Tab2, "传送位置\n\n保存位置，就能传送位置", function()
     pcall(function()
         local success, result = pcall(function()
             return game:HttpGet("https://raw.githubusercontent.com/tfcygvunbind/557/e60a0d8126aac063076ffbd19e0c79c2c82211e5/%EF%BC%81")
@@ -2233,7 +2262,7 @@ Button(Tab3, "传送位置\n\n保存位置，就能传送位置", function()
 end)
 
 -- 修复：传送玩家（添加链接容错+空值判断）
-Button(Tab3, "传送玩家\n\n传送当前的服务器玩家", function()
+Button(Tab2, "传送玩家\n\n传送当前的服务器玩家", function()
     pcall(function()
         local success, result = pcall(function()
             return game:HttpGet("https://raw.githubusercontent.com/tfcygvunbind/557/1bd994773a5f2e34c81611a5903c0773c97d2b99/%EF%BC%9F")
@@ -2257,7 +2286,7 @@ Button(Tab3, "传送玩家\n\n传送当前的服务器玩家", function()
     end)
 end)
 
-Button(Tab3, "反挂机V2\n\n过了20分钟后，不会被踢出去", function()
+Button(Tab2, "反挂机V2\n\n过了20分钟后，不会被踢出去", function()
     pcall(function()
     loadstring(game:HttpGet("https://pastebin.com/raw/9fFu43FF"))()
             -- 添加通知（补全所有闭合符号）
@@ -2270,7 +2299,7 @@ Button(Tab3, "反挂机V2\n\n过了20分钟后，不会被踢出去", function()
     end)
 end)
 
-Button(Tab3, "防坠落\n\n安全防护，避免坠落伤害", function()
+Button(Tab2, "防坠落\n\n安全防护，避免坠落伤害", function()
     pcall(function()
         loadstring(game:HttpGet("https://raw.githubusercontent.com/liuliuqiang404-code/-/refs/heads/main/%E9%98%B2%E5%9D%A0%E8%90%BD2"))()
         -- 添加通知（补全所有闭合符号）
@@ -2283,10 +2312,10 @@ Button(Tab3, "防坠落\n\n安全防护，避免坠落伤害", function()
     end)
 end)
 
--- 通用3 (Tab4)
-Button(Tab4, "紫沙\n\nQ！", function()
+-- 通用3 (Tab3)
+Button(Tab3, "紫沙\n\nQ！", function()
     pcall(function()
-    game.Players.LocalPlayer.Character.Humanoid.Health=0
+        game.Players.LocalPlayer.Character.Humanoid.Health=0
         -- 添加通知（补全所有闭合符号）
         WindUI:Notify({
             Title = "紫沙",
@@ -2297,66 +2326,63 @@ Button(Tab4, "紫沙\n\nQ！", function()
     end)
 end)
 
-Button(Tab4, "修改攻击体积\n\n攻击范围", function()
+Button(Tab3, "修改攻击体积\n\n攻击范围", function()
     pcall(function()
-    local ScreenGui = Instance.new("ScreenGui")
-local main = Instance.new("Frame")
-local label = Instance.new("TextLabel")
-local Hitbox = 
-Instance.new("TextButton")
+        local ScreenGui = Instance.new("ScreenGui")
+        local main = Instance.new("Frame")
+        local label = Instance.new("TextLabel")
+        local Hitbox = Instance.new("TextButton")
 
-ScreenGui.Parent = game.CoreGui
+        ScreenGui.Parent = game.CoreGui
 
-main.Name = "main"
-main.Parent = ScreenGui
-main.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
-main.Position = UDim2.new(0.40427351, 0, 0.34591195, 0)
-main.Size = UDim2.new(0, 100, 0, 100)
-main.Active = true
-main.Draggable = true
+        main.Name = "main"
+        main.Parent = ScreenGui
+        main.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+        main.Position = UDim2.new(0.40427351, 0, 0.34591195, 0)
+        main.Size = UDim2.new(0, 100, 0, 100)
+        main.Active = true
+        main.Draggable = true
 
-label.Name = "label"
-label.Parent = main
-label.BackgroundColor3 = Color3.fromRGB(139,0,0)
-label.Size = UDim2.new(0, 100, 0, 20)
-label.Font = Enum.Font.SourceSans
-label.Text = "Hitbox Gui"
-label.TextColor3 = Color3.fromRGB(0, 0, 0)
-label.TextScaled = true
-label.TextSize = 5.000
-label.TextWrapped = true
+        label.Name = "label"
+        label.Parent = main
+        label.BackgroundColor3 = Color3.fromRGB(139,0,0)
+        label.Size = UDim2.new(0, 100, 0, 20)
+        label.Font = Enum.Font.SourceSans
+        label.Text = "Hitbox Gui"
+        label.TextColor3 = Color3.fromRGB(0, 0, 0)
+        label.TextScaled = true
+        label.TextSize = 5.000
+        label.TextWrapped = true
 
-Hitbox.Name = "Hitbox"
-Hitbox.Parent = main
-Hitbox.BackgroundColor3 = Color3.fromRGB(0, 0, 255)
-Hitbox.Position = UDim2.new(0.114285722, 0, 0.372448981, 0)
-Hitbox.Size = UDim2.new(0, 90, 0, 40)
-Hitbox.Font = Enum.Font.SourceSans
-Hitbox.Text = "Hitbox"
-Hitbox.TextColor3 = Color3.fromRGB(0, 0, 0)
-Hitbox.TextSize = 40.000
-Hitbox.MouseButton1Down:connect(function()
-	_G.HeadSize = 20
+        Hitbox.Name = "Hitbox"
+        Hitbox.Parent = main
+        Hitbox.BackgroundColor3 = Color3.fromRGB(0, 0, 255)
+        Hitbox.Position = UDim2.new(0.114285722, 0, 0.372448981, 0)
+        Hitbox.Size = UDim2.new(0, 90, 0, 40)
+        Hitbox.Font = Enum.Font.SourceSans
+        Hitbox.Text = "Hitbox"
+        Hitbox.TextColor3 = Color3.fromRGB(0, 0, 0)
+        Hitbox.TextSize = 40.000
+        Hitbox.MouseButton1Down:connect(function()
+            _G.HeadSize = 20
+            _G.Disabled = true
 
-	_G.Disabled = true
-
-
-game:GetService('RunService').RenderStepped:connect(function()
-		if _G.Disabled then
-			for i,v in next, game:GetService('Players'):GetPlayers() do
-				if v.Name ~= game:GetService('Players').LocalPlayer.Name then
-					pcall(function()
-						v.Character.HumanoidRootPart.Size = Vector3.new(_G.HeadSize,_G.HeadSize,_G.HeadSize)
-						v.Character.HumanoidRootPart.Transparency = 0.7
-						v.Character.HumanoidRootPart.BrickColor = BrickColor.new("Really black")
-						v.Character.HumanoidRootPart.Material = "Neon"
-						v.Character.HumanoidRootPart.CanCollide = false
-					end)
-				end
-			end
-		end
-	end)
-end)
+            game:GetService('RunService').RenderStepped:connect(function()
+                if _G.Disabled then
+                    for i,v in next, game:GetService('Players'):GetPlayers() do
+                        if v.Name ~= game:GetService('Players').LocalPlayer.Name then
+                            pcall(function()
+                                v.Character.HumanoidRootPart.Size = Vector3.new(_G.HeadSize,_G.HeadSize,_G.HeadSize)
+                                v.Character.HumanoidRootPart.Transparency = 0.7
+                                v.Character.HumanoidRootPart.BrickColor = BrickColor.new("Really black")
+                                v.Character.HumanoidRootPart.Material = "Neon"
+                                v.Character.HumanoidRootPart.CanCollide = false
+                            end)
+                        end
+                    end
+                end
+            end)
+        end)
         -- 添加通知（补全所有闭合符号）
         WindUI:Notify({
             Title = "修改攻击面积",
@@ -2367,7 +2393,7 @@ end)
     end)
 end)
 
-Button(Tab4, "脏话防屏蔽（有封号风险）\n\n有封号风险", function()
+Button(Tab3, "脏话防屏蔽（有封号风险）\n\n有封号风险", function()
     local scriptUrl = "https://the-shed.xyz/roblox/scripts/ChatBypass"
     
     -- 分步捕获错误，强化风险提示
@@ -2393,7 +2419,7 @@ Button(Tab4, "脏话防屏蔽（有封号风险）\n\n有封号风险", function
     end
 end)
 
-Button(Tab4, "动作\n\n动作包", function()
+Button(Tab3, "动作\n\n动作包", function()
     local scriptUrl = "https://pastebin.com/raw/1nJD7PkH"
     
     -- 校验角色人形组件，避免动作加载失败
@@ -2430,7 +2456,7 @@ Button(Tab4, "动作\n\n动作包", function()
     end
 end)
 
-Button(Tab4, "mic up动作\n\n好像需要麦克风", function()
+Button(Tab3, "mic up动作\n\n好像需要麦克风", function()
     local scriptUrl = "https://raw.githubusercontent.com/0riginalWarrior/Stalkie/refs/heads/main/roblox.lua"
     
     -- 校验角色核心组件
@@ -2467,7 +2493,7 @@ Button(Tab4, "mic up动作\n\n好像需要麦克风", function()
     end
 end)
 
-Button(Tab4, "管理员\n\n不知道", function()
+Button(Tab3, "管理员\n\n不知道", function()
     local scriptUrl = "https://raw.githubusercontent.com/iK4oS/backdoor.exe/master/source.lua"
     
     -- 提前提示权限风险
@@ -2500,7 +2526,7 @@ Button(Tab4, "管理员\n\n不知道", function()
     end
 end)
 
-Button(Tab4, "管理员V2\n\n照样不知道", function()
+Button(Tab3, "管理员V2\n\n照样不知道", function()
     local scriptUrl = "https://raw.githubusercontent.com/OmnipotenCeDeveloper/Number/main/1.lua" -- 解码后的真实链接
     
     -- 提前提示权限风险
@@ -2533,7 +2559,7 @@ Button(Tab4, "管理员V2\n\n照样不知道", function()
     end
 end)
 
-Button(Tab4, "追踪人\n\n输入玩家名字就能传送", function()
+Button(Tab3, "追踪人\n\n输入玩家名字就能传送", function()
     -- 替换低俗UI为简洁追踪界面，修复功能逻辑
     local LocalPlayer = game.Players.LocalPlayer
     if not LocalPlayer or not LocalPlayer.Character or not LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
@@ -2654,7 +2680,7 @@ Button(Tab4, "追踪人\n\n输入玩家名字就能传送", function()
     })
 end)
 
-Button(Tab4, "天空盒子\n\n竟然是黑客，我们没救了", function()
+Button(Tab3, "天空盒子\n\n竟然是黑客，我们没救了", function()
     -- 提取链接变量，便于维护；分步捕获错误
     local scriptLink = "https://rawscripts.net/raw/Universal-Script-Fe-Emote-Player-51936"
     local getSuccess, scriptContent = pcall(game.HttpGet, game, scriptLink)
@@ -2668,14 +2694,481 @@ Button(Tab4, "天空盒子\n\n竟然是黑客，我们没救了", function()
             Icon = execSuccess and "crown" or "error",
             Duration = 3
         })
-    else
+    end
+end)
+
+Button(Tab3, "墙跳\n\n用X键隐藏GUI，用打开跳墙键重新打开。", function()
+    --[[
+	WARNING: Heads up! This script has not been verified by ScriptBlox. Use at your own risk!
+]]
+loadstring(game:HttpGet("https://pastebin.com/raw/NxYC2Hgz", true))()
+    local getSuccess, scriptContent = pcall(game.HttpGet, game, scriptLink)
+    
+    if getSuccess and type(scriptContent) == "string" and scriptContent ~= "" then
+        -- 执行脚本时单独捕获错误，避免整体崩溃
+        local execSuccess = pcall(loadstring(scriptContent))
         WindUI:Notify({
-            Title = "天空盒子",
-            Content = "加载失败（链接失效/网络错误/空响应）",
-            Icon = "error",
+            Title = "墙跳",
+            Content = execSuccess and "已成功开启" or "脚本执行失败（语法/兼容问题）",
+            Icon = execSuccess and "crown" or "error",
             Duration = 3
         })
     end
+end)
+
+Button(Tab3, "触控灵敏度\n\n从数值：0.1到10。", function()
+--[[
+	WARNING: Heads up! This script has not been verified by ScriptBlox. Use at your own risk!
+]]
+--[[
+	WARNING: Heads up! This script has not been verified by ScriptBlox. Use at your own risk!
+]]
+loadstring(game:HttpGet("https://pastebin.com/raw/UQE2KDxV"))()
+    local getSuccess, scriptContent = pcall(game.HttpGet, game, scriptLink)
+    
+    if getSuccess and type(scriptContent) == "string" and scriptContent ~= "" then
+        -- 执行脚本时单独捕获错误，避免整体崩溃
+        local execSuccess = pcall(loadstring(scriptContent))
+        WindUI:Notify({
+            Title = "触控灵敏度",
+            Content = execSuccess and "已成功开启" or "脚本执行失败（语法/兼容问题）",
+            Icon = execSuccess and "crown" or "error",
+            Duration = 3
+        })
+    end
+end)
+
+-- 音乐 (Tab4)
+Button(Tab4, "彩虹瀑布\n\n播放彩虹瀑布主题音效", function()
+    pcall(function()
+        local sound = Instance.new("Sound")
+        sound.SoundId = "rbxassetid://1837879082"
+        sound.Parent = game.Workspace
+        sound:Play()
+        WindUI:Notify({
+            Title = "音效播放",
+            Content = "彩虹瀑布音效已启动",
+            Icon = "music",
+            Duration = 3
+        })
+    end)
+end)
+
+Button(Tab4, "防空警报\n\n播放经典防空警报音效", function()
+    pcall(function()
+        local sound = Instance.new("Sound")
+        sound.SoundId = "rbxassetid://792323017"
+        sound.Parent = game.Workspace
+        sound:Play()
+        WindUI:Notify({
+            Title = "音效播放",
+            Content = "防空警报音效已启动",
+            Icon = "alert",
+            Duration = 3
+        })
+    end)
+end)
+
+Button(Tab4, "义勇军进行曲\n\n播放中华人民共和国国歌", function()
+    pcall(function()
+        local sound = Instance.new("Sound")
+        sound.SoundId = "rbxassetid://1845918434"
+        sound.Parent = game.Workspace
+        sound:Play()
+        WindUI:Notify({
+            Title = "音效播放",
+            Content = "义勇军进行曲已播放",
+            Icon = "flag",
+            Duration = 3
+        })
+    end)
+end)
+
+Button(Tab4, "火车音\n\n播放真实火车行驶音效", function()
+    pcall(function()
+        local sound = Instance.new("Sound")
+        sound.SoundId = "rbxassetid://3900067524"
+        sound.Parent = game.Workspace
+        sound:Play()
+        WindUI:Notify({
+            Title = "音效播放",
+            Content = "火车音效已启动",
+            Icon = "train",
+            Duration = 3
+        })
+    end)
+end)
+
+Button(Tab4, "Gentry Road\n\n播放英文经典音乐", function()
+    pcall(function()
+        local sound = Instance.new("Sound")
+        sound.SoundId = "rbxassetid://5567523008"
+        sound.Parent = game.Workspace
+        sound:Play()
+        WindUI:Notify({
+            Title = "音乐播放",
+            Content = "Gentry Road 已播放",
+            Icon = "music",
+            Duration = 3
+        })
+    end)
+end)
+
+Button(Tab4, "植物大战僵尸\n\n播放游戏原声音乐", function()
+    pcall(function()
+        local sound = Instance.new("Sound")
+        sound.SoundId = "rbxassetid://158260415"
+        sound.Parent = game.Workspace
+        sound:Play()
+        WindUI:Notify({
+            Title = "音乐播放",
+            Content = "植物大战僵尸原声已播放",
+            Icon = "game",
+            Duration = 3
+        })
+    end)
+end)
+
+Button(Tab4, "早安越南\n\n播放经典影视相关音乐", function()
+    pcall(function()
+        local sound = Instance.new("Sound")
+        sound.SoundId = "rbxassetid://8295016126"
+        sound.Parent = game.Workspace
+        sound:Play()
+        WindUI:Notify({
+            Title = "音乐播放",
+            Content = "早安越南 已播放",
+            Icon = "film",
+            Duration = 3
+        })
+    end)
+end)
+
+Button(Tab4, "愤怒芒西 Evade?\n\n播放游戏主题音效", function()
+    pcall(function()
+        local sound = Instance.new("Sound")
+        sound.SoundId = "rbxassetid://5029269312"
+        sound.Parent = game.Workspace
+        sound:Play()
+        WindUI:Notify({
+            Title = "音效播放",
+            Content = "愤怒芒西音效已启动",
+            Icon = "game",
+            Duration = 3
+        })
+    end)
+end)
+
+Button(Tab4, "梅西\n\n播放梅西相关主题音效", function()
+    pcall(function()
+        local sound = Instance.new("Sound")
+        sound.SoundId = "rbxassetid://7354576319"
+        sound.Parent = game.Workspace
+        sound:Play()
+        WindUI:Notify({
+            Title = "音效播放",
+            Content = "梅西主题音效已播放",
+            Icon = "sport",
+            Duration = 3
+        })
+    end)
+end)
+
+Button(Tab4, "永春拳\n\n播放武术相关音效", function()
+    pcall(function()
+        local sound = Instance.new("Sound")
+        sound.SoundId = "rbxassetid://1845973140"
+        sound.Parent = game.Workspace
+        sound:Play()
+        WindUI:Notify({
+            Title = "音效播放",
+            Content = "永春拳相关音效已启动",
+            Icon = "martialarts",
+            Duration = 3
+        })
+    end)
+end)
+
+Button(Tab4, "带劲的音乐\n\n播放动感节奏音乐", function()
+    pcall(function()
+        local sound = Instance.new("Sound")
+        sound.SoundId = "rbxassetid://18841891575"
+        sound.Parent = game.Workspace
+        sound:Play()
+        WindUI:Notify({
+            Title = "音乐播放",
+            Content = "动感音乐已播放",
+            Icon = "music",
+            Duration = 3
+        })
+    end)
+end)
+
+Button(Tab4, "韩国国歌\n\n播放大韩民国国歌", function()
+    pcall(function()
+        local sound = Instance.new("Sound")
+        sound.SoundId = "rbxassetid://1837478300"
+        sound.Parent = game.Workspace
+        sound:Play()
+        WindUI:Notify({
+            Title = "音乐播放",
+            Content = "韩国国歌已播放",
+            Icon = "flag",
+            Duration = 3
+        })
+    end)
+end)
+
+Button(Tab4, "哥哥你女朋友不会吃醋吧?\n\n播放网络热梗音效", function()
+    pcall(function()
+        local sound = Instance.new("Sound")
+        sound.SoundId = "rbxassetid://8715811379"
+        sound.Parent = game.Workspace
+        sound:Play()
+        WindUI:Notify({
+            Title = "梗音效播放",
+            Content = "网络热梗音效已启动",
+            Icon = "laugh",
+            Duration = 3
+        })
+    end)
+end)
+
+Button(Tab4, "蜘蛛侠出场声音\n\n播放英雄出场专属音效", function()
+    pcall(function()
+        local sound = Instance.new("Sound")
+        sound.SoundId = "rbxassetid://9108472930"
+        sound.Parent = game.Workspace
+        sound:Play()
+        WindUI:Notify({
+            Title = "音效播放",
+            Content = "蜘蛛侠出场音效已启动",
+            Icon = "hero",
+            Duration = 3
+        })
+    end)
+end)
+
+Button(Tab4, "消防车\n\n播放消防车警报音效", function()
+    pcall(function()
+        local sound = Instance.new("Sound")
+        sound.SoundId = "rbxassetid://317455930"
+        sound.Parent = game.Workspace
+        sound:Play()
+        WindUI:Notify({
+            Title = "音效播放",
+            Content = "消防车警报音效已启动",
+            Icon = "firetruck",
+            Duration = 3
+        })
+    end)
+end)
+
+Button(Tab4, "万圣节1🎃\n\n播放万圣节主题音效", function()
+    pcall(function()
+        local sound = Instance.new("Sound")
+        sound.SoundId = "rbxassetid://1837467198"
+        sound.Parent = game.Workspace
+        sound:Play()
+        WindUI:Notify({
+            Title = "音效播放",
+            Content = "万圣节主题音效已启动",
+            Icon = "halloween",
+            Duration = 3
+        })
+    end)
+end)
+
+Button(Tab4, "好听的\n\n播放精选舒适音乐", function()
+    pcall(function()
+        local sound = Instance.new("Sound")
+        sound.SoundId = "rbxassetid://1844125168"
+        sound.Parent = game.Workspace
+        sound:Play()
+        WindUI:Notify({
+            Title = "音乐播放",
+            Content = "精选好听音乐已播放",
+            Icon = "music",
+            Duration = 3
+        })
+    end)
+end)
+
+Button(Tab4, "国外音乐脚本\n\n加载外部国外音乐合集", function()
+    pcall(function()
+        loadstring(game:HttpGet(('https://pastebin.com/raw/g97RafnE'), true))()
+        WindUI:Notify({
+            Title = "脚本加载",
+            Content = "国外音乐脚本已启动",
+            Icon = "external",
+            Duration = 3
+        })
+    end)
+end)
+
+Button(Tab4, "国歌[Krx版]\n\n播放Krx改编版国歌", function()
+    pcall(function()
+        local sound = Instance.new("Sound")
+        sound.SoundId = "rbxassetid://1845918434"
+        sound.Parent = game.Workspace
+        sound:Play()
+        WindUI:Notify({
+            Title = "音乐播放",
+            Content = "Krx版国歌已播放",
+            Icon = "flag",
+            Duration = 3
+        })
+    end)
+end)
+
+Button(Tab4, "妈妈生的\n\n播放网络热梗音效", function()
+    pcall(function()
+        local sound = Instance.new("Sound")
+        sound.SoundId = "rbxassetid://6689498326"
+        sound.Parent = game.Workspace
+        sound:Play()
+        WindUI:Notify({
+            Title = "梗音效播放",
+            Content = "网络热梗音效已启动",
+            Icon = "laugh",
+            Duration = 3
+        })
+    end)
+end)
+
+Button(Tab4, "Music Ball-CTT\n\n播放CTT原创音乐", function()
+    pcall(function()
+        local sound = Instance.new("Sound")
+        sound.SoundId = "rbxassetid://9045415830"
+        sound.Parent = game.Workspace
+        sound:Play()
+        WindUI:Notify({
+            Title = "音乐播放",
+            Content = "Music Ball-CTT 已播放",
+            Icon = "music",
+            Duration = 3
+        })
+    end)
+end)
+
+Button(Tab4, "电音\n\n播放劲爆电子音乐", function()
+    pcall(function()
+        local sound = Instance.new("Sound")
+        sound.SoundId = "rbxassetid://6911766512"
+        sound.Parent = game.Workspace
+        sound:Play()
+        WindUI:Notify({
+            Title = "音乐播放",
+            Content = "劲爆电音已播放",
+            Icon = "edm",
+            Duration = 3
+        })
+    end)
+end)
+
+Button(Tab4, "梗合集\n\n播放多款网络热梗音效", function()
+    pcall(function()
+        local sound = Instance.new("Sound")
+        sound.SoundId = "rbxassetid://8161264253"
+        sound.Parent = game.Workspace
+        sound:Play()
+        WindUI:Notify({
+            Title = "音效播放",
+            Content = "网络热梗合集音效已启动",
+            Icon = "laugh",
+            Duration = 3
+        })
+    end)
+end)
+
+Button(Tab4, "Its been so long\n\n播放经典英文歌曲", function()
+    pcall(function()
+        local sound = Instance.new("Sound")
+        sound.SoundId = "rbxassetid://6913550990"
+        sound.Parent = game.Workspace
+        sound:Play()
+        WindUI:Notify({
+            Title = "音乐播放",
+            Content = "Its been so long 已播放",
+            Icon = "music",
+            Duration = 3
+        })
+    end)
+end)
+
+Button(Tab4, "Baller\n\n播放潮流主题音乐", function()
+    pcall(function()
+        local sound = Instance.new("Sound")
+        sound.SoundId = "rbxassetid://13530439660"
+        sound.Parent = game.Workspace
+        sound:Play()
+        WindUI:Notify({
+            Title = "音乐播放",
+            Content = "Baller 已播放",
+            Icon = "music",
+            Duration = 3
+        })
+    end)
+end)
+
+Button(Tab4, "男娘必听\n\n播放专属主题音乐", function()
+    pcall(function()
+        local sound = Instance.new("Sound")
+        sound.SoundId = "rbxassetid://6797864253"
+        sound.Parent = game.Workspace
+        sound:Play()
+        WindUI:Notify({
+            Title = "音乐播放",
+            Content = "专属主题音乐已播放",
+            Icon = "music",
+            Duration = 3
+        })
+    end)
+end)
+
+Button(Tab4, "螃蟹之舞\n\n播放魔性螃蟹舞音乐", function()
+    pcall(function()
+        local sound = Instance.new("Sound")
+        sound.SoundId = "rbxassetid://54100886218"
+        sound.Parent = game.Workspace
+        sound:Play()
+        WindUI:Notify({
+            Title = "音乐播放",
+            Content = "螃蟹之舞魔性音乐已播放",
+            Icon = "dance",
+            Duration = 3
+        })
+    end)
+end)
+
+Button(Tab4, "布鲁克林惨案\n\n播放相关主题音效", function()
+    pcall(function()
+        local sound = Instance.new("Sound")
+        sound.SoundId = "rbxassetid://6783714255"
+        sound.Parent = game.Workspace
+        sound:Play()
+        WindUI:Notify({
+            Title = "音效播放",
+            Content = "布鲁克林惨案主题音效已启动",
+            Icon = "sound",
+            Duration = 3
+        })
+    end)
+end)
+
+Button(Tab4, "航空模拟器音乐\n\n播放模拟飞行背景音乐", function()
+    pcall(function()
+        local sound = Instance.new("Sound")
+        sound.SoundId = "rbxassetid://1838080629"
+        sound.Parent = game.Workspace
+        sound:Play()
+        WindUI:Notify({
+            Title = "音乐播放",
+            Content = "航空模拟器背景音乐已播放",
+            Icon = "plane",
+            Duration = 3
+        })
+    end)
 end)
 
 -- 各大脚本 (Tab5)
@@ -4581,3 +5074,445 @@ Toggle(Tab73, "夜视", false, function(a)
     end)
 end)
 
+-- 失落的前线 (Tab74)
+Button(Tab74, "失落的前线1（要卡密）", function()
+    pcall(function()
+    --[[
+	WARNING: Heads up! This script has not been verified by ScriptBlox. Use at your own risk!
+]]
+
+-- https://discord.gg/JFpzR7Cv for key
+
+loadstring(game:HttpGet("https://raw.githubusercontent.com/larsscriptz/Scripts/refs/heads/main/TheLostFront",true))()
+    end)
+end)
+
+-- 建造一个奥比 (Tab75)
+Button(Tab75, "英文", function()
+    pcall(function()
+    --[[
+	WARNING: Heads up! This script has not been verified by ScriptBlox. Use at your own risk!
+]]
+loadstring(game:HttpGet("https://pastebin.com/raw/26YmD16d"))() 
+
+
+Print("https://direct-link.net/1449506/KSYcTkiTENw3") 
+
+--Enjoy the script! 
+    end)
+end)
+
+-- 聊天室💬 [阿拉伯语] (Tab76)
+Button(Tab76, "聊天刷屏\n\n聊天里刷屏，但其实不好。因为聊天里有小丑", function()
+    -- 核心服务预加载+错误捕获初始化
+    local success, err = pcall(function()
+        local ga = game
+        local rs = ga:GetService("ReplicatedStorage")
+        local pl = ga:GetService("Players").LocalPlayer
+        local ca = pl:WaitForChild("PlayerGui", 10) -- 10秒超时保护
+        local runService = ga:GetService("RunService")
+        local userInputService = ga:GetService("UserInputService")
+
+        -- 防重复创建：删除已存在的UI
+        if ca:FindFirstChild("GG") then
+            ca.GG:Destroy()
+        end
+
+        -- UI创建函数（优化层级结构+视觉反馈）
+        local function createUI()
+            local sc = Instance.new("ScreenGui")
+            sc.Name = "GG"
+            sc.Parent = ca
+            sc.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+            sc.IgnoreGuiInset = false -- 适配屏幕边界
+
+            -- 主开关按钮
+            local tg = Instance.new("TextButton")
+            tg.Name = "TG"
+            tg.Text = "Chat Spam"
+            tg.Size = UDim2.new(0.18, 0, 0.05, 0)
+            tg.Position = UDim2.new(0.01, 0, 0.01, 0)
+            tg.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+            tg.BackgroundTransparency = 0.1
+            tg.BorderSizePixel = 0
+            tg.TextColor3 = Color3.new(1, 1, 1)
+            tg.Font = Enum.Font.SourceSansBold
+            tg.TextSize = 20
+            tg.AutoButtonColor = true -- 点击视觉反馈
+            tg.Parent = sc
+
+            -- 按钮美化组件
+            local ug1 = Instance.new("UICorner")
+            ug1.CornerRadius = UDim.new(0, 8)
+            ug1.Parent = tg
+
+            local ui1 = Instance.new("UIGradient")
+            ui1.Color = ColorSequence.new({
+                ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 180, 255)),
+                ColorSequenceKeypoint.new(1, Color3.fromRGB(150, 0, 255))
+            })
+            ui1.Parent = tg
+
+            -- 输入面板
+            local fr = Instance.new("Frame")
+            fr.Name = "FR"
+            fr.Size = UDim2.new(0.35, 0, 0.1, 0)
+            fr.Position = UDim2.new(0.325, 0, 0.85, 0)
+            fr.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+            fr.BackgroundTransparency = 0.2
+            fr.BorderSizePixel = 0
+            fr.ClipsDescendants = true
+            fr.Parent = sc
+            fr.Visible = false -- 默认隐藏
+
+            -- 面板美化组件
+            local ug = Instance.new("UICorner")
+            ug.CornerRadius = UDim.new(0, 10)
+            ug.Parent = fr
+
+            local ui = Instance.new("UIGradient")
+            ui.Color = ColorSequence.new({
+                ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 200, 255)),
+                ColorSequenceKeypoint.new(1, Color3.fromRGB(150, 0, 255))
+            })
+            ui.Parent = fr
+
+            -- 输入文本框
+            local ti = Instance.new("TextBox")
+            ti.Name = "TT"
+            ti.PlaceholderText = "Type message here... (Multi-line enabled)"
+            ti.Text = "Hello!"
+            ti.Size = UDim2.new(0.7, 0, 1, 0)
+            ti.Position = UDim2.new(0, 0, 0, 0)
+            ti.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+            ti.BackgroundTransparency = 0.1
+            ti.BorderSizePixel = 0
+            ti.TextColor3 = Color3.new(1, 1, 1)
+            ti.TextSize = 16
+            ti.Font = Enum.Font.SourceSans
+            ti.MultiLine = true
+            ti.ClearTextOnFocus = false -- 聚焦不清除文本
+            ti.Parent = fr
+
+            -- 发送按钮
+            local se = Instance.new("TextButton")
+            se.Name = "SS"
+            se.Text = "Send"
+            se.Size = UDim2.new(0.15, 0, 1, 0)
+            se.Position = UDim2.new(0.7, 0, 0, 0)
+            se.BackgroundColor3 = Color3.fromRGB(0, 150, 255)
+            se.BorderSizePixel = 0
+            se.TextColor3 = Color3.new(1, 1, 1)
+            se.Font = Enum.Font.SourceSansBold
+            se.AutoButtonColor = true
+            se.Parent = fr
+
+            -- 刷屏按钮
+            local sp = Instance.new("TextButton")
+            sp.Name = "SM"
+            sp.Text = "Spam"
+            sp.Size = UDim2.new(0.15, 0, 1, 0)
+            sp.Position = UDim2.new(0.85, 0, 0, 0)
+            sp.BackgroundColor3 = Color3.fromRGB(255, 50, 100)
+            se.BorderSizePixel = 0
+            sp.TextColor3 = Color3.new(1, 1, 1)
+            sp.Font = Enum.Font.SourceSansBold
+            sp.AutoButtonColor = true
+            sp.Parent = fr
+
+            return sc, tg, fr, ti, se, sp
+        end
+
+        -- 发送消息函数（增加错误捕获）
+        local function sendMessage(text)
+            if type(text) ~= "string" or text == "" then
+                WindUI:Notify({
+                    Title = "输入错误",
+                    Content = "消息不能为空！",
+                    Icon = "error",
+                    Duration = 2
+                })
+                return
+            end
+
+            local ev = rs:FindFirstChild("ChatMessageEvent")
+            if ev then
+                local fireSuccess = pcall(ev.FireServer, ev, text)
+                if not fireSuccess then
+                    WindUI:Notify({
+                        Title = "发送失败",
+                        Content = "无法发送消息（服务器限制）",
+                        Icon = "error",
+                        Duration = 2
+                    })
+                end
+            else
+                WindUI:Notify({
+                    Title = "功能缺失",
+                    Content = "未找到聊天事件（不兼容当前游戏）",
+                    Icon = "error",
+                    Duration = 2
+                })
+            end
+        end
+
+        -- 拖拽功能（优化边界检测）
+        local function enableDragging(frame)
+            local isDragging = false
+            local startPosition = Vector2.new()
+            local frameStartPosition = UDim2.new()
+
+            frame.InputBegan:Connect(function(input)
+                if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+                    isDragging = true
+                    startPosition = userInputService:GetMouseLocation()
+                    frameStartPosition = frame.Position
+                end
+            end)
+
+            userInputService.InputEnded:Connect(function(input)
+                if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+                    isDragging = false
+                end
+            end)
+
+            userInputService.InputChanged:Connect(function(input)
+                if isDragging and input.UserInputType == Enum.UserInputType.MouseMovement then
+                    local delta = userInputService:GetMouseLocation() - startPosition
+                    local newPos = frameStartPosition + UDim2.new(0, delta.X, 0, delta.Y)
+                    
+                    -- 限制在屏幕内
+                    newPos = UDim2.new(
+                        math.clamp(newPos.X.Scale, 0, 1 - frame.Size.X.Scale),
+                        newPos.X.Offset,
+                        math.clamp(newPos.Y.Scale, 0, 1 - frame.Size.Y.Scale),
+                        newPos.Y.Offset
+                    )
+                    
+                    frame.Position = newPos
+                end
+            end)
+        end
+
+        -- 初始化UI和功能
+        local sc, tg, fr, ti, se, sp = createUI()
+        enableDragging(fr)
+
+        -- 开关面板显示/隐藏
+        tg.MouseButton1Click:Connect(function()
+            fr.Visible = not fr.Visible
+            WindUI:Notify({
+                Title = "面板控制",
+                Content = fr.Visible and "已显示刷屏面板" or "已隐藏刷屏面板",
+                Icon = "info",
+                Duration = 1.5
+            })
+        end)
+
+        -- 单次发送
+        se.MouseButton1Click:Connect(function()
+            sendMessage(ti.Text)
+        end)
+
+        -- 刷屏控制（优化协程管理）
+        local spamConnection = nil
+        sp.MouseButton1Click:Connect(function()
+            if spamConnection then
+                -- 停止刷屏
+                spamConnection:Disconnect()
+                spamConnection = nil
+                sp.Text = "Spam"
+                sp.BackgroundColor3 = Color3.fromRGB(255, 50, 100)
+                WindUI:Notify({
+                    Title = "刷屏停止",
+                    Content = "已停止自动刷屏",
+                    Icon = "check",
+                    Duration = 1.5
+                })
+            else
+                -- 开始刷屏
+                spamConnection = runService.Heartbeat:Connect(function()
+                    sendMessage(ti.Text)
+                    wait(0.1) -- 控制刷屏频率
+                end)
+                sp.Text = "Stop"
+                sp.BackgroundColor3 = Color3.fromRGB(50, 200, 50)
+                WindUI:Notify({
+                    Title = "刷屏开启",
+                    Content = "已开始自动刷屏（谨慎使用）",
+                    Icon = "warning",
+                    Duration = 2
+                })
+            end
+        end)
+
+        -- 初始通知
+        WindUI:Notify({
+            Title = "聊天刷屏",
+            Content = "功能已加载完成，点击顶部按钮打开面板",
+            Icon = "crown",
+            Duration = 3
+        })
+    end)
+
+    -- 全局错误处理
+    if not success then
+        WindUI:Notify({
+            Title = "加载失败",
+            Content = "刷屏功能初始化错误：" .. tostring(err),
+            Icon = "error",
+            Duration = 3
+        })
+    end
+end)
+
+-- [✨2倍经验✨]植物进化 (Tab77)
+Button(Tab77, "oP脚本", function()
+    pcall(function()
+    --[[
+	WARNING: Heads up! This script has not been verified by ScriptBlox. Use at your own risk!
+]]
+loadstring(game:HttpGet("https://raw.githubusercontent.com/gumanba/Scripts/main/PlantEvolution"))()
+    end)
+end)
+
+-- 🦘跳跃去见辫inrots！ (Tab78)
+Button(Tab78, "刷钱", function()
+    pcall(function()
+    --[[
+	WARNING: Heads up! This script has not been verified by ScriptBlox. Use at your own risk!
+]]
+--t.me/Soul_Scr1pt
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+
+local player = Players.LocalPlayer
+local sequence = workspace.WinSequences["Odin Din Din Dun"]
+local touchPart = sequence.WinPad.TouchPart
+local touchInterest = touchPart.TouchInterest
+local remote = game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Functions"):WaitForChild("BuyUpgrade")
+local args = {"Coins"}
+
+local connection
+local function startLoop()
+    if connection then connection:Disconnect() end
+    
+    connection = RunService.Heartbeat:Connect(function()
+        if player.Character and player.Character:FindFirstChild("Humanoid") then
+            local humanoid = player.Character.Humanoid
+            if humanoid.Health > 0 then
+                firetouchinterest(player.Character.HumanoidRootPart, touchPart, 0)
+                firetouchinterest(player.Character.HumanoidRootPart, touchPart, 1)
+                remote:InvokeServer(unpack(args))
+            end
+        end
+    end)
+end
+
+player.CharacterAdded:Connect(function(character)
+    character:WaitForChild("Humanoid")
+    character.Humanoid.Died:Connect(function()
+        task.wait(1)
+        startLoop()
+    end)
+    startLoop()
+end)
+
+if player.Character then startLoop() end
+    end)
+end)
+
+-- 钓鱼！ 🐟 (Tab79)
+Button(Tab79, "最好的脚本钓法", function()
+    pcall(function()
+    --[[
+	WARNING: Heads up! This script has not been verified by ScriptBlox. Use at your own risk!
+]]
+loadstring(game:HttpGet("https://pastebin.com/raw/iyYc5zds"))()
+    end)
+end)
+
+-- [史莱姆]键盘ASMR塔 (Tab80)
+Button(Tab80, "自动步行登顶", function()
+    pcall(function()
+    --[[
+	WARNING: Heads up! This script has not been verified by ScriptBlox. Use at your own risk!
+]]
+loadstring(game:HttpGet("https://pastefy.app/eAr7aXfU/raw"))()
+    end)
+end)
+
+-- [🎣鱼+🐶宠物]安吉尔山🥴 (Tab81)
+Button(Tab81, "脚本1", function()
+    pcall(function()
+    --[[
+	WARNING: Heads up! This script has not been verified by ScriptBlox. Use at your own risk!
+]]
+loadstring(game:HttpGet("https://raw.gatinero.xyz/main.lua"))()
+    end)
+end)
+
+-- 🍰 烘焙或死亡 💀 (Tab82)
+Button(Tab82, "杀死光环", function()
+    pcall(function()
+    --[[
+	WARNING: Heads up! This script has not been verified by ScriptBlox. Use at your own risk!
+]]
+local ZAP = require(game:GetService("ReplicatedStorage").Client.ClientRemotes)
+local slotNumber = 2 -- your melee slot
+local auraDistance = 25 -- kill aura distnace
+
+while true do
+    task.wait()
+    
+    local character = game.Players.LocalPlayer.Character
+    if character and character:FindFirstChild("HumanoidRootPart") then
+        local root = character.HumanoidRootPart
+        
+        for _, monster in pairs(workspace.Monsters:GetChildren()) do
+            if monster:FindFirstChild("HumanoidRootPart") then
+                local distance = (root.Position - monster.HumanoidRootPart.Position).Magnitude
+                if distance < auraDistance then
+                    ZAP.meleeAttack.fire({
+                        monsters = {monster},
+                        civilians = {},
+                        activeSlot = slotNumber
+                    })
+                    break
+                end
+            end
+        end
+    end
+end
+    end)
+end)
+
+-- 打破朋友 🦴 (Tab83)
+Button(Tab83, "现金组 I 自动升级", function()
+    pcall(function()
+    --[[
+	WARNING: Heads up! This script has not been verified by ScriptBlox. Use at your own risk!
+]]
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Defy-cloud/Scripts/refs/heads/main/BreakaFriend",true))()
+    end)
+end)
+
+-- 【⚔️公会战争】[第38卷]修炼：凡人至仙人 (Tab84)
+Button(Tab84, "自动一切及更多", function()
+    pcall(function()
+    --[[
+	WARNING: Heads up! This script has not been verified by ScriptBlox. Use at your own risk!
+]]
+loadstring(game:HttpGet('https://raw.githubusercontent.com/Tseting-nil/-Cultivation-Simulator-script/refs/heads/main/%E5%95%9F%E5%8B%95%E5%99%A8%E5%8A%A0%E5%AF%86%E9%81%B8%E5%96%AE.lua'))()
+    end)
+end)
+
+-- 杀人犯对警长决斗 (Tab85)
+Button(Tab85, "最佳脚本", function()
+    pcall(function()
+    --[[
+	WARNING: Heads up! This script has not been verified by ScriptBlox. Use at your own risk!
+]]
+loadstring(game:HttpGet("https://gist.githubusercontent.com/ekuve/2b8487682ec7220be76b9342d3357425/raw"))()
+    end)
+end)
