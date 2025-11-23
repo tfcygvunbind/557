@@ -332,7 +332,7 @@ local attempts = 0
 local maxAttempts = 3
 VerifyBtn.MouseButton1Click:Connect(function()
     local key = Input.Text
-    if key == "HB_XiaXu&LnLiGayp̶̠͔̎u̵̬͓̎n̸̡̙̉̀ì̴̩̑s̸̟̈́ḧ̷͖̹́Tri§ix" then
+    if key == "H§Ḃ̶̸𐌰̶₪⧫⸿_ï̴𐌿̍å̶&εȋ̴⧇𐌹ελλήά·ʎ�" then
         Msg.Text = "验证成功，启动中..."
         Msg.TextColor3 = Color3.fromRGB(80, 200, 80)
         task.wait(1)
