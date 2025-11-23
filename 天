@@ -1,6 +1,135 @@
+-- ====================== UI文本自动汉化（前置模块，不删原内容）======================
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+local RunService = game:GetService("RunService")
+
+-- 汉化文本配置（整合原脚本所有翻译项，不重复）
+local Translations = {
+    ["CloseWindowTitle"] = "关闭窗口",
+    ["CloseWindowConfirm"] = "求你了别关脚本😭😭",
+    ["CancelBtn"] = "取消",
+    ["CloseBtn"] = "关闭窗口",
+    ["LockedText"] = "锁定",
+    ["Close Window"] = "关闭窗口",
+    ["Do you want to close this window? You will not be able to open it again."] = "求你了别关脚本😭😭，再用用呗🙏🙏🙏",
+    ["Cancel"] = "取消",
+    ["Locked"] = "锁定",
+}
+
+-- 翻译核心函数
+local function translateText(text)
+    if not text or type(text) ~= "string" then return text end
+    if Translations[text] then
+        return Translations[text]
+    end
+    for en, cn in pairs(Translations) do
+        if text:find(en) then
+            return text:gsub(en, cn)
+        end
+    end
+    return text
+end
+
+-- 自动汉化引擎（启动即执行，无需点击）
+local function setupTranslationEngine()
+    local success, err = pcall(function()
+        -- 元表劫持（实时翻译新UI，不影响原逻辑）
+        local oldIndex = getrawmetatable(game).__newindex
+        setreadonly(getrawmetatable(game), false)
+        
+        getrawmetatable(game).__newindex = newcclosure(function(t, k, v)
+            if (t:IsA("TextLabel") or t:IsA("TextButton") or t:IsA("TextBox")) and k == "Text" then
+                v = translateText(tostring(v))
+            end
+            return oldIndex(t, k, v)
+        end)
+        
+        setreadonly(getrawmetatable(game), true)
+    end)
+    
+    if not success then
+        warn("元表劫持失败，启用备用汉化:", err)
+    end
+
+    -- 扫描已存在UI并汉化
+    local translated = {}
+    local function scanAndTranslate()
+        -- 系统UI
+        for _, gui in ipairs(game:GetService("CoreGui"):GetDescendants()) do
+            if (gui:IsA("TextLabel") or gui:IsA("TextButton") or gui:IsA("TextBox")) and not translated[gui] then
+                pcall(function()
+                    local text = gui.Text
+                    if text and text ~= "" then
+                        local translatedText = translateText(text)
+                        if translatedText ~= text then
+                            gui.Text = translatedText
+                            translated[gui] = true
+                        end
+                    end
+                end)
+            end
+        end
+        -- 玩家UI
+        if LocalPlayer and LocalPlayer:FindFirstChild("PlayerGui") then
+            for _, gui in ipairs(LocalPlayer.PlayerGui:GetDescendants()) do
+                if (gui:IsA("TextLabel") or gui:IsA("TextButton") or gui:IsA("TextBox")) and not translated[gui] then
+                    pcall(function()
+                        local text = gui.Text
+                        if text and text ~= "" then
+                            local translatedText = translateText(text)
+                            if translatedText ~= text then
+                                gui.Text = translatedText
+                                translated[gui] = true
+                            end
+                        end
+                    end)
+                end
+            end
+        end
+    end
+
+    -- 监听新创建UI
+    local function setupDescendantListener(parent)
+        parent.DescendantAdded:Connect(function(descendant)
+            if descendant:IsA("TextLabel") or descendant:IsA("TextButton") or descendant:IsA("TextBox") then
+                task.wait(0.1)
+                pcall(function()
+                    local text = descendant.Text
+                    if text and text ~= "" then
+                        local translatedText = translateText(text)
+                        if translatedText ~= text then
+                            descendant.Text = translatedText
+                        end
+                    end
+                end)
+            end
+        end)
+    end
+
+    -- 启动监听
+    pcall(setupDescendantListener, game:GetService("CoreGui"))
+    if LocalPlayer and LocalPlayer:FindFirstChild("PlayerGui") then
+        pcall(setupDescendantListener, LocalPlayer.PlayerGui)
+    end
+
+    -- 持续扫描
+    coroutine.wrap(function()
+        while true do
+            scanAndTranslate()
+            task.wait(3)
+        end
+    end)()
+end
+
+-- 等待玩家加载后自动启动（不阻塞原脚本）
+coroutine.wrap(function()
+    repeat task.wait(0.1) until LocalPlayer and LocalPlayer.Character
+    setupTranslationEngine()
+    print("✅ UI自动汉化已启动（未删除任何原内容）")
+end)()
+
 --如果你看到这条信息，大概我的脚本源码被泄露也是难免了
 
--- 合规音效单次播放（请确保音效内容及用途符合平台规则）
 local soundId = "rbxassetid://88457346646245" -- 请确认此音效内容完全合规
 local Workspace = game:GetService("Workspace")
 
@@ -854,20 +983,135 @@ Window:EditOpenButton({
     Icon = "monitor",
     CornerRadius = UDim.new(0,16),
     StrokeThickness = 2,
+    -- 透明度设为0（完全透明）
+    Transparency = 1,
     Color = ColorSequence.new(
         Color3.fromHex("FFFFFF"), -- 纯白（渐变起点）
-        Color3.fromHex("333333")  -- 深灰（渐变终点，替代纯黑更柔和）
+        Color3.fromHex("333333")  -- 深灰（渐变终点）
     ),
     Draggable = true,
+    -- 添加亮框（白色描边，厚度3更醒目）
+    StrokeColor = Color3.fromHex("FFFFFF"),
+    -- 可选：增加内发光效果，亮框更有层次感
+    GlowColor = Color3.fromHex("FFFFFF"),
+    GlowSize = 8,
+    GlowTransparency = 0.4
 })
 
+
+-- 最终方案：所有标签优先用基础图标，看不见的自动显示眼睛（无需手动排查）
 function Tab(a)
-    return Window:Tab({Title = a, Icon = "eye"})
+    local tabIcon = ({
+        ["简介"] = "info",
+        ["通用"] = "cog",
+        ["通用2"] = "wrench",
+        ["通用3"] = "settings",
+        ["范围与旋转"] = "target",
+        ["音乐"] = "music",
+        ["各大脚本"] = "code",
+        ["FE"] = "server",
+        ["DOORS"] = "door-closed",
+        ["rooms&doors"] = "door-closed",
+        ["压力,doors"] = "door-closed",
+        ["动感星期五"] = "drum",
+        ["压力"] = "alert",
+        ["成为乞丐"] = "money",
+        ["磁铁模拟器"] = "magnet",
+        ["建造一架飞机"] = "plane",
+        ["勘探中"] = "compass",
+        ["法宝模拟器"] = "star",
+        ["在披萨店工作"] = "cutlery",
+        ["战斗勇士"] = "sword",
+        ["一次尘土的旅行"] = "road",
+        ["破坏者谜团2"] = "puzzle",
+        ["模仿者"] = "copy",
+        ["火箭发射模拟器"] = "rocket",
+        ["只因剑"] = "sword",
+        ["森林里的99夜"] = "tree",
+        ["旗帜战争"] = "flag",
+        ["逃出建筑"] = "exit",
+        ["打墙模拟器"] = "hammer",
+        ["生存巨人"] = "user",
+        ["健身房之星模拟器"] = "dumbbell",
+        ["死铁轨"] = "train",
+        ["墨水游戏"] = "tint",
+        ["自然灾害模拟器"] = "cloud",
+        ["穷小子打工记"] = "briefcase",
+        ["最后的黎明"] = "sun",
+        ["索纳里亚世界"] = "globe",
+        ["河北唐县"] = "map-pin",
+        ["被遗弃"] = "ghost",
+        ["骨折模拟器"] = "heart",
+        ["地下城任务"] = "dungeon",
+        ["极速传奇"] = "speed",
+        ["一路向西"] = "arrow-right",
+        ["汽车经销商大亨"] = "car",
+        ["兵工厂"] = "gun",
+        ["by手腕"] = "hand",
+        ["超级足球联赛"] = "football",
+        ["战争大亨"] = "tank",
+        ["吃掉世界"] = "utensils",
+        ["隐藏尸体"] = "eye-slash",
+        ["猎杀僵尸"] = "skull",
+        ["建造汽车"] = "gear",
+        ["原始追求/原始追击"] = "spear",
+        ["攀爬与滑行"] = "mountain",
+        ["拔出一把剑"] = "sword-alt",
+        ["暴力区"] = "fist",
+        ["邪恶的事情会发生什么"] = "skull",
+        ["住宅大屠杀"] = "house",
+        ["犯罪"] = "gavel",
+        ["封锁战线"] = "shield",
+        ["终极战场"] = "battle",
+        ["最强的拳击模拟器"] = "boxing-glove",
+        ["排球传奇"] = "volleyball",
+        ["竞争对手"] = "users",
+        ["柔术无限"] = "fighter",
+        ["超速射击"] = "bow",
+        ["英雄战场"] = "star",
+        ["蓝色锁"] = "lock",
+        ["无标题的拳击"] = "fist",
+        ["越狱"] = "arrow-up-right-from-square",
+        ["生存战争"] = "life-ring",
+        ["停电"] = "power-off",
+        ["战争机器"] = "robot",
+        ["别碰按钮"] = "toggle-off",
+        ["在超级商店过夜生存"] = "store",
+        ["失落的前线"] = "battlefield",
+        ["建造一个奥比"] = "cube",
+        ["聊天室💬 [阿拉伯语]"] = "comment",
+        ["[✨2倍经验✨]植物进化"] = "leaf",
+        ["🦘跳跃去见辫inrots！"] = "arrow-up",
+        ["钓鱼！ 🐟"] = "fish",
+        ["[史莱姆]键盘ASMR塔"] = "keyboard",
+        ["[🎣鱼+🐶宠物]安吉尔山🥴"] = "paw",
+        ["🍰 烘焙或死亡 💀"] = "cake",
+        ["打破朋友 🦴"] = "broken",
+        ["【⚔️公会战争】[第38卷]修炼：凡人至仙人"] = "scroll",
+        ["杀人犯对警长决斗"] = "police-badge",
+        ["🥊拳击怪兽！ 🥊"] = "monster",
+        ["隐形藏匿"] = "eye-slash",
+        ["[第一人称射击]电影上传者"] = "camera",
+        ["成为杀手级重码"] = "skull",
+        ["[✨] NPC或者死！ 💢"] = "user",
+        ["免费UGC✨奥比"] = "gift",
+        [" [1.0] 基础论文教育 RP"] = "book"
+    })[a] 
+    
+    -- 关键修复：如果图标无法显示（返回nil），直接强制设为眼睛
+    if not tabIcon or tabIcon == "" then
+        tabIcon = "eye"
+    end
+    
+    return Window:Tab({Title = a, Icon = tabIcon})
 end
 
+-- 其他函数保留不变
 function Button(a, b, c)
     return a:Button({Title = b, Callback = c})
 end
+
+function Label(a, b) return a:Label({Title = b}) end -- 一行文本标签（无按钮交互，仅显示文字）
 
 function Toggle(a, b, c, d)
     return a:Toggle({Title = b, Value = c, Callback = d})
@@ -887,21 +1131,47 @@ Window:Tag({
 })
 
 Window:Tag({
-    Title = "测试",
-    Color = Color3.fromHex("#FFD700")  -- 金色标签
-})
-
-Window:Tag({
     Title = "诞生于2025年暑假",
     Color = Color3.fromHex("#4169E1")  -- 天蓝色标签（适配Dark主题）
 })
 
 
 Window:CreateTopbarButton("theme-switcher", "moon", function()
-    WindUI:SetTheme(WindUI:GetCurrentTheme() == "MonokaiPro" and "GoldenTheme" or "MonokaiPro")
+    WindUI:SetTheme(WindUI:GetCurrentTheme() == "Dark" and "GoldenTheme" or "MonokaiPro")
     WindUI:Notify({
         Title = "主题已更改",
         Content = "当前主题: "..WindUI:GetCurrentTheme(),
+        Duration = 2
+    })
+end, 990)
+
+Window:CreateTopbarButton("transparency-switcher", "eye", function()
+    -- 记录初始透明度（首次点击时保存默认值）
+    if not _G.OriginalTransparency then
+        _G.OriginalTransparency = WindUI.TransparencyValue or 0 -- 初始值改为0（完全不透明）
+    end
+    
+    local currentTransparency = WindUI.TransparencyValue or _G.OriginalTransparency
+    local newTransparency
+    
+    -- 切换逻辑：当前为初始值（0）→ 切换到0.8；当前为0.8 → 恢复初始值（0）
+    if math.abs(currentTransparency - _G.OriginalTransparency) < 0.01 then
+        newTransparency = 0.8 -- 切换后的透明度，可调整
+    else
+        newTransparency = _G.OriginalTransparency -- 恢复初始透明度（0）
+    end
+    
+    WindUI.TransparencyValue = newTransparency
+    Window:ToggleTransparency(true) -- 确保透明度功能启用
+    
+    -- 通知反馈（区分切换/恢复状态）
+    local notifyContent = newTransparency == _G.OriginalTransparency 
+        and "已恢复初始透明度: " .. newTransparency
+        or "当前透明度: " .. newTransparency
+    
+    WindUI:Notify({
+        Title = "透明度已更改",
+        Content = notifyContent,
         Duration = 2
     })
 end, 990)
@@ -1158,6 +1428,21 @@ Button(Tab0, "小游戏", function()
 end)
 
 -- 通用 (Tab1)
+Button(Tab1, "以后会出现美女😋\n\n我骗你，你就是人。", function()
+loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-DO-NOT-EXECUTE-61096"))()
+    
+    if getSuccess and type(scriptContent) == "string" and scriptContent ~= "" then
+        -- 执行脚本时单独捕获错误，避免整体崩溃
+        local execSuccess = pcall(loadstring(scriptContent))
+        WindUI:Notify({
+            Title = "怪物😱",
+            Content = execSuccess and "已成功开启" or "脚本执行失败（语法/兼容问题）",
+            Icon = execSuccess and "crown" or "error",
+            Duration = 3
+        })
+    end
+end)
+
 Button(Tab1, "飞行\n\n飞行👍", function() 
     local scriptUrl = "https://raw.githubusercontent.com/dingding123hhh/tt/main/jm%E9%A3%9E..lua"
     
@@ -2742,6 +3027,20 @@ loadstring(game:HttpGet("https://pastebin.com/raw/UQE2KDxV"))()
     end
 end)
 
+Button(Tab3, "瞎鸡巴燃\n\n给我听爽了💀。", function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/ke9460394-dot/kenk/refs/heads/main/放克表情.lua"))()
+    
+    if getSuccess and type(scriptContent) == "string" and scriptContent ~= "" then
+        -- 执行脚本时单独捕获错误，避免整体崩溃
+        local execSuccess = pcall(loadstring(scriptContent))
+        WindUI:Notify({
+            Title = "不知道",
+            Content = execSuccess and "已成功开启" or "脚本执行失败（语法/兼容问题）",
+            Icon = execSuccess and "crown" or "error",
+            Duration = 3
+        })
+    end
+end)
 -- 范围与旋转 (Tab4)
 -- 玩家范围高亮功能 (Tab4)
 local renderConnections = {} -- 存储连接用于关闭
@@ -2939,6 +3238,21 @@ Button(Tab4, "停止旋转", function()
 end)
 
 -- 音乐 (Tab5)
+Button(Tab5, "k00pz\n\n播放k00pz音效", function()
+    pcall(function()
+        local sound = Instance.new("Sound")
+        sound.SoundId = "rbxassetid://1839246711"
+        sound.Parent = game.Workspace
+        sound:Play()
+        WindUI:Notify({
+            Title = "音效播放",
+            Content = "k00pz音效已启动",
+            Icon = "music",
+            Duration = 3
+        })
+    end)
+end)
+
 Button(Tab5, "彩虹瀑布\n\n播放彩虹瀑布主题音效", function()
     pcall(function()
         local sound = Instance.new("Sound")
@@ -4107,6 +4421,37 @@ end)
 Button(Tab33, "黑洞v6", function()
     pcall(function()
     loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Super-ring-Parts-V6-28581"))()
+    end)
+end)
+
+Button(Tab33, "没有坠落伤害", function()
+    pcall(function()
+    --[[
+	WARNING: Heads up! This script has not been verified by ScriptBlox. Use at your own risk!
+]]
+local ServicioRun = game:GetService("RunService")
+local Latido = ServicioRun.Heartbeat
+local Render = ServicioRun.RenderStepped
+local Jugador = game.Players.LocalPlayer
+local VelocidadNula = Vector3.zero
+local function EvitarCaida(personaje)
+    local Raiz = personaje:WaitForChild("HumanoidRootPart")
+    local conexion
+    conexion = Latido:Connect(function()
+        if not Raiz.Parent then
+            conexion:Disconnect()
+            return
+        end
+        local velocidadAnt = Raiz.AssemblyLinearVelocity
+        Raiz.AssemblyLinearVelocity = VelocidadNula
+        Render:Wait()
+        Raiz.AssemblyLinearVelocity = velocidadAnt
+    end)
+end
+EvitarCaida(Jugador.Character or Jugador.CharacterAdded:Wait())
+Jugador.CharacterAdded:Connect(EvitarCaida)
+
+--sexo
     end)
 end)
 
@@ -5812,7 +6157,6 @@ loadstring(game:HttpGet('https://raw.githubusercontent.com/Hjgyhfyh/Scripts-robl
 end)
 
 -- 免费UGC✨奥比 (Tab92)
-local Tab92 = Tab("免费UGC✨奥比") -- 先创建Tab92（避免未定义报错）
 Button(Tab92, "自动完成", function()
     pcall(function()
         -- 校验核心服务与玩家状态，避免空值错误
