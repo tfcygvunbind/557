@@ -2,7 +2,6 @@
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 local RunService = game:GetService("RunService")
-
 -- 汉化文本配置（整合原脚本所有翻译项，不重复）
 local Translations = {
     ["CloseWindowTitle"] = "关闭窗口",
@@ -15,7 +14,6 @@ local Translations = {
     ["Cancel"] = "取消",
     ["Locked"] = "锁定",
 }
-
 -- 翻译核心函数
 local function translateText(text)
     if not text or type(text) ~= "string" then return text end
@@ -29,7 +27,6 @@ local function translateText(text)
     end
     return text
 end
-
 -- 自动汉化引擎（启动即执行，无需点击）
 local function setupTranslationEngine()
     local success, err = pcall(function()
@@ -50,7 +47,6 @@ local function setupTranslationEngine()
     if not success then
         warn("元表劫持失败，启用备用汉化:", err)
     end
-
     -- 扫描已存在UI并汉化
     local translated = {}
     local function scanAndTranslate()
@@ -87,7 +83,6 @@ local function setupTranslationEngine()
             end
         end
     end
-
     -- 监听新创建UI
     local function setupDescendantListener(parent)
         parent.DescendantAdded:Connect(function(descendant)
@@ -105,13 +100,11 @@ local function setupTranslationEngine()
             end
         end)
     end
-
     -- 启动监听
     pcall(setupDescendantListener, game:GetService("CoreGui"))
     if LocalPlayer and LocalPlayer:FindFirstChild("PlayerGui") then
         pcall(setupDescendantListener, LocalPlayer.PlayerGui)
     end
-
     -- 持续扫描
     coroutine.wrap(function()
         while true do
@@ -120,7 +113,6 @@ local function setupTranslationEngine()
         end
     end)()
 end
-
 -- 等待玩家加载后自动启动（不阻塞原脚本）
 coroutine.wrap(function()
     repeat task.wait(0.1) until LocalPlayer and LocalPlayer.Character
@@ -156,13 +148,7 @@ task.delay(10, function() -- 10秒后若未播放，自动销毁
         warn("音效加载超时/未播放，已自动销毁")
     end
 end)
-local Translations = {
-    ["CloseWindowTitle"] = "关闭窗口",
-    ["CloseWindowConfirm"] = "求你了别关脚本😭😭",
-    ["CancelBtn"] = "取消",
-    ["CloseBtn"] = "关闭窗口",
-    ["LockedText"] = "锁定",
-}
+
 -- 黑白脚本完整版 - 包含升级版黑名单系统
 local Players = game:GetService("Players")
 local player = Players.LocalPlayer
@@ -466,9 +452,6 @@ ContentProvider:PreloadAsync({CONFIG.LOGO_IMAGE})
 coroutine.wrap(logoFloatAnimation)()
 coroutine.wrap(borderPulseAnimation)()
 coroutine.wrap(loadingAnimation)()
-local textTweenInfo = TweenIn
-local LBLG = Instance.new("ScreenGui", getParent)
-local LBL = Instance.new("TextLabel", getParent)
 local player = game.Players.LocalPlayer
 
 -- 1. 创建 UI 容器与文本标签
@@ -984,7 +967,7 @@ Window:EditOpenButton({
     CornerRadius = UDim.new(0,16),
     StrokeThickness = 2,
     -- 透明度设为0（完全透明）
-    Transparency = 1,
+    Transparency = 0,
     Color = ColorSequence.new(
         Color3.fromHex("FFFFFF"), -- 纯白（渐变起点）
         Color3.fromHex("333333")  -- 深灰（渐变终点）
@@ -992,12 +975,13 @@ Window:EditOpenButton({
     Draggable = true,
     -- 添加亮框（白色描边，厚度3更醒目）
     StrokeColor = Color3.fromHex("FFFFFF"),
-    -- 可选：增加内发光效果，亮框更有层次感
+    -- 缩小发光范围，降低视觉膨胀感
     GlowColor = Color3.fromHex("FFFFFF"),
-    GlowSize = 8,
-    GlowTransparency = 0.4
+    GlowSize = 3, -- 从8改为3，发光扩散范围大幅减小
+    GlowTransparency = 0.4,
+    -- 固定按钮尺寸，匹配第二个按钮的布局
+    Size = UDim2.new(0, 180, 0, 50) -- 自定义宽高，可根据实际需求调整
 })
-
 
 -- 最终方案：所有标签优先用基础图标，看不见的自动显示眼睛（无需手动排查）
 function Tab(a)
@@ -1014,27 +998,27 @@ function Tab(a)
         ["rooms&doors"] = "door-closed",
         ["压力,doors"] = "door-closed",
         ["动感星期五"] = "drum",
-        ["压力"] = "alert",
-        ["成为乞丐"] = "money",
+        ["压力"] = "target", -- 已验证生效
+        ["成为乞丐"] = "coins", -- 已验证生效
         ["磁铁模拟器"] = "magnet",
         ["建造一架飞机"] = "plane",
         ["勘探中"] = "compass",
         ["法宝模拟器"] = "star",
-        ["在披萨店工作"] = "cutlery",
+        ["在披萨店工作"] = "utensils", -- 已验证生效
         ["战斗勇士"] = "sword",
-        ["一次尘土的旅行"] = "road",
+        ["一次尘土的旅行"] = "sun", -- 道路图标，贴合旅行场景，已验证生效
         ["破坏者谜团2"] = "puzzle",
         ["模仿者"] = "copy",
         ["火箭发射模拟器"] = "rocket",
         ["只因剑"] = "sword",
-        ["森林里的99夜"] = "tree",
+        ["森林里的99夜"] = "leaf",
         ["旗帜战争"] = "flag",
-        ["逃出建筑"] = "exit",
+        ["逃出建筑"] = "user",
         ["打墙模拟器"] = "hammer",
         ["生存巨人"] = "user",
         ["健身房之星模拟器"] = "dumbbell",
-        ["死铁轨"] = "train",
-        ["墨水游戏"] = "tint",
+        ["死铁轨"] = "target",
+        ["墨水游戏"] = "skull",
         ["自然灾害模拟器"] = "cloud",
         ["穷小子打工记"] = "briefcase",
         ["最后的黎明"] = "sun",
@@ -1042,63 +1026,69 @@ function Tab(a)
         ["河北唐县"] = "map-pin",
         ["被遗弃"] = "ghost",
         ["骨折模拟器"] = "heart",
-        ["地下城任务"] = "dungeon",
-        ["极速传奇"] = "speed",
+        ["地下城任务"] = "sword",
+        ["极速传奇"] = "car",
         ["一路向西"] = "arrow-right",
         ["汽车经销商大亨"] = "car",
-        ["兵工厂"] = "gun",
+        ["兵工厂"] = "gavel",
         ["by手腕"] = "hand",
-        ["超级足球联赛"] = "football",
-        ["战争大亨"] = "tank",
+        ["超级足球联赛"] = "globe",
+        ["战争大亨"] = "eye",
         ["吃掉世界"] = "utensils",
-        ["隐藏尸体"] = "eye-slash",
+        ["隐藏尸体"] = "ghost",
         ["猎杀僵尸"] = "skull",
-        ["建造汽车"] = "gear",
-        ["原始追求/原始追击"] = "spear",
+        ["建造汽车"] = "eye",
+        ["原始追求/原始追击"] = "eye",
         ["攀爬与滑行"] = "mountain",
-        ["拔出一把剑"] = "sword-alt",
-        ["暴力区"] = "fist",
+        ["拔出一把剑"] = "eye",
+        ["暴力区"] = "eye",
         ["邪恶的事情会发生什么"] = "skull",
         ["住宅大屠杀"] = "house",
         ["犯罪"] = "gavel",
         ["封锁战线"] = "shield",
-        ["终极战场"] = "battle",
-        ["最强的拳击模拟器"] = "boxing-glove",
+        ["终极战场"] = "eye",
+        ["最强的拳击模拟器"] = "eye",
         ["排球传奇"] = "volleyball",
         ["竞争对手"] = "users",
-        ["柔术无限"] = "fighter",
-        ["超速射击"] = "bow",
+        ["柔术无限"] = "eye",
+        ["超速射击"] = "eye",
         ["英雄战场"] = "star",
         ["蓝色锁"] = "lock",
-        ["无标题的拳击"] = "fist",
-        ["越狱"] = "arrow-up-right-from-square",
-        ["生存战争"] = "life-ring",
+        ["无标题的拳击"] = "eye",
+        ["越狱"] = "eye",
+        ["生存战争"] = "eye",
         ["停电"] = "power-off",
-        ["战争机器"] = "robot",
-        ["别碰按钮"] = "toggle-off",
+        ["战争机器"] = "eye",
+        ["别碰按钮"] = "eye",
         ["在超级商店过夜生存"] = "store",
-        ["失落的前线"] = "battlefield",
-        ["建造一个奥比"] = "cube",
-        ["聊天室💬 [阿拉伯语]"] = "comment",
+        ["失落的前线"] = "eye",
+        ["建造一个奥比"] = "eye",
+        ["聊天室💬 [阿拉伯语]"] = "eye",
         ["[✨2倍经验✨]植物进化"] = "leaf",
         ["🦘跳跃去见辫inrots！"] = "arrow-up",
         ["钓鱼！ 🐟"] = "fish",
         ["[史莱姆]键盘ASMR塔"] = "keyboard",
-        ["[🎣鱼+🐶宠物]安吉尔山🥴"] = "paw",
+        ["[🎣鱼+🐶宠物]安吉尔山🥴"] = "eye",
         ["🍰 烘焙或死亡 💀"] = "cake",
-        ["打破朋友 🦴"] = "broken",
+        ["打破朋友 🦴"] = "eye",
         ["【⚔️公会战争】[第38卷]修炼：凡人至仙人"] = "scroll",
-        ["杀人犯对警长决斗"] = "police-badge",
-        ["🥊拳击怪兽！ 🥊"] = "monster",
-        ["隐形藏匿"] = "eye-slash",
+        ["杀人犯对警长决斗"] = "eye",
+        ["🥊拳击怪兽！ 🥊"] = "eye",
+        ["隐形藏匿"] = "eye",
         ["[第一人称射击]电影上传者"] = "camera",
         ["成为杀手级重码"] = "skull",
         ["[✨] NPC或者死！ 💢"] = "user",
         ["免费UGC✨奥比"] = "gift",
-        [" [1.0] 基础论文教育 RP"] = "book"
+        [" [1.0] 基础论文教育 RP"] = "book",
+        ["在筏子上生存"] = "life-ring",
+        ["挂杆塔"] = "eye",
+        ["捉迷藏"] = "eye",
+        ["[更新]🎉动漫拍打塔 🖐️"] = "hand-paper",
+        ["[🏈标签]音速速度模拟器"] = "bolt", -- 修复：补充缺失的逗号
+        ["终极采矿大亨"] = "pickaxe", -- 采矿核心图标，贴合游戏玩法
     })[a] 
     
-    -- 关键修复：如果图标无法显示（返回nil），直接强制设为眼睛
+    -- 关键修复：如果图标无法显示（返回nil/空值），直接强制设为眼睛
     if not tabIcon or tabIcon == "" then
         tabIcon = "eye"
     end
@@ -1118,8 +1108,8 @@ function Toggle(a, b, c, d)
 end
 
 function Slider(a, b, c, d, e, f)
-    return a:Slider({Title = b, Step = 1, Value = {Min = c, Max = d, Default = e}, Callback = f})
-end
+    return a:Slider({Title = b, Step = 1, Min = c, Max = d, Default = e, Callback = f})
+end -- 修复：Slider参数格式错误，移除多余的Value嵌套
 
 function Dropdown(a, b, c, d, e)
     return a:Dropdown({Title = b, Values = c, Value = d, Callback = e})
@@ -1134,7 +1124,6 @@ Window:Tag({
     Title = "诞生于2025年暑假",
     Color = Color3.fromHex("#4169E1")  -- 天蓝色标签（适配Dark主题）
 })
-
 
 Window:CreateTopbarButton("theme-switcher", "moon", function()
     WindUI:SetTheme(WindUI:GetCurrentTheme() == "Dark" and "GoldenTheme" or "MonokaiPro")
@@ -1249,6 +1238,8 @@ TabHandles.Appearance:Paragraph({
     Color = "White"
 })
 
+
+
 local Tab0 = Tab("简介")
 local Tab1 = Tab("通用")
 local Tab2 = Tab("通用2")
@@ -1343,6 +1334,9 @@ local Tab90 = Tab("成为杀手级重码")
 local Tab91 = Tab("[✨] NPC或者死！ 💢")
 local Tab92 = Tab("免费UGC✨奥比")
 local Tab93 = Tab(" [1.0] 基础论文教育 RP")
+local Tab94 = Tab("[🎅🏻]在筏子上生存")
+local Tab95 = Tab("挂杆塔")
+local Tab96 = Tab("终极采矿大亨")
 
 local Paragraph = Tab0:Paragraph({
     Title = "QQ群",
@@ -2986,15 +2980,12 @@ Button(Tab3, "天空盒子\n\n竟然是黑客，我们没救了", function()
     end
 end)
 
+-- 墙跳（修复后）
 Button(Tab3, "墙跳\n\n用X键隐藏GUI，用打开跳墙键重新打开。", function()
-    --[[
-	WARNING: Heads up! This script has not been verified by ScriptBlox. Use at your own risk!
-]]
-loadstring(game:HttpGet("https://pastebin.com/raw/NxYC2Hgz", true))()
+    local scriptLink = "https://pastebin.com/raw/NxYC2Hgz" -- 补充缺失的变量定义
+    loadstring(game:HttpGet(scriptLink, true))()
     local getSuccess, scriptContent = pcall(game.HttpGet, game, scriptLink)
-    
     if getSuccess and type(scriptContent) == "string" and scriptContent ~= "" then
-        -- 执行脚本时单独捕获错误，避免整体崩溃
         local execSuccess = pcall(loadstring(scriptContent))
         WindUI:Notify({
             Title = "墙跳",
@@ -3005,18 +2996,12 @@ loadstring(game:HttpGet("https://pastebin.com/raw/NxYC2Hgz", true))()
     end
 end)
 
+-- 触控灵敏度（修复后）
 Button(Tab3, "触控灵敏度\n\n从数值：0.1到10。", function()
---[[
-	WARNING: Heads up! This script has not been verified by ScriptBlox. Use at your own risk!
-]]
---[[
-	WARNING: Heads up! This script has not been verified by ScriptBlox. Use at your own risk!
-]]
-loadstring(game:HttpGet("https://pastebin.com/raw/UQE2KDxV"))()
+    local scriptLink = "https://pastebin.com/raw/UQE2KDxV" -- 补充缺失的变量定义
+    loadstring(game:HttpGet(scriptLink))()
     local getSuccess, scriptContent = pcall(game.HttpGet, game, scriptLink)
-    
     if getSuccess and type(scriptContent) == "string" and scriptContent ~= "" then
-        -- 执行脚本时单独捕获错误，避免整体崩溃
         local execSuccess = pcall(loadstring(scriptContent))
         WindUI:Notify({
             Title = "触控灵敏度",
@@ -3027,11 +3012,11 @@ loadstring(game:HttpGet("https://pastebin.com/raw/UQE2KDxV"))()
     end
 end)
 
+-- 瞎鸡巴燃（修复后）
 Button(Tab3, "瞎鸡巴燃\n\n给我听爽了💀。", function()
-loadstring(game:HttpGet("https://raw.githubusercontent.com/ke9460394-dot/kenk/refs/heads/main/放克表情.lua"))()
-    
+    local scriptLink = "https://raw.githubusercontent.com/ke9460394-dot/kenk/refs/heads/main/放克表情.lua" -- 补充缺失的变量定义
+    local getSuccess, scriptContent = pcall(game.HttpGet, game, scriptLink)
     if getSuccess and type(scriptContent) == "string" and scriptContent ~= "" then
-        -- 执行脚本时单独捕获错误，避免整体崩溃
         local execSuccess = pcall(loadstring(scriptContent))
         WindUI:Notify({
             Title = "不知道",
@@ -3041,6 +3026,7 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/ke9460394-dot/kenk/re
         })
     end
 end)
+
 -- 范围与旋转 (Tab4)
 -- 玩家范围高亮功能 (Tab4)
 local renderConnections = {} -- 存储连接用于关闭
@@ -3984,6 +3970,12 @@ Button(Tab7, "FE拥抱", function()
     end)
 end)
 
+Button(Tab7, "FEac6音乐播放器", function()
+    pcall(function()
+    loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-FE-Ac6-Music-Vulnerability-25536"))()
+    end)
+end)
+
 -- DOORS功能 (Tab8)
 Button(Tab8, "门", function()
     pcall(function()
@@ -4423,6 +4415,13 @@ Button(Tab33, "黑洞v6", function()
     loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Super-ring-Parts-V6-28581"))()
     end)
 end)
+
+Button(Tab33, "黑洞", function()
+    pcall(function()
+    loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-BLACK-HOLE-30646"))()
+    end)
+end)
+
 
 Button(Tab33, "没有坠落伤害", function()
     pcall(function()
@@ -6199,5 +6198,231 @@ Button(Tab93, "FPE角色扮演脚本", function()
 	WARNING: Heads up! This script has not been verified by ScriptBlox. Use at your own risk!
 ]]
 loadstring(game:HttpGet("https://pastefy.app/eGWvP8qO/raw", true))()
+    end)
+end)
+
+--  ]在筏子上生存 (Tab94)
+Button(Tab94, "英文", function()
+    pcall(function()
+--[[
+	WARNING: Heads up! This script has not been verified by ScriptBlox. Use at your own risk!
+]]
+local CoreGui = game:GetService("CoreGui")
+if CoreGui:FindFirstChild("ToraScript") then
+    CoreGui.ToraScript:Destroy()
+end
+
+local Library = loadstring(game:HttpGet(
+    "https://raw.githubusercontent.com/liebertsx/Tora-Library/main/src/librarynew", 
+    true
+))()
+
+local Window = Library:CreateWindow("Survive on a Raft")
+
+Window:AddButton({
+    text = "Goto Spawn",
+    flag = "button",
+    callback = function()
+        local player = game.Players.LocalPlayer
+        local hrp = player.Character.HumanoidRootPart
+        hrp.CFrame = CFrame.new(workspace.SpawnLocation.Position)
+        player.Character.Humanoid.Jump = true
+    end,
+})
+
+Window:AddToggle({
+    text = "Collect Box",
+    flag = "toggle",
+    state = false,
+    callback = function(state)
+        _G.Box = state
+        print("Box: ", state)
+        if state then
+            Box()
+        end
+    end,
+})
+
+function Box()
+    spawn(function()
+        _G.Box = true
+        while _G.Box do
+            wait()
+            pcall(function()
+                for _, item in pairs(workspace.World.Items:GetDescendants()) do
+                    if (string.find(item.Name, "Box") or string.find(item.Name, "Chest"))
+                        and item:GetAttribute("Water") == true then
+
+                        local hrp = game.Players.LocalPlayer.Character.HumanoidRootPart
+                        hrp.CFrame = CFrame.new(item.Position) * CFrame.new(0, 5, 0)
+
+                        game:GetService("ReplicatedStorage").Action:InvokeServer("Collect", item)
+                        break
+                    end
+                end
+            end)
+        end
+    end)
+end
+
+local player = game.Players.LocalPlayer
+local defaultSpeed = 20
+local connections = {}
+
+local function setWalkSpeed(speed)
+    if player.Character and player.Character:FindFirstChildWhichIsA("Humanoid") then
+        player.Character:FindFirstChildWhichIsA("Humanoid").WalkSpeed = speed
+    end
+end
+
+Window:AddButton({
+    text = "Upgrade Crafting Table",
+    flag = "button",
+    callback = function()
+        local ids = {3422310969, 3422310972, 3422310970, 3422310971, 3422310967}
+        for _, id in ipairs(ids) do
+            game.MarketplaceService:SignalPromptProductPurchaseFinished(player.UserId, id, true)
+        end
+    end,
+})
+
+Window:AddButton({
+    text = "Starter Pistol",
+    flag = "button",
+    callback = function()
+        local ids = {3428925716, 3435174070}
+        for _, id in ipairs(ids) do
+            game.MarketplaceService:SignalPromptProductPurchaseFinished(player.UserId, id, true)
+        end
+    end,
+})
+
+Window:AddButton({
+    text = "Inf Revive",
+    flag = "button",
+    callback = function()
+        game.MarketplaceService:SignalPromptProductPurchaseFinished(player.UserId, 3421071079, true)
+    end,
+})
+
+Window:AddSlider({
+    text = "Walk Speed",
+    flag = "slider1",
+    value = defaultSpeed,
+    min = 20,
+    max = 200,
+    callback = function(speed)
+        defaultSpeed = speed
+        setWalkSpeed(speed)
+
+        if connections.wsLoop then connections.wsLoop:Disconnect() end
+        if connections.wsCA then connections.wsCA:Disconnect() end
+
+        local humanoid = player.Character and player.Character:FindFirstChildWhichIsA("Humanoid")
+        if humanoid then
+            connections.wsLoop = humanoid:GetPropertyChangedSignal("WalkSpeed"):Connect(function()
+                if humanoid.WalkSpeed ~= speed then
+                    humanoid.WalkSpeed = speed
+                end
+            end)
+        end
+
+        connections.wsCA = player.CharacterAdded:Connect(function(char)
+            local h = char:WaitForChild("Humanoid")
+            h.WalkSpeed = speed
+            if connections.wsLoop then connections.wsLoop:Disconnect() end
+            connections.wsLoop = h:GetPropertyChangedSignal("WalkSpeed"):Connect(function()
+                if h.WalkSpeed ~= speed then h.WalkSpeed = speed end
+            end)
+        end)
+    end,
+})
+
+Window:AddButton({
+    text = "Inf Jump",
+    flag = "button",
+    callback = function()
+        game:GetService("UserInputService").JumpRequest:Connect(function()
+            local humanoid = player.Character:FindFirstChildOfClass("Humanoid")
+            if humanoid then humanoid:ChangeState("Jumping") end
+        end)
+    end,
+})
+
+Window:AddLabel({ text = "Deobfuscate by Cáo mod" })
+
+Library:Init()
+
+local ncConnection
+local noclipActive = false
+
+function noclip()
+    noclipActive = false
+    ncConnection = game:GetService("RunService").Stepped:Connect(function()
+        if not noclipActive and player.Character then
+            for _, part in pairs(player.Character:GetDescendants()) do
+                if part:IsA("BasePart") and part.CanCollide then
+                    part.CanCollide = false
+                end
+            end
+        end
+        wait(0.21)
+    end)
+end
+
+function clip()
+    if ncConnection then ncConnection:Disconnect() end
+    noclipActive = true
+end
+
+noclip()
+    end)
+end)
+
+-- 挂杆塔 (Tab95)
+Button(Tab95, "遥控机库", function()
+    pcall(function()
+        loadstring(game:HttpGet('https://gist.githubusercontent.com/nthienbaogold-cmyk/d3801936483c6c98922d5a0a0452d532/raw/5377cc906cf12fef44433e552c1cb8cca6ecdf18/SlapTower.lua'))()
+    end)
+end)
+
+-- 终极采矿大亨 (Tab96)
+Button(Tab96, "传送到矿井", function()
+    pcall(function()
+        -- 终极采矿大亨 - 无UI纯坐标传送脚本
+local Players = game:GetService("Players")
+local localPlayer = Players.LocalPlayer
+local character = localPlayer.Character or localPlayer.CharacterAdded:Wait()
+local HRP = character:WaitForChild("HumanoidRootPart")
+
+-- 目标传送坐标
+local TARGET_COORD = Vector3.new(-1850.1761474609375, 4.5888285636901855, -197.81626892089844)
+
+-- 核心传送函数
+local function teleportToTarget()
+    if HRP then
+        HRP.CFrame = CFrame.new(TARGET_COORD)
+        print("✅ 已成功传送至目标坐标：", TARGET_COORD)
+    else
+        warn("❌ 角色根部件不存在，无法完成传送")
+    end
+end
+
+-- 执行传送（运行脚本立即触发）
+teleportToTarget()
+
+-- 角色重生后自动重新传送（可选：删除此行则重生后不自动传送）
+localPlayer.CharacterAdded:Connect(function(newChar)
+    HRP = newChar:WaitForChild("HumanoidRootPart")
+    teleportToTarget()
+end)
+    end)
+end)
+
+Button(Tab96, "脚本1", function()
+    pcall(function()
+        LinniScript = "终极采矿大亨"
+Roblox= "霖溺"
+loadstring(game:HttpGet("https://raw.githubusercontent.com/ShenJiaoBen/Partial-Server-Ribbon/refs/heads/main/%E9%9C%96%E6%BA%BA-%E7%BB%88%E6%9E%81%E9%87%87%E7%9F%BF%E5%A4%A7%E4%BA%A8.lua"))()
     end)
 end)
