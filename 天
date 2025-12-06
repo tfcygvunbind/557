@@ -948,8 +948,6 @@ local Window = WindUI:CreateWindow({
     ScrollBarEnabled = true,
     HideSearchBar = false,
     Background = "rbxassetid://75083826531216",
-    -- 新增/修改这一行，设置背景透明度为0.15（15%）
-    BackgroundTransparency = 0.15
 })
 
 -- 定义浮动参数：幅度（像素）、速度（秒）
@@ -977,6 +975,11 @@ game:GetService("RunService").RenderStepped:Connect(function(deltaTime)
         Window.TitleLabel.Position = UDim2.new(0, 0, 0, currentOffset)
     end
 end)
+
+Window:Tag({
+    Title = "诞生于2025年暑假",
+    Color = Color3.fromHex("#4169E1")  
+})
 
 Window:EditOpenButton({
     Title = "打开黑白脚本",
@@ -1132,16 +1135,6 @@ end -- 修复：Slider参数格式错误，移除多余的Value嵌套
 function Dropdown(a, b, c, d, e)
     return a:Dropdown({Title = b, Values = c, Value = d, Callback = e})
 end
-
-Window:Tag({
-    Title = "1.0.8",
-    Color = Color3.fromHex("#30ff6a")
-})
-
-Window:Tag({
-    Title = "诞生于2025年暑假",
-    Color = Color3.fromHex("#4169E1")  -- 天蓝色标签（适配Dark主题）
-})
 
 Window:CreateTopbarButton("theme-switcher", "moon", function()
     WindUI:SetTheme(WindUI:GetCurrentTheme() == "Dark" and "GoldenTheme" or "MonokaiPro")
