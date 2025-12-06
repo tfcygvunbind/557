@@ -641,7 +641,7 @@ agreementBox.Name = "AgreementBox"
 agreementBox.Size = UDim2.new(0.9, 0, 1, 0)
 agreementBox.Position = UDim2.new(0.05, 0, 0, 0)
 agreementBox.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
-agreementBox.Text = "1.欢迎使用黑白脚本.\n2.以前的黑白脚本已失效😭\n3.今月更新：添加新背景。"
+agreementBox.Text = "1.欢迎使用黑白脚本.\n2.以前的黑白脚本已失效😭\n3.弄到最下面有一个更多，以后肑服务器就在这里\n4.今月更新：添加自动翻译动能（在简介最下面）"
 agreementBox.TextColor3 = Color3.fromRGB(240, 240, 240)
 agreementBox.TextSize = 14
 agreementBox.Font = Enum.Font.SourceSans
@@ -1107,6 +1107,7 @@ function Tab(a)
         ["[🏈标签]音速速度模拟器"] = "bolt", -- 修复：补充缺失的逗号
         ["终极采矿大亨"] = "pickaxe", -- 采矿核心图标，贴合游戏玩法
         ["无家可归模拟器"] = "person", -- 新增：无家可归模拟器图标，用person贴合人物场景
+        ["亡命速递"] = "life-ring",
     })[a] 
 
     -- 关键修复：如果图标无法显示（返回nil/空值），直接强制设为眼睛
@@ -1353,7 +1354,7 @@ local Tab93 = Tab(" [1.0] 基础论文教育 RP")
 local Tab94 = Tab("[🎅🏻]在筏子上生存")
 local Tab95 = Tab("挂杆塔")
 local Tab96 = Tab("终极采矿大亨")
-local Tab97 = Tab("无家可归模拟器")
+local Tab97 = Tab("更多")
 
 local Paragraph = Tab0:Paragraph({
     Title = "QQ群",
@@ -1434,6 +1435,13 @@ Tab0:Divider() -- 插入分割线
 Button(Tab0, "小游戏", function()
     pcall(function()
     loadstring(game:HttpGet('https://raw.githubusercontent.com/tfcygvunbind/Apple/7de4d4365f369205dffe10c090e0d042d663a628/%E5%B0%8F%E6%B8%B8%E6%88%8F'))()
+
+    end)
+end)
+
+Button(Tab0, "自动汉化", function()
+    pcall(function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/tfcygvunbind/557/main/自动'))()
 
     end)
 end)
@@ -4388,6 +4396,19 @@ loadstring(game:HttpGet('https://raw.githubusercontent.com/XxwanhexxX/UN/refs/he
     end)
 end)
 
+Button(Tab6, "锻造脚本", function()
+    pcall(function()
+    loadstring(game:HttpGet("https://api.luarmor.net/files/v3/loaders/a221309d4a35f389a793462a7fe607da.lua"))()
+    end)
+end)
+
+Button(Tab6, "SX HUB V2", function()
+    pcall(function()
+    --[超强脚本 已经更新至V2 脚本加载大约15秒左右 请耐心等待 QQ主群566257944]
+loadstring(game:HttpGet("https://api.luarmor.net/files/v3/loaders/87a8a4f4c2d2ef535ccd1bdb949218fe.lua"))()
+    end)
+end)
+
 -- FE (Tab7)
 Button(Tab7, "FE coolkid-酷小孩", function()
     pcall(function()
@@ -6936,24 +6957,9 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/ShenJiaoBen/Partial-S
     end)
 end)
 
--- 无家可归模拟器 (Tab97)
-Button(Tab97, "无家可归模拟器1", function()
+-- 更多 (Tab97)
+Button(Tab97, "服务器二", function()
     pcall(function()
-        --[[
-	WARNING: Heads up! This script has not been verified by ScriptBlox. Use at your own risk!
-]]
---[[
-	WARNING: Heads up! This script has not been verified by ScriptBlox. Use at your own risk!
-]]
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
-
-local ReduceHunger = ReplicatedStorage.ReduceHunger
-
-ReduceHunger:FireServer(
-    math.huge
-)
-
- 
+        loadstring(game:HttpGet('https://raw.githubusercontent.com/tfcygvunbind/557/main/服务器二'))()
     end)
 end)
-
