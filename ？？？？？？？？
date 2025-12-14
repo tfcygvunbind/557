@@ -889,7 +889,7 @@ VerifyBtn.MouseButton1Click:Connect(function()
         return
     end
     
-    if key == "HB_Recommend Liu's certain script" then
+    if key == "HB_9178" then
         -- 验证成功
         updateStatus(Color3.fromRGB(80, 255, 80), "已验证")
         showMessage("✓ 验证成功，正在启动脚本...", Color3.fromRGB(80, 255, 80))
