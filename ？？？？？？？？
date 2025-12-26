@@ -1122,38 +1122,3 @@ print("黑白脚本紧凑增强版UI已加载完成")
 print("窗口尺寸: 300x260 (紧凑尺寸)")
 print("设备适配:", isMobile and "移动端" or "电脑端")
 print("功能优化完成，用户体验提升")
-
--- 修复版：Ninja动画切换（兼容角色加载与重生）
-local function applyNinjaAnimation()
-    local LocalPlayer = game.Players.LocalPlayer
-    -- 等待角色加载完成
-    local character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
-    local Animate = character:WaitForChild("Animate", 10) -- 10秒超时保护
-    local Humanoid = character:WaitForChild("Humanoid", 10)
-    
-    if not Animate or not Humanoid then
-        warn("Ninja动画加载失败：未找到Animate/Humanoid对象")
-        return
-    end
-    
-    -- 直接设置Ninja动画
-    pcall(function()
-        Animate.idle.Animation1.AnimationId = "http://www.roblox.com/asset/?id=656117400"
-        Animate.idle.Animation2.AnimationId = "http://www.roblox.com/asset/?id=656118341"
-        Animate.walk.WalkAnim.AnimationId = "http://www.roblox.com/asset/?id=656121766"
-        Animate.run.RunAnim.AnimationId = "http://www.roblox.com/asset/?id=656118852"
-        Animate.jump.JumpAnim.AnimationId = "http://www.roblox.com/asset/?id=656117878"
-        Animate.climb.ClimbAnim.AnimationId = "http://www.roblox.com/asset/?id=656114359"
-        Animate.fall.FallAnim.AnimationId = "http://www.roblox.com/asset/?id=656115606"
-        
-        -- 触发跳跃以应用动画
-        Humanoid.Jump = true
-        print("已切换为Ninja动画（无UI）")
-        
-        -- 角色重生后重新应用动画
-        LocalPlayer.CharacterAdded:Connect(applyNinjaAnimation)
-    end)
-end
-
--- 执行动画切换
-applyNinjaAnimation()
