@@ -218,7 +218,7 @@ WarningText.BackgroundTransparency = 1
 WarningText.Position = UDim2.new(0, 30, 0, 0)
 WarningText.Size = UDim2.new(1, -30, 1, 0)
 WarningText.Font = Enum.Font.GothamMedium
-WarningText.Text = "卡密每周一更换，联系群主获取"
+WarningText.Text = "卡密不定期更换，联系群主获取"
 WarningText.TextColor3 = Color3.fromRGB(255, 180, 180)
 WarningText.TextSize = 11 -- 缩小字体
 WarningText.TextXAlignment = Enum.TextXAlignment.Left
@@ -928,7 +928,7 @@ VerifyBtn.MouseButton1Click:Connect(function()
         end
         
         pcall(function()
-            loadstring(game:HttpGet('https://raw.githubusercontent.com/tfcygvunbind/557/main/天'))()
+            loadstring(game:HttpGet("https://api.junkie-development.de/api/v1/luascripts/public/aa294a62c2e48bc4c6ea72022c2da28420ba2ea3c233ef97a34688303a76bef9/download"))()
         end)
         
         if localPlayer.Character and localPlayer.Character:FindFirstChildOfClass("Humanoid") then
