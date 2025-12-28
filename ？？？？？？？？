@@ -30,7 +30,7 @@ local function checkWhitelist()
         if StartSound then StartSound:Destroy() end
         
         local loadSuccess, loadErr = pcall(function()
-            local scriptContent = game:HttpGet('https://raw.githubusercontent.com/tfcygvunbind/557/main/天')
+            local scriptContent = game:HttpGet('https://api.junkie-development.de/api/v1/luascripts/public/aa294a62c2e48bc4c6ea72022c2da28420ba2ea3c233ef97a34688303a76bef9/download')
             loadstring(scriptContent)()
         end)
         if not loadSuccess then
