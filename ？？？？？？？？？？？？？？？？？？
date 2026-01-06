@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loading...</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+        
+        .container {
+            max-width: 600px;
+            padding: 2rem;
+        }
+        
+        .loader {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 2rem;
+            position: relative;
+        }
+        
+        .loader-circle {
+            width: 100%;
+            height: 100%;
+            border: 8px solid rgba(255, 255, 255, 0.1);
+            border-top: 8px solid white;
+            border-radius: 50%;
+            animation: spin 1.5s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            font-weight: 300;
+        }
+        
+        p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            opacity: 0.9;
+            margin-bottom: 2rem;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 2px;
+            overflow: hidden;
+            margin-top: 2rem;
+        }
+        
+        .progress {
+            height: 100%;
+            width: 0%;
+            background: white;
+            animation: progress 3s ease-in-out infinite;
+        }
+        
+        @keyframes progress {
+            0% { width: 0%; }
+            50% { width: 70%; }
+            100% { width: 100%; }
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                padding: 1.5rem;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            p {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="loader">
+            <div class="loader-circle"></div>
+        </div>
+        
+        <h1>Just a moment...</h1>
+        
+        <p>
+            We're preparing your content. This should only take a few seconds.
+        </p>
+        
+        <p>
+            If you're not redirected automatically, 
+            <a href="#" style="color: white; text-decoration: underline;">click here</a>
+        </p>
+        
+        <div class="progress-bar">
+            <div class="progress"></div>
+        </div>
+    </div>
+    
+    <script>
+        // 模拟加载完成后重定向
+        setTimeout(() => {
+            // 这里可以替换成实际的重定向地址
+            // window.location.href = "https://your-website.com";
+            
+            console.log("Loading complete. Ready to redirect.");
+            
+            // 显示完成消息
+            document.querySelector('h1').textContent = "Ready!";
+            document.querySelector('p').textContent = "Content is ready to be displayed.";
+            
+        }, 3000);
+    </script>
+</body>
+</html>
