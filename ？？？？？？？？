@@ -1,1 +1,1 @@
-local scriptContent = game:HttpGet('https://raw.githubusercontent.com/tfcygvunbind/557/main/天')
+loadstring(game:HttpGet("https://raw.githubusercontent.com/tfcygvunbind/557/main/天')"))()
