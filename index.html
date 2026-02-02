@@ -1,1 +1,1051 @@
-哈哈哈哈
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>哥斯拉 Pro - Lua混淆工具 | 多层加密+反调试</title>
+    <style>
+        * {margin: 0; padding: 0; box-sizing: border-box; font-family: "Consolas", "微软雅黑", sans-serif;}
+        body {
+            background: #000;
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+            position: relative;
+            overflow-x: hidden;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(255, 69, 0, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 69, 0, 0.05) 0%, transparent 50%);
+            z-index: -1;
+            pointer-events: none;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: rgba(20, 20, 20, 0.95);
+            border-radius: 16px;
+            padding: 35px;
+            border: 2px solid #ff4500;
+            box-shadow: 
+                0 0 40px rgba(255, 69, 0, 0.3),
+                inset 0 0 20px rgba(255, 69, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        .godzilla-title {
+            text-align: center;
+            font-size: 42px;
+            font-weight: bold;
+            color: #ff4500;
+            text-shadow: 
+                0 0 10px #ff4500,
+                0 0 20px #ff4500,
+                0 0 40px rgba(255, 69, 0, 0.5);
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+        .godzilla-title::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #ff4500, transparent);
+        }
+        .godzilla-sub {
+            text-align: center;
+            color: #ccc;
+            margin-bottom: 35px;
+            font-size: 16px;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+        .code-box {
+            margin-bottom: 30px;
+            transition: transform 0.3s;
+        }
+        .code-box:hover {
+            transform: translateY(-2px);
+        }
+        .code-box h3 {
+            color: #ff4500;
+            margin-bottom: 15px;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .code-box h3::before {
+            content: "🦖🦖🦖";
+            font-size: 22px;
+            filter: drop-shadow(0 0 5px #ff4500);
+        }
+        textarea {
+            width: 100%;
+            height: 200px;
+            padding: 20px;
+            background: rgba(10, 10, 10, 0.8);
+            border: 2px solid #333;
+            border-radius: 10px;
+            color: #fff;
+            font-size: 14px;
+            line-height: 1.8;
+            resize: vertical;
+            outline: none;
+            transition: all 0.3s;
+            white-space: pre;
+            word-wrap: normal;
+            overflow-x: auto;
+            font-family: "Consolas", "Courier New", monospace;
+            scrollbar-width: thin;
+            scrollbar-color: #ff4500 #222;
+        }
+        textarea::-webkit-scrollbar {
+            width: 8px;
+        }
+        textarea::-webkit-scrollbar-track {
+            background: #222;
+            border-radius: 4px;
+        }
+        textarea::-webkit-scrollbar-thumb {
+            background: #ff4500;
+            border-radius: 4px;
+        }
+        textarea:focus {
+            border-color: #ff4500;
+            box-shadow: 0 0 15px rgba(255, 69, 0, 0.4);
+            background: rgba(15, 15, 15, 0.9);
+        }
+        #obfCode {
+            background: rgba(15, 15, 15, 0.9);
+            border-color: #444;
+        }
+        .controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .control-group {
+            padding: 15px;
+            background: rgba(30, 30, 30, 0.7);
+            border-radius: 10px;
+            border: 1px solid #444;
+            transition: all 0.3s;
+        }
+        .control-group:hover {
+            border-color: #ff4500;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 69, 0, 0.2);
+        }
+        .control-group label {
+            display: block;
+            margin-bottom: 12px;
+            color: #ff4500;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        select, input[type="range"] {
+            width: 100%;
+            padding: 10px 15px;
+            background: rgba(20, 20, 20, 0.9);
+            border: 1px solid #555;
+            border-radius: 8px;
+            color: #fff;
+            outline: none;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        select:focus, input[type="range"]:focus {
+            border-color: #ff4500;
+            box-shadow: 0 0 10px rgba(255, 69, 0, 0.3);
+        }
+        input[type="range"] {
+            -webkit-appearance: none;
+            height: 8px;
+            background: linear-gradient(90deg, #333, #ff4500);
+            border-radius: 4px;
+            padding: 0;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            background: #ff4500;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid #fff;
+            box-shadow: 0 0 10px rgba(255, 69, 0, 0.8);
+            transition: all 0.3s;
+        }
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+            box-shadow: 0 0 15px rgba(255, 69, 0, 1);
+        }
+        .range-value {
+            display: inline-block;
+            margin-left: 10px;
+            color: #ff4500;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        .btn-group {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 25px;
+        }
+        .btn {
+            padding: 14px 35px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+            min-width: 160px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+        .btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+        .btn-obf {
+            background: linear-gradient(135deg, #ff4500, #ff6b35);
+            color: #000;
+            box-shadow: 0 5px 20px rgba(255, 69, 0, 0.4);
+        }
+        .btn-obf:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 10px 25px rgba(255, 69, 0, 0.6);
+        }
+        .btn-clear, .btn-copy {
+            background: linear-gradient(135deg, #333, #444);
+            color: #fff;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        .btn-clear:hover, .btn-copy:hover {
+            background: linear-gradient(135deg, #444, #555);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 69, 0, 0.3);
+        }
+        .btn:active {
+            transform: translateY(-1px);
+        }
+        .tip {
+            text-align: center;
+            color: #aaa;
+            font-size: 14px;
+            line-height: 1.8;
+            margin-bottom: 15px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+        .tip span {
+            color: #ff4500;
+            font-weight: bold;
+            padding: 5px 10px;
+            background: rgba(255, 69, 0, 0.1);
+            border-radius: 5px;
+        }
+        .stats {
+            text-align: center;
+            color: #888;
+            font-size: 14px;
+            padding: 15px;
+            background: rgba(30, 30, 30, 0.6);
+            border-radius: 10px;
+            border: 1px solid #444;
+            margin-top: 20px;
+            transition: all 0.3s;
+        }
+        .stats.active {
+            color: #ff4500;
+            border-color: #ff4500;
+            background: rgba(255, 69, 0, 0.1);
+        }
+        .feature-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 25px 0;
+        }
+        .feature-item {
+            background: rgba(255, 69, 0, 0.05);
+            padding: 12px;
+            border-radius: 8px;
+            border-left: 3px solid #ff4500;
+            font-size: 13px;
+            color: #ccc;
+        }
+        .feature-item strong {
+            color: #ff4500;
+            display: block;
+            margin-bottom: 5px;
+        }
+        
+        /* 新增样式 */
+        .preset-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+        .preset-btn {
+            padding: 8px 15px;
+            background: rgba(255, 69, 0, 0.2);
+            border: 1px solid #ff4500;
+            border-radius: 6px;
+            color: #ffa500;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.3s;
+        }
+        .preset-btn:hover {
+            background: rgba(255, 69, 0, 0.4);
+            transform: translateY(-2px);
+        }
+        .preset-btn.active {
+            background: #ff4500;
+            color: #000;
+            font-weight: bold;
+        }
+        .progress-container {
+            height: 4px;
+            background: rgba(255, 69, 0, 0.2);
+            border-radius: 2px;
+            margin: 10px 0;
+            overflow: hidden;
+            display: none;
+        }
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #ff4500, #ff8c00);
+            width: 0%;
+            transition: width 0.3s;
+        }
+        .history-section {
+            margin-top: 20px;
+            border-top: 1px solid #333;
+            padding-top: 15px;
+        }
+        .history-list {
+            max-height: 150px;
+            overflow-y: auto;
+            margin-top: 10px;
+        }
+        .history-item {
+            padding: 8px 12px;
+            background: rgba(255, 69, 0, 0.05);
+            border-radius: 6px;
+            margin-bottom: 5px;
+            cursor: pointer;
+            font-size: 12px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .history-item:hover {
+            background: rgba(255, 69, 0, 0.1);
+        }
+        .code-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: #888;
+            margin-top: 5px;
+        }
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            background: rgba(255, 69, 0, 0.9);
+            color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            transform: translateX(150%);
+            transition: transform 0.3s;
+        }
+        .notification.show {
+            transform: translateX(0);
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            .godzilla-title {
+                font-size: 32px;
+            }
+            .controls {
+                grid-template-columns: 1fr;
+            }
+            .btn {
+                min-width: 140px;
+                padding: 12px 25px;
+            }
+            .preset-buttons {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="godzilla-title">哥斯拉 Pro - Lua混淆工具</h1>
+        <p class="godzilla-sub">多层加密 + 反调试 + 控制流混淆 | 适配loadstring+HttpGet</p>
+        
+        <!-- 预设配置 -->
+        <div class="preset-buttons">
+            <div class="preset-btn active" onclick="applyPreset('default')">默认配置</div>
+            <div class="preset-btn" onclick="applyPreset('performance')">性能优先</div>
+            <div class="preset-btn" onclick="applyPreset('security')">安全优先</div>
+            <div class="preset-btn" onclick="applyPreset('extreme')">极限混淆</div>
+        </div>
+        
+        <div class="code-box">
+            <h3>原始Lua脚本（粘贴即可）</h3>
+            <textarea id="originalCode" placeholder="粘贴你的loadstring脚本..."></textarea>
+            <div class="code-info">
+                <span id="charCount">0 字符</span>
+                <span id="lineCount">0 行</span>
+            </div>
+        </div>
+
+        <!-- 进度条 -->
+        <div class="progress-container" id="progressContainer">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+
+        <div class="controls">
+            <div class="control-group">
+                <label for="obfLevel">混淆强度 <span id="levelValue">中等</span></label>
+                <select id="obfLevel" onchange="updateLevelValue()">
+                    <option value="light">轻度混淆（快速）</option>
+                    <option value="medium" selected>中等混淆（推荐）</option>
+                    <option value="heavy">重度混淆（安全）</option>
+                    <option value="extreme">极端混淆（最高）</option>
+                </select>
+            </div>
+            <div class="control-group">
+                <label for="stringEncrypt">字符串加密 <span id="encryptValue">Base64</span></label>
+                <select id="stringEncrypt" onchange="updateEncryptValue()">
+                    <option value="hex">十六进制</option>
+                    <option value="base64" selected>Base64</option>
+                    <option value="xor">XOR加密</option>
+                    <option value="double">双重加密</option>
+                </select>
+            </div>
+            <div class="control-group">
+                <label for="controlFlow">控制流混淆 <span id="flowValue" class="range-value">1</span></label>
+                <input type="range" id="controlFlow" min="0" max="5" value="1" oninput="updateFlowValue()">
+            </div>
+        </div>
+
+        <div class="feature-list">
+            <div class="feature-item"><strong>✅ 多层加密</strong>多级字符串加密保护</div>
+            <div class="feature-item"><strong>🛡🛡🛡️ 反调试</strong>内置反调试检测机制</div>
+            <div class="feature-item"><strong>🌀 控制流混淆</strong>代码逻辑随机化</div>
+            <div class="feature-item"><strong>🔒🔒 本地处理</strong>脚本永不上传服务器</div>
+        </div>
+
+        <div class="code-box">
+            <h3>混淆后Lua脚本</h3>
+            <textarea id="obfCode" placeholder="混淆后的代码将显示在这里..." readonly></textarea>
+            <div class="code-info">
+                <span id="obfCharCount">0 字符</span>
+                <span id="obfLineCount">0 行</span>
+            </div>
+        </div>
+
+        <div class="btn-group">
+            <button class="btn btn-obf" onclick="obfuscateLua()" id="obfuscateBtn">
+                <span>🦖🦖🦖</span> 一键混淆
+            </button>
+            <button class="btn btn-clear" onclick="clearAll()">
+                <span>🗑🗑️</span> 清空内容
+            </button>
+            <button class="btn btn-copy" onclick="copyObfCode()">
+                <span>📋📋</span> 复制代码
+            </button>
+        </div>
+
+        <!-- 历史记录 -->
+        <div class="history-section">
+            <h3>历史记录 <span id="historyCount">(0)</span></h3>
+            <div class="history-list" id="historyList">
+                <!-- 历史记录将动态添加 -->
+            </div>
+        </div>
+
+        <p class="tip">
+            <span>✅ 多层加密保护</span>
+            <span>🚫🚫 本地运行</span>
+            <span>🎯🎯 适配HttpGet</span>
+            <span>⚡⚡ 实时处理</span>
+        </p>
+        <div class="stats" id="statsInfo">等待混淆...</div>
+    </div>
+
+    <!-- 通知 -->
+    <div class="notification" id="notification"></div>
+
+    <script>
+        // 优化后的混淆工具核心
+        class GodzillaObfuscator {
+            constructor() {
+                this.obfLevel = 'medium';
+                this.stringEncrypt = 'base64';
+                this.controlFlowLevel = 1;
+                this.xorKey = this.generateXORKey();
+                this.cache = new Map(); // 添加缓存机制
+            }
+
+            // 生成XOR密钥
+            generateXORKey() {
+                const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+                let key = '';
+                for (let i = 0; i < 8; i++) {
+                    key += chars.charAt(Math.floor(Math.random() * chars.length));
+                }
+                return key;
+            }
+
+            // 生成随机变量名（优化性能）
+            generateRandomName(prefix = 'G_') {
+                const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_';
+                let name = prefix;
+                for (let i = 0; i < 6; i++) {
+                    name += chars.charAt(Math.floor(Math.random() * chars.length));
+                }
+                return name;
+            }
+
+            // 十六进制字符串编码（优化性能）
+            hexEncode(str) {
+                let hex = '';
+                for (let i = 0; i < str.length; i++) {
+                    hex += '\\x' + str.charCodeAt(i).toString(16).padStart(2, '0');
+                }
+                return hex;
+            }
+
+            // XOR加密（优化性能）
+            xorEncode(str, key) {
+                let result = '';
+                for (let i = 0; i < str.length; i++) {
+                    const charCode = str.charCodeAt(i) ^ key.charCodeAt(i % key.length);
+                    result += String.fromCharCode(charCode);
+                }
+                return result;
+            }
+
+            // 字符串加密（根据配置选择，添加缓存）
+            encryptString(str, method) {
+                const cacheKey = `${method}_${str}`;
+                if (this.cache.has(cacheKey)) {
+                    return this.cache.get(cacheKey);
+                }
+                
+                let result;
+                switch(method) {
+                    case 'hex':
+                        result = `"${this.hexEncode(str)}"`;
+                        break;
+                    
+                    case 'base64':
+                        const base64Encoded = btoa(unescape(encodeURIComponent(str)));
+                        result = `(function() local b="${base64Encoded}" return (b:gsub(".", function(x) return string.char(("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/="):find(x)-1) end)) end)()`;
+                        break;
+                    
+                    case 'xor':
+                        const xorEncoded = this.xorEncode(str, this.xorKey);
+                        const hexXor = this.hexEncode(xorEncoded);
+                        result = `(function() local k="${this.xorKey}" local d="${hexXor}" return (d:gsub("..", function(x) return string.char(tonumber(x,16) ~ k:byte((#d/2)%#k+1)) end)) end)()`;
+                        break;
+                    
+                    case 'double':
+                        const base64 = btoa(unescape(encodeURIComponent(str)));
+                        const xor = this.xorEncode(base64, this.xorKey);
+                        result = `(function() local k="${this.xorKey}" local d="${this.hexEncode(xor)}" local r=(d:gsub("..", function(x) return string.char(tonumber(x,16) ~ k:byte((#d/2)%#k+1)) end)) return (r:gsub(".", function(x) return string.char(("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/="):find(x)-1) end)) end)()`;
+                        break;
+                    
+                    default:
+                        result = `"${str}"`;
+                }
+                
+                this.cache.set(cacheKey, result);
+                return result;
+            }
+
+            // 生成控制流混淆代码（优化性能）
+            generateControlFlow(level, codeBlock) {
+                if (level <= 0) return codeBlock;
+                
+                let result = '';
+                const controlVars = [];
+                
+                // 创建多个控制变量
+                for (let i = 0; i < level; i++) {
+                    const varName = this.generateRandomName('CF');
+                    const value = Math.floor(Math.random() * 1000);
+                    controlVars.push({ name: varName, value: value });
+                    result += `local ${varName} = ${value}\n`;
+                }
+                
+                // 构建嵌套if语句
+                for (let i = 0; i < controlVars.length; i++) {
+                    const randOp = Math.random() > 0.5 ? '==' : '~=';
+                    const randVal = Math.floor(Math.random() * 1000);
+                    result += `if ${controlVars[i].name} ${randOp} ${randVal} then\n`;
+                    if (i === controlVars.length - 1) {
+                        result += '--[[控制流开始]]--\n';
+                        result += codeBlock + '\n';
+                        result += '--[[控制流结束]]--\n';
+                    }
+                }
+                
+                // 添加else分支（冗余代码）
+                for (let i = 0; i < level; i++) {
+                    result += 'else\n';
+                    result += `--[[冗余代码 ${i+1}]]--\n`;
+                }
+                
+                // 结束所有if语句
+                result += 'end '.repeat(level * 2);
+                
+                return result;
+            }
+
+            // 生成垃圾代码（优化性能）
+            generateJunkCode(count) {
+                const junk = [];
+                const operations = ['+', '-', '*', '/', '%'];
+                
+                for (let i = 0; i < count; i++) {
+                    const varName = this.generateRandomName('J');
+                    const op = operations[Math.floor(Math.random() * operations.length)];
+                    const num1 = Math.floor(Math.random() * 100);
+                    const num2 = Math.floor(Math.random() * 100);
+                    
+                    if (Math.random() > 0.7) {
+                        junk.push(`local ${varName} = ${num1} ${op} ${num2}`);
+                    } else {
+                        junk.push(`local ${varName} = "${Math.random().toString(36).substring(2, 8)}"`);
+                    }
+                }
+                
+                return junk.join('\n');
+            }
+
+            // 生成反调试代码
+            generateAntiDebug() {
+                return `
+--[[反调试检测开始]]--
+local function checkDebug()
+    if debug and debug.getinfo then
+        return false
+    end
+    if type(loadstring) ~= "function" then
+        return false
+    end
+    return true
+end
+
+if not checkDebug() then
+    return
+end
+--[[反调试检测结束]]--
+                `.trim();
+            }
+
+            // 核心混淆函数（优化性能）
+            async obfuscate(code, progressCallback = null) {
+                const startTime = performance.now();
+                
+                // 获取配置
+                this.obfLevel = document.getElementById('obfLevel').value;
+                this.stringEncrypt = document.getElementById('stringEncrypt').value;
+                this.controlFlowLevel = parseInt(document.getElementById('controlFlow').value);
+                
+                let obfuscated = code.trim();
+                
+                // 提取URL并进行加密
+                const urlRegex = /["']/g;
+                const urls = [];
+                let match;
+                
+                while ((match = urlRegex.exec(code)) !== null) {
+                    urls.push(match[1]);
+                }
+                
+                // 加密所有找到的URL
+                const totalUrls = urls.length;
+                for (let i = 0; i < totalUrls; i++) {
+                    const url = urls[i];
+                    const encryptedUrl = this.encryptString(url, this.stringEncrypt);
+                    obfuscated = obfuscated.replace(url, encryptedUrl);
+                    
+                    // 更新进度
+                    if (progressCallback) {
+                        progressCallback((i + 1) / (totalUrls + 1) * 50);
+                    }
+                }
+                
+                // 根据混淆强度添加垃圾代码
+                let junkCount = 0;
+                switch(this.obfLevel) {
+                    case 'light': junkCount = 3; break;
+                    case 'medium': junkCount = 7; break;
+                    case 'heavy': junkCount = 12; break;
+                    case 'extreme': junkCount = 20; break;
+                }
+                
+                // 构建最终混淆代码
+                let finalCode = `--[ 哥斯拉 Pro Obfuscator v2.0 - ${new Date().toLocaleDateString()} ]--\n\n`;
+                
+                // 添加反调试代码
+                if (this.obfLevel !== 'light') {
+                    finalCode += this.generateAntiDebug() + '\n\n';
+                }
+                
+                // 添加垃圾代码
+                finalCode += this.generateJunkCode(junkCount) + '\n\n';
+                
+                // 添加主代码块（可能包含控制流混淆）
+                const mainCode = obfuscated;
+                if (this.controlFlowLevel > 0 && this.obfLevel !== 'light') {
+                    finalCode += this.generateControlFlow(this.controlFlowLevel, mainCode);
+                } else {
+                    finalCode += mainCode;
+                }
+                
+                // 添加结束标记
+                finalCode += `\n\n--[ 混淆完成 ]--`;
+                
+                const endTime = performance.now();
+                const timeTaken = (endTime - startTime).toFixed(2);
+                
+                return {
+                    code: finalCode,
+                    time: timeTaken,
+                    length: finalCode.length,
+                    originalLength: code.length
+                };
+            }
+        }
+
+        // 全局混淆器实例
+        const obfuscator = new GodzillaObfuscator();
+        let obfuscationHistory = [];
+
+        // 更新UI显示的值
+        function updateLevelValue() {
+            const select = document.getElementById('obfLevel');
+            const valueSpan = document.getElementById('levelValue');
+            valueSpan.textContent = select.options[select.selectedIndex].text.split('（')[0];
+        }
+
+        function updateEncryptValue() {
+            const select = document.getElementById('stringEncrypt');
+            const valueSpan = document.getElementById('encryptValue');
+            valueSpan.textContent = select.options[select.selectedIndex].text;
+        }
+
+        function updateFlowValue() {
+            const slider = document.getElementById('controlFlow');
+            const valueSpan = document.getElementById('flowValue');
+            valueSpan.textContent = slider.value;
+        }
+
+        // 初始化UI值
+        updateLevelValue();
+        updateEncryptValue();
+        updateFlowValue();
+
+        // 应用预设配置
+        function applyPreset(preset) {
+            const presetButtons = document.querySelectorAll('.preset-btn');
+            presetButtons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            switch(preset) {
+                case 'default':
+                    document.getElementById('obfLevel').value = 'medium';
+                    document.getElementById('stringEncrypt').value = 'base64';
+                    document.getElementById('controlFlow').value = 1;
+                    break;
+                case 'performance':
+                    document.getElementById('obfLevel').value = 'light';
+                    document.getElementById('stringEncrypt').value = 'hex';
+                    document.getElementById('controlFlow').value = 0;
+                    break;
+                case 'security':
+                    document.getElementById('obfLevel').value = 'heavy';
+                    document.getElementById('stringEncrypt').value = 'double';
+                    document.getElementById('controlFlow').value = 3;
+                    break;
+                case 'extreme':
+                    document.getElementById('obfLevel').value = 'extreme';
+                    document.getElementById('stringEncrypt').value = 'double';
+                    document.getElementById('controlFlow').value = 5;
+                    break;
+            }
+            
+            updateLevelValue();
+            updateEncryptValue();
+            updateFlowValue();
+            showNotification(`已应用 ${preset} 预设配置`);
+        }
+
+        // 显示通知
+        function showNotification(message, duration = 3000) {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, duration);
+        }
+
+        // 更新代码统计信息
+        function updateCodeStats() {
+            const originalCode = document.getElementById('originalCode').value;
+            const obfCode = document.getElementById('obfCode').value;
+            
+            document.getElementById('charCount').textContent = `${originalCode.length} 字符`;
+            document.getElementById('lineCount').textContent = `${originalCode.split('\n').length} 行`;
+            
+            document.getElementById('obfCharCount').textContent = `${obfCode.length} 字符`;
+            document.getElementById('obfLineCount').textContent = `${obfCode.split('\n').length} 行`;
+        }
+
+        // 添加历史记录
+        function addToHistory(result) {
+            const historyItem = {
+                timestamp: new Date().toLocaleString(),
+                originalLength: result.originalLength,
+                obfuscatedLength: result.length,
+                time: result.time
+            };
+            
+            obfuscationHistory.unshift(historyItem);
+            if (obfuscationHistory.length > 10) {
+                obfuscationHistory = obfuscationHistory.slice(0, 10);
+            }
+            
+            updateHistoryDisplay();
+            saveHistory();
+        }
+
+        // 更新历史记录显示
+        function updateHistoryDisplay() {
+            const historyList = document.getElementById('historyList');
+            const historyCount = document.getElementById('historyCount');
+            
+            historyList.innerHTML = '';
+            historyCount.textContent = `(${obfuscationHistory.length})`;
+            
+            obfuscationHistory.forEach((item, index) => {
+                const historyItem = document.createElement('div');
+                historyItem.className = 'history-item';
+                historyItem.innerHTML = `
+                    <span>${item.timestamp}</span>
+                    <span>${item.originalLength} → ${item.obfuscatedLength} 字符</span>
+                `;
+                historyItem.onclick = () => {
+                    document.getElementById('statsInfo').textContent = 
+                        `历史记录 ${index+1}: ${item.timestamp} | 耗时 ${item.time}ms`;
+                    document.getElementById('statsInfo').classList.add('active');
+                };
+                historyList.appendChild(historyItem);
+            });
+        }
+
+        // 保存历史记录到本地存储
+        function saveHistory() {
+            localStorage.setItem('godzillaHistory', JSON.stringify(obfuscationHistory));
+        }
+
+        // 加载历史记录
+        function loadHistory() {
+            const savedHistory = localStorage.getItem('godzillaHistory');
+            if (savedHistory) {
+                obfuscationHistory = JSON.parse(savedHistory);
+                updateHistoryDisplay();
+            }
+        }
+
+        // 混淆主函数（优化为异步）
+        async function obfuscateLua() {
+            let code = document.getElementById("originalCode").value.trim();
+            if (!code) {
+                showNotification("请粘贴需要混淆的Lua脚本！", 3000);
+                return;
+            }
+
+            try {
+                const statsDiv = document.getElementById("statsInfo");
+                const obfuscateBtn = document.getElementById("obfuscateBtn");
+                const progressContainer = document.getElementById("progressContainer");
+                const progressBar = document.getElementById("progressBar");
+                
+                statsDiv.textContent = "正在混淆中...";
+                statsDiv.classList.remove('active');
+                obfuscateBtn.disabled = true;
+                obfuscateBtn.textContent = "混淆中...";
+                progressContainer.style.display = 'block';
+                progressBar.style.width = '0%';
+                
+                // 使用进度回调更新进度条
+                const progressCallback = (progress) => {
+                    progressBar.style.width = `${progress}%`;
+                };
+                
+                const result = await obfuscator.obfuscate(code, progressCallback);
+                
+                document.getElementById("obfCode").value = result.code;
+                progressBar.style.width = '100%';
+                
+                statsDiv.textContent = 
+                    `✅ 混淆完成！耗时 ${result.time}ms | ` +
+                    `原始长度：${result.originalLength} 字符 | ` +
+                    `混淆后：${result.length} 字符 | ` +
+                    `压缩率：${((1 - result.originalLength / result.length) * 100).toFixed(1)}%`;
+                statsDiv.classList.add('active');
+                
+                // 添加历史记录
+                addToHistory(result);
+                
+                // 更新代码统计
+                updateCodeStats();
+                
+                // 恢复按钮状态
+                setTimeout(() => {
+                    obfuscateBtn.disabled = false;
+                    obfuscateBtn.innerHTML = '<span>🦖🦖🦖</span> 一键混淆';
+                    progressContainer.style.display = 'none';
+                    
+                    // 自动滚动到结果
+                    document.getElementById("obfCode").scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }, 500);
+                
+            } catch (error) {
+                console.error("混淆错误:", error);
+                showNotification(`混淆失败：${error.message}`, 5000);
+                document.getElementById("statsInfo").textContent = "❌❌ 混淆失败，请检查输入";
+                document.getElementById("statsInfo").classList.remove('active');
+                
+                // 恢复按钮状态
+                document.getElementById("obfuscateBtn").disabled = false;
+                document.getElementById("obfuscateBtn").innerHTML = '<span>🦖🦖🦖</span> 一键混淆';
+                document.getElementById("progressContainer").style.display = 'none';
+            }
+        }
+
+        // 清空输入框
+        function clearAll() {
+            if (confirm("确定要清空所有内容吗？")) {
+                document.getElementById("originalCode").value = "";
+                document.getElementById("obfCode").value = "";
+                document.getElementById("statsInfo").textContent = "等待混淆...";
+                document.getElementById("statsInfo").classList.remove('active');
+                document.getElementById("originalCode").focus();
+                updateCodeStats();
+            }
+        }
+
+        // 复制混淆代码
+        function copyObfCode() {
+            const obfCode = document.getElementById("obfCode");
+            if (!obfCode.value.trim()) {
+                showNotification("暂无混淆后的代码可复制！", 3000);
+                return;
+            }
+            
+            obfCode.select();
+            obfCode.setSelectionRange(0, 99999); // 移动设备兼容
+            
+            try {
+                const successful = document.execCommand("copy");
+                if (successful) {
+                    showNotification("✅ 代码已复制到剪贴板！", 2000);
+                } else {
+                    showNotification("复制失败，请手动选择并复制", 3000);
+                }
+            } catch (err) {
+                console.error("复制失败:", err);
+                showNotification("复制失败，请手动复制", 3000);
+            }
+        }
+
+        // 添加键盘快捷键支持
+        document.addEventListener('keydown', function(e) {
+            // Ctrl + Enter 混淆
+            if (e.ctrlKey && e.key === 'Enter') {
+                obfuscateLua();
+                e.preventDefault();
+            }
+            // Ctrl + C 复制
+            if (e.ctrlKey && e.key === 'c') {
+                if (document.activeElement === document.getElementById("obfCode")) {
+                    copyObfCode();
+                    e.preventDefault();
+                }
+            }
+            // Esc 清空
+            if (e.key === 'Escape') {
+                clearAll();
+            }
+        });
+
+        // 实时更新代码统计
+        document.getElementById('originalCode').addEventListener('input', updateCodeStats);
+        document.getElementById('obfCode').addEventListener('input', updateCodeStats);
+
+        // 页面加载时初始化
+        window.addEventListener('load', function() {
+            const exampleCode = `loadstring(game:HttpGet("https://example.com/script.lua"))()`;
+            document.getElementById("originalCode").placeholder = exampleCode;
+            updateCodeStats();
+            loadHistory();
+        });
+    </script>
+</body>
+</html>
+修一下，混淆出来的代码都用不了
