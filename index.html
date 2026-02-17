@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>哥斯拉 Pro - Roblox Lua混淆工具</title>
+    <title>哥斯拉 Pro - Lua混淆工具 | 多层加密+反调试</title>
     <style>
         * {margin: 0; padding: 0; box-sizing: border-box; font-family: "Consolas", "微软雅黑", sans-serif;}
         body {
@@ -29,7 +29,7 @@
             pointer-events: none;
         }
         .container {
-            max-width: 1200px;
+            max-width: 1000px;
             margin: 0 auto;
             background: rgba(20, 20, 20, 0.95);
             border-radius: 16px;
@@ -89,7 +89,7 @@
             gap: 10px;
         }
         .code-box h3::before {
-            content: "🦖🦖🦖";
+            content: "🦖";
             font-size: 22px;
             filter: drop-shadow(0 0 5px #ff4500);
         }
@@ -316,141 +316,6 @@
             display: block;
             margin-bottom: 5px;
         }
-        
-        .preset-buttons {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
-            flex-wrap: wrap;
-        }
-        .preset-btn {
-            padding: 8px 15px;
-            background: rgba(255, 69, 0, 0.2);
-            border: 1px solid #ff4500;
-            border-radius: 6px;
-            color: #ffa500;
-            cursor: pointer;
-            font-size: 12px;
-            transition: all 0.3s;
-        }
-        .preset-btn:hover {
-            background: rgba(255, 69, 0, 0.4);
-            transform: translateY(-2px);
-        }
-        .preset-btn.active {
-            background: #ff4500;
-            color: #000;
-            font-weight: bold;
-        }
-        .progress-container {
-            height: 4px;
-            background: rgba(255, 69, 0, 0.2);
-            border-radius: 2px;
-            margin: 10px 0;
-            overflow: hidden;
-            display: none;
-        }
-        .progress-bar {
-            height: 100%;
-            background: linear-gradient(90deg, #ff4500, #ff8c00);
-            width: 0%;
-            transition: width 0.3s;
-        }
-        .history-section {
-            margin-top: 20px;
-            border-top: 1px solid #333;
-            padding-top: 15px;
-        }
-        .history-list {
-            max-height: 150px;
-            overflow-y: auto;
-            margin-top: 10px;
-        }
-        .history-item {
-            padding: 8px 12px;
-            background: rgba(255, 69, 0, 0.05);
-            border-radius: 6px;
-            margin-bottom: 5px;
-            cursor: pointer;
-            font-size: 12px;
-            display: flex;
-            justify-content: space-between;
-        }
-        .history-item:hover {
-            background: rgba(255, 69, 0, 0.1);
-        }
-        .code-info {
-            display: flex;
-            justify-content: space-between;
-            font-size: 12px;
-            color: #888;
-            margin-top: 5px;
-        }
-        .notification {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 15px 20px;
-            background: rgba(255, 69, 0, 0.9);
-            color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-            z-index: 1000;
-            transform: translateX(150%);
-            transition: transform 0.3s;
-        }
-        .notification.show {
-            transform: translateX(0);
-        }
-        
-        /* 新增样式 */
-        .examples {
-            margin-top: 20px;
-            border-top: 1px solid #333;
-            padding-top: 15px;
-        }
-        .example-buttons {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 10px;
-        }
-        .example-btn {
-            padding: 8px 15px;
-            background: rgba(0, 100, 255, 0.2);
-            border: 1px solid #0066ff;
-            border-radius: 6px;
-            color: #66aaff;
-            cursor: pointer;
-            font-size: 12px;
-            transition: all 0.3s;
-        }
-        .example-btn:hover {
-            background: rgba(0, 100, 255, 0.4);
-            transform: translateY(-2px);
-        }
-        .toggle-options {
-            margin-top: 10px;
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-        .toggle-option {
-            padding: 8px 15px;
-            background: rgba(255, 69, 0, 0.1);
-            border: 1px solid #555;
-            border-radius: 6px;
-            color: #ccc;
-            cursor: pointer;
-            font-size: 12px;
-            transition: all 0.3s;
-        }
-        .toggle-option.active {
-            background: rgba(255, 69, 0, 0.3);
-            border-color: #ff4500;
-            color: #fff;
-        }
-        
         @media (max-width: 768px) {
             .container {
                 padding: 20px;
@@ -465,948 +330,366 @@
                 min-width: 140px;
                 padding: 12px 25px;
             }
-            .preset-buttons, .example-buttons {
-                justify-content: center;
-            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1 class="godzilla-title">哥斯拉 Pro - Roblox Lua混淆工具</h1>
-        <p class="godzilla-sub">支持多种Roblox Lua脚本混淆 | 保持代码结构不变</p>
-        
-        <!-- 预设配置 -->
-        <div class="preset-buttons">
-            <div class="preset-btn active" onclick="applyPreset('simple')">简单混淆</div>
-            <div class="preset-btn" onclick="applyPreset('standard')">标准混淆</div>
-            <div class="preset-btn" onclick="applyPreset('advanced')">高级混淆</div>
-        </div>
+        <h1 class="godzilla-title">哥斯拉 Pro - Lua混淆工具</h1>
+        <p class="godzilla-sub">多层加密 + 反调试 + 控制流混淆 | 适配loadstring+HttpGet</p>
         
         <div class="code-box">
             <h3>原始Lua脚本（粘贴即可）</h3>
-            <textarea id="originalCode" placeholder="粘贴你的Roblox Lua脚本..."></textarea>
-            <div class="code-info">
-                <span id="charCount">0 字符</span>
-                <span id="lineCount">0 行</span>
-            </div>
+            <textarea id="originalCode" placeholder="粘贴你的loadstring脚本..."></textarea>
         </div>
 
-        <!-- 进度条 -->
-        <div class="progress-container" id="progressContainer">
-            <div class="progress-bar" id="progressBar"></div>
-        </div>
-
-        <!-- 控制选项 -->
         <div class="controls">
             <div class="control-group">
-                <label for="stringEncrypt">字符串加密方式</label>
-                <select id="stringEncrypt">
-                    <option value="hex" selected>十六进制编码 (推荐)</option>
-                    <option value="unicode">Unicode编码</option>
-                    <option value="base64">Base64编码</option>
-                </select>
-            </div>
-            <div class="control-group">
-                <label for="obfLevel">混淆强度 <span id="levelValue">标准</span></label>
+                <label for="obfLevel">混淆强度 <span id="levelValue">中等</span></label>
                 <select id="obfLevel" onchange="updateLevelValue()">
-                    <option value="light">轻度混淆</option>
-                    <option value="standard" selected>标准混淆</option>
-                    <option value="heavy">重度混淆</option>
+                    <option value="light">轻度混淆（快速）</option>
+                    <option value="medium" selected>中等混淆（推荐）</option>
+                    <option value="heavy">重度混淆（安全）</option>
+                    <option value="extreme">极端混淆（最高）</option>
                 </select>
             </div>
             <div class="control-group">
-                <label for="removeComments">移除注释</label>
-                <select id="removeComments">
-                    <option value="no" selected>保留注释</option>
-                    <option value="yes">移除注释</option>
+                <label for="stringEncrypt">字符串加密 <span id="encryptValue">Base64</span></label>
+                <select id="stringEncrypt" onchange="updateEncryptValue()">
+                    <option value="hex">十六进制</option>
+                    <option value="base64" selected>Base64</option>
+                    <option value="xor">XOR加密</option>
+                    <option value="double">双重加密</option>
                 </select>
             </div>
-        </div>
-
-        <!-- 高级选项 -->
-        <div class="toggle-options">
-            <div class="toggle-option" id="optHexStrings" onclick="toggleOption(this)">十六进制字符串</div>
-            <div class="toggle-option" id="optHexNumbers" onclick="toggleOption(this)">十六进制数字</div>
-            <div class="toggle-option" id="optObfuscateVars" onclick="toggleOption(this)">混淆变量名</div>
-            <div class="toggle-option" id="optMinify" onclick="toggleOption(this)">代码压缩</div>
+            <div class="control-group">
+                <label for="controlFlow">控制流混淆 <span id="flowValue" class="range-value">1</span></label>
+                <input type="range" id="controlFlow" min="0" max="5" value="1" oninput="updateFlowValue()">
+            </div>
         </div>
 
         <div class="feature-list">
-            <div class="feature-item"><strong>✅ 多种混淆</strong>支持字符串、数字、变量名混淆</div>
-            <div class="feature-item"><strong>🔒 纯本地处理</strong>脚本永不上传服务器</div>
-            <div class="feature-item"><strong>🚀 即时处理</strong>实时转换，无需等待</div>
-            <div class="feature-item"><strong>🎯 兼容性强</strong>完美适配Roblox Lua</div>
+            <div class="feature-item"><strong>✅ 多层加密</strong>多级字符串加密保护</div>
+            <div class="feature-item"><strong>🛡️ 反调试</strong>内置反调试检测机制</div>
+            <div class="feature-item"><strong>🌀 控制流混淆</strong>代码逻辑随机化</div>
+            <div class="feature-item"><strong>🔒 本地处理</strong>脚本永不上传服务器</div>
         </div>
 
         <div class="code-box">
             <h3>混淆后Lua脚本</h3>
             <textarea id="obfCode" placeholder="混淆后的代码将显示在这里..." readonly></textarea>
-            <div class="code-info">
-                <span id="obfCharCount">0 字符</span>
-                <span id="obfLineCount">0 行</span>
-            </div>
         </div>
 
         <div class="btn-group">
-            <button class="btn btn-obf" onclick="obfuscateLua()" id="obfuscateBtn">
-                <span>🦖🦖🦖</span> 一键混淆
+            <button class="btn btn-obf" onclick="obfuscateLua()">
+                <span>🦖</span> 一键混淆
             </button>
             <button class="btn btn-clear" onclick="clearAll()">
-                <span>🗑🗑️</span> 清空内容
+                <span>🗑️</span> 清空内容
             </button>
             <button class="btn btn-copy" onclick="copyObfCode()">
-                <span>📋📋</span> 复制代码
+                <span>📋</span> 复制代码
             </button>
-        </div>
-
-        <!-- 示例代码 -->
-        <div class="examples">
-            <h3>示例脚本 <span id="exampleCount">(7)</span></h3>
-            <p style="color: #888; margin-bottom: 10px; font-size: 13px;">点击加载示例到输入框</p>
-            <div class="example-buttons">
-                <div class="example-btn" onclick="loadExample('loadstring')">loadstring脚本</div>
-                <div class="example-btn" onclick="loadExample('gui')">GUI界面脚本</div>
-                <div class="example-btn" onclick="loadExample('esp')">ESP透视脚本</div>
-                <div class="example-btn" onclick="loadExample('aimbot')">Aimbot脚本</div>
-                <div class="example-btn" onclick="loadExample('autofarm')">自动农场脚本</div>
-                <div class="example-btn" onclick="loadExample('fly')">飞行脚本</div>
-                <div class="example-btn" onclick="loadExample('infiniteyield')">Infinite Yield</div>
-            </div>
-        </div>
-
-        <!-- 历史记录 -->
-        <div class="history-section">
-            <h3>历史记录 <span id="historyCount">(0)</span></h3>
-            <div class="history-list" id="historyList">
-                <!-- 历史记录将动态添加 -->
-            </div>
         </div>
 
         <p class="tip">
-            <span>✅ 多种混淆方式</span>
-            <span>🚫 无额外代码</span>
-            <span>🎯 保持原结构</span>
+            <span>✅ 多层加密保护</span>
+            <span>🚫 本地运行</span>
+            <span>🎯 适配HttpGet</span>
             <span>⚡ 实时处理</span>
         </p>
         <div class="stats" id="statsInfo">等待混淆...</div>
     </div>
 
-    <!-- 通知 -->
-    <div class="notification" id="notification"></div>
-
     <script>
-        // 增强版混淆工具
-        class EnhancedObfuscator {
+        // 增强版混淆工具核心
+        class GodzillaObfuscator {
             constructor() {
-                this.cache = new Map();
-                this.variableMap = new Map();
-                this.hexNumbers = false;
-                this.obfuscateVars = false;
-                this.minifyCode = false;
-                this.removeComments = false;
+                this.obfLevel = 'medium';
+                this.stringEncrypt = 'base64';
+                this.controlFlowLevel = 1;
+                this.xorKey = this.generateXORKey();
             }
 
-            // 十六进制编码
-            hexEncode(str) {
-                const cacheKey = `hex_${str}`;
-                if (this.cache.has(cacheKey)) {
-                    return this.cache.get(cacheKey);
+            // 生成XOR密钥
+            generateXORKey() {
+                const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+                let key = '';
+                for (let i = 0; i < 8; i++) {
+                    key += chars.charAt(Math.floor(Math.random() * chars.length));
                 }
-                
-                let hex = '"';
-                for (let i = 0; i < str.length; i++) {
-                    hex += '\\x' + str.charCodeAt(i).toString(16).padStart(2, '0');
-                }
-                hex += '"';
-                
-                this.cache.set(cacheKey, hex);
-                return hex;
-            }
-
-            // Unicode编码
-            unicodeEncode(str) {
-                const cacheKey = `unicode_${str}`;
-                if (this.cache.has(cacheKey)) {
-                    return this.cache.get(cacheKey);
-                }
-                
-                let unicode = '"';
-                for (let i = 0; i < str.length; i++) {
-                    const code = str.charCodeAt(i);
-                    unicode += '\\u' + code.toString(16).padStart(4, '0');
-                }
-                unicode += '"';
-                
-                this.cache.set(cacheKey, unicode);
-                return unicode;
-            }
-
-            // Base64编码
-            base64Encode(str) {
-                const cacheKey = `base64_${str}`;
-                if (this.cache.has(cacheKey)) {
-                    return this.cache.get(cacheKey);
-                }
-                
-                const base64 = btoa(unescape(encodeURIComponent(str)));
-                const encoded = `"${base64}"`;
-                
-                this.cache.set(cacheKey, encoded);
-                return encoded;
-            }
-
-            // 加密字符串
-            encryptString(str, method) {
-                switch(method) {
-                    case 'hex':
-                        return this.hexEncode(str);
-                    case 'unicode':
-                        return this.unicodeEncode(str);
-                    case 'base64':
-                        return this.base64Encode(str);
-                    default:
-                        return `"${str}"`;
-                }
-            }
-
-            // 将数字转换为十六进制
-            convertToHexNumber(numStr) {
-                const num = parseFloat(numStr);
-                if (isNaN(num)) return numStr;
-                
-                // 整数转换为十六进制
-                if (Number.isInteger(num)) {
-                    return `0x${num.toString(16)}`;
-                }
-                
-                // 浮点数保持不变
-                return numStr;
+                return key;
             }
 
             // 生成随机变量名
-            generateRandomVarName(length = 8) {
-                const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-                let name = '';
-                for (let i = 0; i < length; i++) {
+            generateRandomName(prefix = 'G_') {
+                const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_';
+                let name = prefix;
+                for (let i = 0; i < 6; i++) {
                     name += chars.charAt(Math.floor(Math.random() * chars.length));
                 }
                 return name;
             }
 
-            // 混淆变量名
-            obfuscateVariableNames(code) {
-                // 提取所有变量名（排除关键字和函数名）
-                const variableRegex = /\b(local\s+)?([a-zA-Z_][a-zA-Z0-9_]*)\b(?=\s*[=,;)\]])/g;
-                const variables = new Set();
-                let match;
+            // 十六进制字符串编码
+            hexEncode(str) {
+                let hex = '';
+                for (let i = 0; i < str.length; i++) {
+                    hex += '\\x' + str.charCodeAt(i).toString(16).padStart(2, '0');
+                }
+                return hex;
+            }
+
+            // XOR加密
+            xorEncode(str, key) {
+                let result = '';
+                for (let i = 0; i < str.length; i++) {
+                    const charCode = str.charCodeAt(i) ^ key.charCodeAt(i % key.length);
+                    result += String.fromCharCode(charCode);
+                }
+                return result;
+            }
+
+            // 字符串加密（根据配置选择）
+            encryptString(str, method) {
+                switch(method) {
+                    case 'hex':
+                        return `"${this.hexEncode(str)}"`;
+                    
+                    case 'base64':
+                        const base64Encoded = btoa(unescape(encodeURIComponent(str)));
+                        return `(function() local b="${base64Encoded}" return (b:gsub(".", function(x) return string.char(("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/="):find(x)-1) end)) end)()`;
+                    
+                    case 'xor':
+                        const xorEncoded = this.xorEncode(str, this.xorKey);
+                        const hexXor = this.hexEncode(xorEncoded);
+                        return `(function() local k="${this.xorKey}" local d="${hexXor}" return (d:gsub("..", function(x) return string.char(tonumber(x,16) ~ k:byte((#d/2)%#k+1)) end)) end)()`;
+                    
+                    case 'double':
+                        const base64 = btoa(unescape(encodeURIComponent(str)));
+                        const xor = this.xorEncode(base64, this.xorKey);
+                        return `(function() local k="${this.xorKey}" local d="${this.hexEncode(xor)}" local r=(d:gsub("..", function(x) return string.char(tonumber(x,16) ~ k:byte((#d/2)%#k+1)) end)) return (r:gsub(".", function(x) return string.char(("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/="):find(x)-1) end)) end)()`;
+                    
+                    default:
+                        return `"${str}"`;
+                }
+            }
+
+            // 生成控制流混淆代码
+            generateControlFlow(level, codeBlock) {
+                if (level <= 0) return codeBlock;
                 
-                while ((match = variableRegex.exec(code)) !== null) {
-                    const varName = match[2];
-                    // 排除Lua关键字和常见函数名
-                    if (!this.isLuaKeyword(varName) && !this.isCommonFunction(varName)) {
-                        variables.add(varName);
+                let result = '';
+                const controlVars = [];
+                
+                // 创建多个控制变量
+                for (let i = 0; i < level; i++) {
+                    const varName = this.generateRandomName('CF');
+                    const value = Math.floor(Math.random() * 1000);
+                    controlVars.push({ name: varName, value: value });
+                    result += `local ${varName} = ${value}\n`;
+                }
+                
+                // 构建嵌套if语句
+                for (let i = 0; i < controlVars.length; i++) {
+                    const randOp = Math.random() > 0.5 ? '==' : '~=';
+                    const randVal = Math.floor(Math.random() * 1000);
+                    result += `if ${controlVars[i].name} ${randOp} ${randVal} then\n`;
+                    if (i === controlVars.length - 1) {
+                        result += '--[[控制流开始]]--\n';
+                        result += codeBlock + '\n';
+                        result += '--[[控制流结束]]--\n';
                     }
                 }
                 
-                // 创建变量名映射
-                let result = code;
-                for (const varName of variables) {
-                    if (varName.length > 2 && !this.variableMap.has(varName)) {
-                        const newName = this.generateRandomVarName();
-                        this.variableMap.set(varName, newName);
+                // 添加else分支（冗余代码）
+                for (let i = 0; i < level; i++) {
+                    result += 'else\n';
+                    result += `--[[冗余代码 ${i+1}]]--\n`;
+                }
+                
+                // 结束所有if语句
+                result += 'end '.repeat(level * 2);
+                
+                return result;
+            }
+
+            // 生成垃圾代码
+            generateJunkCode(count) {
+                const junk = [];
+                const operations = ['+', '-', '*', '/', '%'];
+                
+                for (let i = 0; i < count; i++) {
+                    const varName = this.generateRandomName('J');
+                    const op = operations[Math.floor(Math.random() * operations.length)];
+                    const num1 = Math.floor(Math.random() * 100);
+                    const num2 = Math.floor(Math.random() * 100);
+                    
+                    if (Math.random() > 0.7) {
+                        junk.push(`local ${varName} = ${num1} ${op} ${num2}`);
+                    } else {
+                        junk.push(`local ${varName} = "${Math.random().toString(36).substring(2, 8)}"`);
                     }
                 }
                 
-                // 替换变量名
-                for (const [oldName, newName] of this.variableMap) {
-                    const regex = new RegExp(`\\b${oldName}\\b`, 'g');
-                    result = result.replace(regex, newName);
-                }
-                
-                return result;
+                return junk.join('\n');
             }
 
-            // 检查是否为Lua关键字
-            isLuaKeyword(word) {
-                const keywords = [
-                    'and', 'break', 'do', 'else', 'elseif', 'end', 'false', 'for',
-                    'function', 'goto', 'if', 'in', 'local', 'nil', 'not', 'or',
-                    'repeat', 'return', 'then', 'true', 'until', 'while'
-                ];
-                return keywords.includes(word);
+            // 生成反调试代码
+            generateAntiDebug() {
+                return `
+--[[反调试检测开始]]--
+local function checkDebug()
+    if debug and debug.getinfo then
+        return false
+    end
+    if type(loadstring) ~= "function" then
+        return false
+    end
+    return true
+end
+
+if not checkDebug() then
+    return
+end
+--[[反调试检测结束]]--
+                `.trim();
             }
 
-            // 检查是否为常见函数名
-            isCommonFunction(word) {
-                const functions = [
-                    'print', 'loadstring', 'game', 'wait', 'spawn', 'delay',
-                    'tick', 'time', 'typeof', 'pairs', 'ipairs', 'next',
-                    'getfenv', 'setfenv', 'getmetatable', 'setmetatable'
-                ];
-                return functions.includes(word);
-            }
-
-            // 移除注释
-            removeCommentsFromCode(code) {
-                // 移除单行注释
-                let result = code.replace(/--\[\[[\s\S]*?\]\]/g, '');
-                result = result.replace(/--[^\n]*/g, '');
-                
-                // 移除多行注释
-                result = result.replace(/--\[\[[\s\S]*?\]\]/g, '');
-                
-                return result;
-            }
-
-            // 压缩代码
-            minifyCode(code) {
-                // 移除多余空格和空行
-                let result = code
-                    .replace(/\s*([=+\-*/%^#<>~])\s*/g, '$1') // 运算符周围的空格
-                    .replace(/\s*([,;])\s*/g, '$1') // 逗号分号周围的空格
-                    .replace(/\s*([{}()[\]])\s*/g, '$1') // 括号周围的空格
-                    .replace(/^\s*[\r\n]/gm, '') // 空行
-                    .replace(/\s+$/gm, ''); // 行尾空格
-                
-                return result;
-            }
-
-            // 主混淆函数
-            async obfuscate(code, progressCallback = null) {
+            // 核心混淆函数
+            obfuscate(code) {
                 const startTime = performance.now();
                 
-                if (!code || code.trim() === '') {
-                    throw new Error("代码为空");
-                }
-                
-                this.variableMap.clear();
-                
                 // 获取配置
-                const method = document.getElementById('stringEncrypt').value;
-                const level = document.getElementById('obfLevel').value;
-                this.removeComments = document.getElementById('removeComments').value === 'yes';
-                this.hexNumbers = document.getElementById('optHexNumbers').classList.contains('active');
-                this.obfuscateVars = document.getElementById('optObfuscateVars').classList.contains('active');
-                this.minifyCode = document.getElementById('optMinify').classList.contains('active');
+                this.obfLevel = document.getElementById('obfLevel').value;
+                this.stringEncrypt = document.getElementById('stringEncrypt').value;
+                this.controlFlowLevel = parseInt(document.getElementById('controlFlow').value);
                 
-                let result = code;
+                let obfuscated = code.trim();
                 
-                // 步骤1: 移除注释
-                if (this.removeComments) {
-                    result = this.removeCommentsFromCode(result);
-                    if (progressCallback) progressCallback(20);
-                }
-                
-                // 步骤2: 混淆字符串
-                const stringReplacements = [];
-                
-                // 处理双引号字符串
-                const doubleQuoteRegex = /"([^"\\]*(?:\\.[^"\\]*)*)"/g;
+                // 提取URL并进行加密
+                const urlRegex = /["'](https?:\/\/[^"']+)["']/g;
+                const urls = [];
                 let match;
                 
-                while ((match = doubleQuoteRegex.exec(result)) !== null) {
-                    const fullMatch = match[0];
-                    const content = match[1];
-                    const index = match.index;
-                    
-                    if (!fullMatch.includes('\\x') && !fullMatch.includes('\\u')) {
-                        stringReplacements.push({
-                            original: fullMatch,
-                            encrypted: this.encryptString(content, method),
-                            index: index,
-                            length: fullMatch.length
-                        });
-                    }
+                while ((match = urlRegex.exec(code)) !== null) {
+                    urls.push(match[1]);
                 }
                 
-                // 处理单引号字符串
-                const singleQuoteRegex = /'([^'\\]*(?:\\.[^'\\]*)*)'/g;
+                // 加密所有找到的URL
+                urls.forEach(url => {
+                    const encryptedUrl = this.encryptString(url, this.stringEncrypt);
+                    obfuscated = obfuscated.replace(url, encryptedUrl);
+                });
                 
-                while ((match = singleQuoteRegex.exec(result)) !== null) {
-                    const fullMatch = match[0];
-                    const content = match[1];
-                    const index = match.index;
-                    
-                    if (!fullMatch.includes('\\x') && !fullMatch.includes('\\u')) {
-                        stringReplacements.push({
-                            original: fullMatch,
-                            encrypted: this.encryptString(content, method),
-                            index: index,
-                            length: fullMatch.length
-                        });
-                    }
+                // 根据混淆强度添加垃圾代码
+                let junkCount = 0;
+                switch(this.obfLevel) {
+                    case 'light': junkCount = 3; break;
+                    case 'medium': junkCount = 7; break;
+                    case 'heavy': junkCount = 12; break;
+                    case 'extreme': junkCount = 20; break;
                 }
                 
-                // 按索引降序排序，从后往前替换
-                stringReplacements.sort((a, b) => b.index - a.index);
+                // 构建最终混淆代码
+                let finalCode = `--[ 哥斯拉 Pro Obfuscator v2.0 - ${new Date().toLocaleDateString()} ]--\n\n`;
                 
-                for (const replacement of stringReplacements) {
-                    result = result.substring(0, replacement.index) + 
-                             replacement.encrypted + 
-                             result.substring(replacement.index + replacement.length);
+                // 添加反调试代码
+                if (this.obfLevel !== 'light') {
+                    finalCode += this.generateAntiDebug() + '\n\n';
                 }
                 
-                if (progressCallback) progressCallback(40);
+                // 添加垃圾代码
+                finalCode += this.generateJunkCode(junkCount) + '\n\n';
                 
-                // 步骤3: 转换数字为十六进制
-                if (this.hexNumbers) {
-                    const numberRegex = /\b(\d+\.?\d*)\b/g;
-                    result = result.replace(numberRegex, (match, numStr) => {
-                        return this.convertToHexNumber(numStr);
-                    });
-                    if (progressCallback) progressCallback(60);
+                // 添加主代码块（可能包含控制流混淆）
+                const mainCode = obfuscated;
+                if (this.controlFlowLevel > 0 && this.obfLevel !== 'light') {
+                    finalCode += this.generateControlFlow(this.controlFlowLevel, mainCode);
+                } else {
+                    finalCode += mainCode;
                 }
                 
-                // 步骤4: 混淆变量名
-                if (this.obfuscateVars && level !== 'light') {
-                    result = this.obfuscateVariableNames(result);
-                    if (progressCallback) progressCallback(80);
-                }
-                
-                // 步骤5: 压缩代码
-                if (this.minifyCode) {
-                    result = this.minifyCode(result);
-                    if (progressCallback) progressCallback(90);
-                }
-                
-                if (progressCallback) progressCallback(100);
+                // 添加结束标记
+                finalCode += `\n\n--[ 混淆完成 ]--`;
                 
                 const endTime = performance.now();
                 const timeTaken = (endTime - startTime).toFixed(2);
                 
                 return {
-                    code: result,
+                    code: finalCode,
                     time: timeTaken,
-                    length: result.length,
+                    length: finalCode.length,
                     originalLength: code.length
                 };
             }
         }
 
-        // UI相关函数
-        const obfuscator = new EnhancedObfuscator();
-        let obfuscationHistory = [];
-        let examples = {};
+        // 全局混淆器实例
+        const obfuscator = new GodzillaObfuscator();
 
-        // 初始化示例代码
-        function initExamples() {
-            examples = {
-                loadstring: `loadstring(game:HttpGet("https://api.jnkie.com/api/v1/luascripts/public/c7d693ddb2834cdbe37ab59f1fa033def4d8264cc521b88c31a74ece4a8c5487/download"))()`,
-                
-                gui: `-- 简单的GUI界面
-local ScreenGui = Instance.new("ScreenGui")
-ScreenGui.Parent = game.CoreGui
-
-local Frame = Instance.new("Frame")
-Frame.Size = UDim2.new(0, 300, 0, 200)
-Frame.Position = UDim2.new(0.5, -150, 0.5, -100)
-Frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-Frame.Parent = ScreenGui
-
-local TextLabel = Instance.new("TextLabel")
-TextLabel.Size = UDim2.new(1, 0, 0, 50)
-TextLabel.Text = "Roblox GUI"
-TextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-TextLabel.BackgroundColor3 = Color3.fromRGB(255, 69, 0)
-TextLabel.Parent = Frame
-
-local Button = Instance.new("TextButton")
-Button.Size = UDim2.new(0, 100, 0, 40)
-Button.Position = UDim2.new(0.5, -50, 0.7, -20)
-Button.Text = "点击我"
-Button.TextColor3 = Color3.fromRGB(255, 255, 255)
-Button.BackgroundColor3 = Color3.fromRGB(0, 100, 255)
-Button.Parent = Frame
-
-Button.MouseButton1Click:Connect(function()
-    print("按钮被点击了！")
-    TextLabel.Text = "你好，Roblox！"
-end)`,
-                
-                esp: `-- ESP透视脚本
-local Players = game:GetService("Players")
-local RunService = game:GetService("RunService")
-
-local function createESP(player)
-    local character = player.Character
-    if not character then return end
-    
-    local highlight = Instance.new("Highlight")
-    highlight.Adornee = character
-    highlight.Parent = character
-    highlight.FillColor = Color3.fromRGB(255, 0, 0)
-    highlight.OutlineColor = Color3.fromRGB(255, 255, 0)
-    highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
-    
-    local billboard = Instance.new("BillboardGui")
-    billboard.Size = UDim2.new(0, 100, 0, 40)
-    billboard.StudsOffset = Vector3.new(0, 3, 0)
-    billboard.Adornee = character.Head
-    billboard.Parent = character.Head
-    
-    local textLabel = Instance.new("TextLabel")
-    textLabel.Size = UDim2.new(1, 0, 1, 0)
-    textLabel.Text = player.Name
-    textLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-    textLabel.BackgroundTransparency = 1
-    textLabel.Parent = billboard
-end
-
-for _, player in pairs(Players:GetPlayers()) do
-    if player ~= game.Players.LocalPlayer then
-        createESP(player)
-    end
-end
-
-Players.PlayerAdded:Connect(function(player)
-    createESP(player)
-end)`,
-                
-                aimbot: `-- Aimbot瞄准辅助
-local Players = game:GetService("Players")
-local RunService = game:GetService("RunService")
-local UserInputService = game:GetService("UserInputService")
-
-local LocalPlayer = Players.LocalPlayer
-local Camera = workspace.CurrentCamera
-
-local aimbotEnabled = false
-local aimKey = Enum.KeyCode.E
-
-local function getClosestPlayer()
-    local closestPlayer = nil
-    local shortestDistance = math.huge
-    
-    for _, player in pairs(Players:GetPlayers()) do
-        if player ~= LocalPlayer and player.Character then
-            local humanoid = player.Character:FindFirstChild("Humanoid")
-            local head = player.Character:FindFirstChild("Head")
-            
-            if humanoid and humanoid.Health > 0 and head then
-                local distance = (head.Position - Camera.CFrame.Position).Magnitude
-                if distance < shortestDistance then
-                    shortestDistance = distance
-                    closestPlayer = player
-                end
-            end
-        end
-    end
-    
-    return closestPlayer
-end
-
-UserInputService.InputBegan:Connect(function(input)
-    if input.KeyCode == aimKey then
-        aimbotEnabled = true
-    end
-end)
-
-UserInputService.InputEnded:Connect(function(input)
-    if input.KeyCode == aimKey then
-        aimbotEnabled = false
-    end
-end)
-
-RunService.RenderStepped:Connect(function()
-    if aimbotEnabled then
-        local target = getClosestPlayer()
-        if target and target.Character and target.Character:FindFirstChild("Head") then
-            local head = target.Character.Head
-            Camera.CFrame = CFrame.new(Camera.CFrame.Position, head.Position)
-        end
-    end
-end)`,
-                
-                autofarm: `-- 自动农场脚本
-local Players = game:GetService("Players")
-local Workspace = game:GetService("Workspace")
-local RunService = game:GetService("RunService")
-
-local LocalPlayer = Players.LocalPlayer
-local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
-
-local farming = false
-local farmSpeed = 50
-
-local function findNearestCoin()
-    local closestCoin = nil
-    local shortestDistance = math.huge
-    
-    for _, item in pairs(Workspace:GetChildren()) do
-        if item.Name == "Coin" or item.Name == "Money" then
-            local distance = (item.Position - Character.HumanoidRootPart.Position).Magnitude
-            if distance < shortestDistance then
-                shortestDistance = distance
-                closestCoin = item
-            end
-        end
-    end
-    
-    return closestCoin
-end
-
-local function startFarming()
-    farming = true
-    
-    spawn(function()
-        while farming do
-            local coin = findNearestCoin()
-            if coin then
-                Character.HumanoidRootPart.CFrame = CFrame.new(coin.Position + Vector3.new(0, 3, 0))
-                wait(0.1)
-                coin:Destroy()
-            else
-                wait(1)
-            end
-        end
-    end)
-end
-
-local function stopFarming()
-    farming = false
-end
-
--- 启动自动农场
-startFarming()`,
-                
-                fly: `-- 飞行脚本
-local Players = game:GetService("Players")
-local UserInputService = game:GetService("UserInputService")
-local RunService = game:GetService("RunService")
-
-local LocalPlayer = Players.LocalPlayer
-local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
-local Humanoid = Character:WaitForChild("Humanoid")
-
-local flying = false
-local flySpeed = 50
-local bodyVelocity = Instance.new("BodyVelocity")
-bodyVelocity.MaxForce = Vector3.new(math.huge, math.huge, math.huge)
-
-local function toggleFly()
-    flying = not flying
-    
-    if flying then
-        Humanoid.PlatformStand = true
-        bodyVelocity.Parent = Character.HumanoidRootPart
-        print("飞行模式已开启")
-    else
-        Humanoid.PlatformStand = false
-        bodyVelocity.Parent = nil
-        print("飞行模式已关闭")
-    end
-end
-
-UserInputService.InputBegan:Connect(function(input)
-    if input.KeyCode == Enum.KeyCode.F then
-        toggleFly()
-    end
-end)
-
-RunService.Heartbeat:Connect(function()
-    if flying then
-        local direction = Vector3.new(0, 0, 0)
-        
-        if UserInputService:IsKeyDown(Enum.KeyCode.W) then
-            direction = direction + Vector3.new(0, 0, -1)
-        end
-        if UserInputService:IsKeyDown(Enum.KeyCode.S) then
-            direction = direction + Vector3.new(0, 0, 1)
-        end
-        if UserInputService:IsKeyDown(Enum.KeyCode.A) then
-            direction = direction + Vector3.new(-1, 0, 0)
-        end
-        if UserInputService:IsKeyDown(Enum.KeyCode.D) then
-            direction = direction + Vector3.new(1, 0, 0)
-        end
-        if UserInputService:IsKeyDown(Enum.KeyCode.Space) then
-            direction = direction + Vector3.new(0, 1, 0)
-        end
-        if UserInputService:IsKeyDown(Enum.KeyCode.LeftShift) then
-            direction = direction + Vector3.new(0, -1, 0)
-        end
-        
-        if direction.Magnitude > 0 then
-            direction = direction.Unit * flySpeed
-        end
-        
-        bodyVelocity.Velocity = direction
-    end
-end)`,
-                
-                infiniteyield: `-- Infinite Yield 类似功能
-local Players = game:GetService("Players")
-local UserInputService = game:GetService("UserInputService")
-
-local LocalPlayer = Players.LocalPlayer
-local commands = {}
-
-commands["tp"] = function(args)
-    if args[1] then
-        local target = Players:FindFirstChild(args[1])
-        if target and target.Character then
-            LocalPlayer.Character.HumanoidRootPart.CFrame = target.Character.HumanoidRootPart.CFrame
-            return "传送至 " .. args[1]
-        end
-    end
-    return "用法: tp [玩家名]"
-end
-
-commands["speed"] = function(args)
-    if args[1] then
-        local speed = tonumber(args[1])
-        if speed then
-            LocalPlayer.Character.Humanoid.WalkSpeed = speed
-            return "速度设置为 " .. speed
-        end
-    end
-    return "用法: speed [数值]"
-end
-
-commands["jump"] = function(args)
-    if args[1] then
-        local power = tonumber(args[1])
-        if power then
-            LocalPlayer.Character.Humanoid.JumpPower = power
-            return "跳跃高度设置为 " .. power
-        end
-    end
-    return "用法: jump [数值]"
-end
-
-commands["esp"] = function(args)
-    -- ESP功能
-    return "ESP功能已启用"
-end
-
-commands["noclip"] = function(args)
-    LocalPlayer.Character.Humanoid:ChangeState(11)
-    return "穿墙模式已切换"
-end
-
-commands["fly"] = function(args)
-    -- 飞行功能
-    return "飞行模式已切换"
-end
-
-local function executeCommand(cmd)
-    local parts = {}
-    for part in cmd:gmatch("%S+") do
-        table.insert(parts, part)
-    end
-    
-    if #parts > 0 then
-        local commandName = parts[1]:lower()
-        table.remove(parts, 1)
-        
-        if commands[commandName] then
-            return commands[commandName](parts)
-        else
-            return "未知命令: " .. commandName
-        end
-    end
-    return ""
-end
-
-print("脚本已加载！输入命令:")
-print("tp [玩家名] - 传送到玩家")
-print("speed [数值] - 设置移动速度")
-print("jump [数值] - 设置跳跃高度")
-print("esp - 显示ESP")
-print("noclip - 穿墙模式")
-print("fly - 飞行模式")`
-            };
-        }
-
+        // 更新UI显示的值
         function updateLevelValue() {
             const select = document.getElementById('obfLevel');
             const valueSpan = document.getElementById('levelValue');
+            valueSpan.textContent = select.options[select.selectedIndex].text.split('（')[0];
+        }
+
+        function updateEncryptValue() {
+            const select = document.getElementById('stringEncrypt');
+            const valueSpan = document.getElementById('encryptValue');
             valueSpan.textContent = select.options[select.selectedIndex].text;
         }
 
-        function applyPreset(preset) {
-            const presetButtons = document.querySelectorAll('.preset-btn');
-            presetButtons.forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
-            
-            // 重置所有选项
-            document.querySelectorAll('.toggle-option').forEach(opt => {
-                opt.classList.remove('active');
-            });
-            
-            switch(preset) {
-                case 'simple':
-                    document.getElementById('stringEncrypt').value = 'hex';
-                    document.getElementById('obfLevel').value = 'light';
-                    document.getElementById('removeComments').value = 'no';
-                    document.getElementById('optHexStrings').classList.add('active');
-                    break;
-                case 'standard':
-                    document.getElementById('stringEncrypt').value = 'hex';
-                    document.getElementById('obfLevel').value = 'standard';
-                    document.getElementById('removeComments').value = 'yes';
-                    document.getElementById('optHexStrings').classList.add('active');
-                    document.getElementById('optMinify').classList.add('active');
-                    break;
-                case 'advanced':
-                    document.getElementById('stringEncrypt').value = 'unicode';
-                    document.getElementById('obfLevel').value = 'heavy';
-                    document.getElementById('removeComments').value = 'yes';
-                    document.querySelectorAll('.toggle-option').forEach(opt => {
-                        opt.classList.add('active');
-                    });
-                    break;
-            }
-            
-            updateLevelValue();
-            showNotification(`已应用 ${preset} 预设配置`);
+        function updateFlowValue() {
+            const slider = document.getElementById('controlFlow');
+            const valueSpan = document.getElementById('flowValue');
+            valueSpan.textContent = slider.value;
         }
 
-        function toggleOption(element) {
-            element.classList.toggle('active');
-        }
+        // 初始化UI值
+        updateLevelValue();
+        updateEncryptValue();
+        updateFlowValue();
 
-        function loadExample(exampleName) {
-            if (examples[exampleName]) {
-                document.getElementById("originalCode").value = examples[exampleName];
-                updateCodeStats();
-                showNotification(`已加载 ${exampleName} 示例`, 2000);
-            }
-        }
-
-        function showNotification(message, duration = 3000) {
-            const notification = document.getElementById('notification');
-            notification.textContent = message;
-            notification.classList.add('show');
-            
-            setTimeout(() => {
-                notification.classList.remove('show');
-            }, duration);
-        }
-
-        function updateCodeStats() {
-            const originalCode = document.getElementById('originalCode').value;
-            const obfCode = document.getElementById('obfCode').value;
-            
-            document.getElementById('charCount').textContent = `${originalCode.length} 字符`;
-            document.getElementById('lineCount').textContent = `${originalCode.split('\n').length} 行`;
-            
-            document.getElementById('obfCharCount').textContent = `${obfCode.length} 字符`;
-            document.getElementById('obfLineCount').textContent = `${obfCode.split('\n').length} 行`;
-        }
-
-        function addToHistory(result) {
-            const historyItem = {
-                timestamp: new Date().toLocaleString(),
-                originalLength: result.originalLength,
-                obfuscatedLength: result.length,
-                time: result.time
-            };
-            
-            obfuscationHistory.unshift(historyItem);
-            if (obfuscationHistory.length > 10) {
-                obfuscationHistory = obfuscationHistory.slice(0, 10);
-            }
-            
-            updateHistoryDisplay();
-            saveHistory();
-        }
-
-        function updateHistoryDisplay() {
-            const historyList = document.getElementById('historyList');
-            const historyCount = document.getElementById('historyCount');
-            
-            historyList.innerHTML = '';
-            historyCount.textContent = `(${obfuscationHistory.length})`;
-            
-            obfuscationHistory.forEach((item, index) => {
-                const historyItem = document.createElement('div');
-                historyItem.className = 'history-item';
-                historyItem.innerHTML = `
-                    <span>${item.timestamp}</span>
-                    <span>${item.originalLength} → ${item.obfuscatedLength} 字符</span>
-                `;
-                historyItem.onclick = () => {
-                    document.getElementById('statsInfo').textContent = 
-                        `历史记录 ${index+1}: ${item.timestamp} | 耗时 ${item.time}ms`;
-                    document.getElementById('statsInfo').classList.add('active');
-                };
-                historyList.appendChild(historyItem);
-            });
-        }
-
-        function saveHistory() {
-            localStorage.setItem('godzillaHistory', JSON.stringify(obfuscationHistory));
-        }
-
-        function loadHistory() {
-            const savedHistory = localStorage.getItem('godzillaHistory');
-            if (savedHistory) {
-                obfuscationHistory = JSON.parse(savedHistory);
-                updateHistoryDisplay();
-            }
-        }
-
-        async function obfuscateLua() {
+        // 混淆主函数
+        function obfuscateLua() {
             let code = document.getElementById("originalCode").value.trim();
             if (!code) {
-                showNotification("请粘贴需要混淆的Lua脚本！", 3000);
+                alert("请粘贴需要混淆的Lua脚本！");
                 return;
             }
 
             try {
                 const statsDiv = document.getElementById("statsInfo");
-                const obfuscateBtn = document.getElementById("obfuscateBtn");
-                const progressContainer = document.getElementById("progressContainer");
-                const progressBar = document.getElementById("progressBar");
-                
                 statsDiv.textContent = "正在混淆中...";
                 statsDiv.classList.remove('active');
-                obfuscateBtn.disabled = true;
-                obfuscateBtn.textContent = "混淆中...";
-                progressContainer.style.display = 'block';
-                progressBar.style.width = '0%';
                 
-                const progressCallback = (progress) => {
-                    progressBar.style.width = `${progress}%`;
-                };
-                
-                const result = await obfuscator.obfuscate(code, progressCallback);
-                
-                document.getElementById("obfCode").value = result.code;
-                progressBar.style.width = '100%';
-                
-                statsDiv.textContent = 
-                    `✅ 混淆完成！耗时 ${result.time}ms | ` +
-                    `原始长度：${result.originalLength} 字符 | ` +
-                    `混淆后：${result.length} 字符 | ` +
-                    `压缩率：${((1 - result.originalLength / result.length) * 100).toFixed(1)}%`;
-                statsDiv.classList.add('active');
-                
-                addToHistory(result);
-                updateCodeStats();
-                
+                // 使用setTimeout避免UI阻塞
                 setTimeout(() => {
-                    obfuscateBtn.disabled = false;
-                    obfuscateBtn.innerHTML = '<span>🦖🦖🦖</span> 一键混淆';
-                    progressContainer.style.display = 'none';
+                    const result = obfuscator.obfuscate(code);
+                    document.getElementById("obfCode").value = result.code;
                     
+                    statsDiv.textContent = 
+                        `✅ 混淆完成！耗时 ${result.time}ms | ` +
+                        `原始长度：${result.originalLength} 字符 | ` +
+                        `混淆后：${result.length} 字符 | ` +
+                        `压缩率：${((1 - result.originalLength / result.length) * 100).toFixed(1)}%`;
+                    statsDiv.classList.add('active');
+                    
+                    // 自动滚动到结果
                     document.getElementById("obfCode").scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-                }, 500);
+                }, 100);
                 
             } catch (error) {
                 console.error("混淆错误:", error);
-                showNotification(`混淆失败：${error.message}`, 5000);
-                document.getElementById("statsInfo").textContent = "❌❌ 混淆失败，请检查输入";
+                alert("混淆失败： " + error.message);
+                document.getElementById("statsInfo").textContent = "❌ 混淆失败，请检查输入";
                 document.getElementById("statsInfo").classList.remove('active');
-                
-                document.getElementById("obfuscateBtn").disabled = false;
-                document.getElementById("obfuscateBtn").innerHTML = '<span>🦖🦖🦖</span> 一键混淆';
-                document.getElementById("progressContainer").style.display = 'none';
             }
         }
 
+        // 清空输入框
         function clearAll() {
             if (confirm("确定要清空所有内容吗？")) {
                 document.getElementById("originalCode").value = "";
@@ -1414,60 +697,66 @@ print("fly - 飞行模式")`
                 document.getElementById("statsInfo").textContent = "等待混淆...";
                 document.getElementById("statsInfo").classList.remove('active');
                 document.getElementById("originalCode").focus();
-                updateCodeStats();
             }
         }
 
+        // 复制混淆代码
         function copyObfCode() {
             const obfCode = document.getElementById("obfCode");
             if (!obfCode.value.trim()) {
-                showNotification("暂无混淆后的代码可复制！", 3000);
+                alert("暂无混淆后的代码可复制！");
                 return;
             }
             
             obfCode.select();
-            obfCode.setSelectionRange(0, 99999);
+            obfCode.setSelectionRange(0, 99999); // 移动设备兼容
             
             try {
                 const successful = document.execCommand("copy");
                 if (successful) {
-                    showNotification("✅ 代码已复制到剪贴板！", 2000);
+                    const statsDiv = document.getElementById("statsInfo");
+                    statsDiv.textContent = "✅ 代码已复制到剪贴板！";
+                    statsDiv.classList.add('active');
+                    
+                    // 3秒后恢复原状态
+                    setTimeout(() => {
+                        if (obfCode.value.trim()) {
+                            statsDiv.textContent = `✅ 混淆完成！代码长度：${obfCode.value.length} 字符`;
+                        }
+                    }, 3000);
                 } else {
-                    showNotification("复制失败，请手动选择并复制", 3000);
+                    alert("复制失败，请手动选择并复制");
                 }
             } catch (err) {
                 console.error("复制失败:", err);
-                showNotification("复制失败，请手动复制", 3000);
+                alert("复制失败，请手动复制");
             }
         }
 
+        // 添加键盘快捷键支持
         document.addEventListener('keydown', function(e) {
+            // Ctrl + Enter 混淆
             if (e.ctrlKey && e.key === 'Enter') {
                 obfuscateLua();
                 e.preventDefault();
             }
+            // Ctrl + C 复制
             if (e.ctrlKey && e.key === 'c') {
                 if (document.activeElement === document.getElementById("obfCode")) {
                     copyObfCode();
                     e.preventDefault();
                 }
             }
+            // Esc 清空
             if (e.key === 'Escape') {
                 clearAll();
             }
         });
 
-        document.getElementById('originalCode').addEventListener('input', updateCodeStats);
-        document.getElementById('obfCode').addEventListener('input', updateCodeStats);
-
+        // 页面加载时显示示例代码
         window.addEventListener('load', function() {
-            initExamples();
-            updateLevelValue();
-            updateCodeStats();
-            loadHistory();
-            
-            // 默认启用十六进制字符串选项
-            document.getElementById('optHexStrings').classList.add('active');
+            const exampleCode = `loadstring(game:HttpGet("https://example.com/script.lua"))()`;
+            document.getElementById("originalCode").placeholder = exampleCode;
         });
     </script>
 </body>
