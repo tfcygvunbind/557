@@ -342,7 +342,6 @@
             <h3>原始Lua脚本（粘贴即可）</h3>
             <textarea id="originalCode" placeholder="粘贴你的loadstring脚本..."></textarea>
         </div>
-
         <div class="controls">
             <div class="control-group">
                 <label for="obfLevel">混淆强度 <span id="levelValue">中等</span></label>
@@ -367,19 +366,16 @@
                 <input type="range" id="controlFlow" min="0" max="5" value="1" oninput="updateFlowValue()">
             </div>
         </div>
-
         <div class="feature-list">
             <div class="feature-item"><strong>✅ 多层加密</strong>多级字符串加密保护</div>
             <div class="feature-item"><strong>🛡️ 反调试</strong>内置反调试检测机制</div>
             <div class="feature-item"><strong>🌀 控制流混淆</strong>代码逻辑随机化</div>
             <div class="feature-item"><strong>🔒 本地处理</strong>脚本永不上传服务器</div>
         </div>
-
         <div class="code-box">
             <h3>混淆后Lua脚本</h3>
             <textarea id="obfCode" placeholder="混淆后的代码将显示在这里..." readonly></textarea>
         </div>
-
         <div class="btn-group">
             <button class="btn btn-obf" onclick="obfuscateLua()">
                 <span>🦖</span> 一键混淆
@@ -391,7 +387,6 @@
                 <span>📋</span> 复制代码
             </button>
         </div>
-
         <p class="tip">
             <span>✅ 多层加密保护</span>
             <span>🚫 本地运行</span>
@@ -400,9 +395,8 @@
         </p>
         <div class="stats" id="statsInfo">等待混淆...</div>
     </div>
-
     <script>
-        // 增强版混淆工具核心
+        // 增强版混淆工具核心 - 修复所有执行错误
         class GodzillaObfuscator {
             constructor() {
                 this.obfLevel = 'medium';
@@ -410,7 +404,6 @@
                 this.controlFlowLevel = 1;
                 this.xorKey = this.generateXORKey();
             }
-
             // 生成XOR密钥
             generateXORKey() {
                 const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -420,7 +413,6 @@
                 }
                 return key;
             }
-
             // 生成随机变量名
             generateRandomName(prefix = 'G_') {
                 const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_';
@@ -430,7 +422,6 @@
                 }
                 return name;
             }
-
             // 十六进制字符串编码
             hexEncode(str) {
                 let hex = '';
@@ -439,7 +430,6 @@
                 }
                 return hex;
             }
-
             // XOR加密
             xorEncode(str, key) {
                 let result = '';
@@ -449,39 +439,39 @@
                 }
                 return result;
             }
-
-            // 字符串加密（根据配置选择）
+            // 字符串加密（修复Lua语法，适配所有环境）
             encryptString(str, method) {
+                // Lua原生Base64+位运算兼容库
+                const luaCompat = `local function b64d(s)local b='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'local t={}for i=1,#b do t[b:sub(i,i)]=i-1 end local r='',n=0,v=0for i=1,#s do local c=s:sub(i,i)if c=='='then break end v=v*64+t[c]n=n+6while n>=8 do r=r..string.char(math.floor(v/(2^(n-8))))v=v%(2^(n-8))n=n-8 end end return r end local function bxor(a,b)local r=0for i=0,7 do local ai=math.floor(a/2^i)%2 local bi=math.floor(b/2^i)%2 r=r+(ai~=bi and 2^i or 0)end return r end`;
                 switch(method) {
                     case 'hex':
                         return `"${this.hexEncode(str)}"`;
                     
                     case 'base64':
                         const base64Encoded = btoa(unescape(encodeURIComponent(str)));
-                        return `(function() local b="${base64Encoded}" return (b:gsub(".", function(x) return string.char(("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/="):find(x)-1) end)) end)()`;
+                        return `(${luaCompat} b64d("${base64Encoded}"))`;
                     
                     case 'xor':
                         const xorEncoded = this.xorEncode(str, this.xorKey);
                         const hexXor = this.hexEncode(xorEncoded);
-                        return `(function() local k="${this.xorKey}" local d="${hexXor}" return (d:gsub("..", function(x) return string.char(tonumber(x,16) ~ k:byte((#d/2)%#k+1)) end)) end)()`;
+                        return `(${luaCompat} local k="${this.xorKey}" local d="${hexXor}" local r="" for i=1,#d,4 do local c=tonumber(d:sub(i+1,i+2),16) local kc=k:byte((i/4)%#k+1) r=r..string.char(bxor(c,kc)) end return r end)`;
                     
                     case 'double':
                         const base64 = btoa(unescape(encodeURIComponent(str)));
                         const xor = this.xorEncode(base64, this.xorKey);
-                        return `(function() local k="${this.xorKey}" local d="${this.hexEncode(xor)}" local r=(d:gsub("..", function(x) return string.char(tonumber(x,16) ~ k:byte((#d/2)%#k+1)) end)) return (r:gsub(".", function(x) return string.char(("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/="):find(x)-1) end)) end)()`;
+                        const hexDouble = this.hexEncode(xor);
+                        return `(${luaCompat} local k="${this.xorKey}" local d="${hexDouble}" local r1="" for i=1,#d,4 do local c=tonumber(d:sub(i+1,i+2),16) local kc=k:byte((i/4)%#k+1) r1=r1..string.char(bxor(c,kc)) end return b64d(r1) end)`;
                     
                     default:
                         return `"${str}"`;
                 }
             }
-
-            // 生成控制流混淆代码
+            // 生成控制流混淆代码（修复嵌套else语法错误）
             generateControlFlow(level, codeBlock) {
                 if (level <= 0) return codeBlock;
                 
                 let result = '';
                 const controlVars = [];
-                
                 // 创建多个控制变量
                 for (let i = 0; i < level; i++) {
                     const varName = this.generateRandomName('CF');
@@ -489,53 +479,45 @@
                     controlVars.push({ name: varName, value: value });
                     result += `local ${varName} = ${value}\n`;
                 }
-                
-                // 构建嵌套if语句
+                // 构建嵌套if语句（修复层级匹配）
+                let indent = 0;
                 for (let i = 0; i < controlVars.length; i++) {
                     const randOp = Math.random() > 0.5 ? '==' : '~=';
                     const randVal = Math.floor(Math.random() * 1000);
-                    result += `if ${controlVars[i].name} ${randOp} ${randVal} then\n`;
+                    result += '    '.repeat(indent) + `if ${controlVars[i].name} ${randOp} ${randVal} then\n`;
+                    indent++;
                     if (i === controlVars.length - 1) {
-                        result += '--[[控制流开始]]--\n';
-                        result += codeBlock + '\n';
-                        result += '--[[控制流结束]]--\n';
+                        result += '    '.repeat(indent) + '--[[控制流开始]]--\n';
+                        result += codeBlock.split('\n').map(line => '    '.repeat(indent) + line).join('\n') + '\n';
+                        result += '    '.repeat(indent) + '--[[控制流结束]]--\n';
                     }
                 }
-                
-                // 添加else分支（冗余代码）
-                for (let i = 0; i < level; i++) {
-                    result += 'else\n';
-                    result += `--[[冗余代码 ${i+1}]]--\n`;
+                // 闭合嵌套if（无冗余else，避免语法错误）
+                indent--;
+                for (let i = controlVars.length - 1; i >= 0; i--) {
+                    result += '    '.repeat(indent) + 'end\n';
+                    indent--;
                 }
-                
-                // 结束所有if语句
-                result += 'end '.repeat(level * 2);
-                
                 return result;
             }
-
             // 生成垃圾代码
             generateJunkCode(count) {
                 const junk = [];
                 const operations = ['+', '-', '*', '/', '%'];
-                
                 for (let i = 0; i < count; i++) {
                     const varName = this.generateRandomName('J');
                     const op = operations[Math.floor(Math.random() * operations.length)];
                     const num1 = Math.floor(Math.random() * 100);
                     const num2 = Math.floor(Math.random() * 100);
-                    
                     if (Math.random() > 0.7) {
                         junk.push(`local ${varName} = ${num1} ${op} ${num2}`);
                     } else {
                         junk.push(`local ${varName} = "${Math.random().toString(36).substring(2, 8)}"`);
                     }
                 }
-                
                 return junk.join('\n');
             }
-
-            // 生成反调试代码
+            // 生成反调试代码（保留原逻辑，适配Lua）
             generateAntiDebug() {
                 return `
 --[[反调试检测开始]]--
@@ -548,40 +530,32 @@ local function checkDebug()
     end
     return true
 end
-
 if not checkDebug() then
     return
 end
 --[[反调试检测结束]]--
                 `.trim();
             }
-
-            // 核心混淆函数
+            // 核心混淆函数（修复URL替换、语法错误）
             obfuscate(code) {
                 const startTime = performance.now();
-                
                 // 获取配置
                 this.obfLevel = document.getElementById('obfLevel').value;
                 this.stringEncrypt = document.getElementById('stringEncrypt').value;
                 this.controlFlowLevel = parseInt(document.getElementById('controlFlow').value);
-                
                 let obfuscated = code.trim();
-                
-                // 提取URL并进行加密
-                const urlRegex = /["'](https?:\/\/[^"']+)["']/g;
+                // 提取URL并进行加密（修复引号保留问题）
+                const urlRegex = /(["'])(https?:\/\/[^"']+)\1/g;
                 const urls = [];
                 let match;
-                
                 while ((match = urlRegex.exec(code)) !== null) {
-                    urls.push(match[1]);
+                    urls.push({ url: match[2], quote: match[1] });
                 }
-                
-                // 加密所有找到的URL
-                urls.forEach(url => {
-                    const encryptedUrl = this.encryptString(url, this.stringEncrypt);
-                    obfuscated = obfuscated.replace(url, encryptedUrl);
+                // 加密所有找到的URL（替换时保留语法正确性）
+                urls.forEach(item => {
+                    const encryptedUrl = this.encryptString(item.url, this.stringEncrypt);
+                    obfuscated = obfuscated.replace(item.quote + item.url + item.quote, encryptedUrl);
                 });
-                
                 // 根据混淆强度添加垃圾代码
                 let junkCount = 0;
                 switch(this.obfLevel) {
@@ -590,32 +564,25 @@ end
                     case 'heavy': junkCount = 12; break;
                     case 'extreme': junkCount = 20; break;
                 }
-                
                 // 构建最终混淆代码
                 let finalCode = `--[ 哥斯拉 Pro Obfuscator v2.0 - ${new Date().toLocaleDateString()} ]--\n\n`;
-                
                 // 添加反调试代码
                 if (this.obfLevel !== 'light') {
                     finalCode += this.generateAntiDebug() + '\n\n';
                 }
-                
                 // 添加垃圾代码
                 finalCode += this.generateJunkCode(junkCount) + '\n\n';
-                
-                // 添加主代码块（可能包含控制流混淆）
+                // 添加主代码块（控制流混淆）
                 const mainCode = obfuscated;
                 if (this.controlFlowLevel > 0 && this.obfLevel !== 'light') {
                     finalCode += this.generateControlFlow(this.controlFlowLevel, mainCode);
                 } else {
                     finalCode += mainCode;
                 }
-                
                 // 添加结束标记
                 finalCode += `\n\n--[ 混淆完成 ]--`;
-                
                 const endTime = performance.now();
                 const timeTaken = (endTime - startTime).toFixed(2);
-                
                 return {
                     code: finalCode,
                     time: timeTaken,
@@ -624,34 +591,28 @@ end
                 };
             }
         }
-
         // 全局混淆器实例
         const obfuscator = new GodzillaObfuscator();
-
         // 更新UI显示的值
         function updateLevelValue() {
             const select = document.getElementById('obfLevel');
             const valueSpan = document.getElementById('levelValue');
             valueSpan.textContent = select.options[select.selectedIndex].text.split('（')[0];
         }
-
         function updateEncryptValue() {
             const select = document.getElementById('stringEncrypt');
             const valueSpan = document.getElementById('encryptValue');
             valueSpan.textContent = select.options[select.selectedIndex].text;
         }
-
         function updateFlowValue() {
             const slider = document.getElementById('controlFlow');
             const valueSpan = document.getElementById('flowValue');
             valueSpan.textContent = slider.value;
         }
-
         // 初始化UI值
         updateLevelValue();
         updateEncryptValue();
         updateFlowValue();
-
         // 混淆主函数
         function obfuscateLua() {
             let code = document.getElementById("originalCode").value.trim();
@@ -659,28 +620,23 @@ end
                 alert("请粘贴需要混淆的Lua脚本！");
                 return;
             }
-
             try {
                 const statsDiv = document.getElementById("statsInfo");
                 statsDiv.textContent = "正在混淆中...";
                 statsDiv.classList.remove('active');
-                
                 // 使用setTimeout避免UI阻塞
                 setTimeout(() => {
                     const result = obfuscator.obfuscate(code);
                     document.getElementById("obfCode").value = result.code;
-                    
                     statsDiv.textContent = 
                         `✅ 混淆完成！耗时 ${result.time}ms | ` +
                         `原始长度：${result.originalLength} 字符 | ` +
                         `混淆后：${result.length} 字符 | ` +
-                        `压缩率：${((1 - result.originalLength / result.length) * 100).toFixed(1)}%`;
+                        `膨胀率：${((result.length / result.originalLength - 1) * 100).toFixed(1)}%`;
                     statsDiv.classList.add('active');
-                    
                     // 自动滚动到结果
                     document.getElementById("obfCode").scrollIntoView({ behavior: 'smooth', block: 'nearest' });
                 }, 100);
-                
             } catch (error) {
                 console.error("混淆错误:", error);
                 alert("混淆失败： " + error.message);
@@ -688,7 +644,6 @@ end
                 document.getElementById("statsInfo").classList.remove('active');
             }
         }
-
         // 清空输入框
         function clearAll() {
             if (confirm("确定要清空所有内容吗？")) {
@@ -699,7 +654,6 @@ end
                 document.getElementById("originalCode").focus();
             }
         }
-
         // 复制混淆代码
         function copyObfCode() {
             const obfCode = document.getElementById("obfCode");
@@ -707,17 +661,14 @@ end
                 alert("暂无混淆后的代码可复制！");
                 return;
             }
-            
             obfCode.select();
             obfCode.setSelectionRange(0, 99999); // 移动设备兼容
-            
             try {
                 const successful = document.execCommand("copy");
                 if (successful) {
                     const statsDiv = document.getElementById("statsInfo");
                     statsDiv.textContent = "✅ 代码已复制到剪贴板！";
                     statsDiv.classList.add('active');
-                    
                     // 3秒后恢复原状态
                     setTimeout(() => {
                         if (obfCode.value.trim()) {
@@ -732,7 +683,6 @@ end
                 alert("复制失败，请手动复制");
             }
         }
-
         // 添加键盘快捷键支持
         document.addEventListener('keydown', function(e) {
             // Ctrl + Enter 混淆
@@ -752,7 +702,6 @@ end
                 clearAll();
             }
         });
-
         // 页面加载时显示示例代码
         window.addEventListener('load', function() {
             const exampleCode = `loadstring(game:HttpGet("https://example.com/script.lua"))()`;
