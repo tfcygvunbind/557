@@ -2,170 +2,84 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<title>Roblox 终极混淆器 | 内置BS防封壳+下载</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>手机混淆器</title>
 <style>
-body{background:#000;color:#0f0;font-family:Consolas;padding:20px}
-textarea{width:100%;height:320px;background:#0a0a0a;border:1px solid #333;color:#0f0;padding:12px;outline:none}
-button{padding:14px 36px;margin:8px 4px;border:none;border-radius:4px;color:#fff;cursor:pointer;font-weight:bold}
-#obfBtn{background:#0066ff}
-#copyBtn{background:#00b853}
-#downloadBtn{background:#ff5500}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-text-size-adjust:none}
+body{background:#000;color:#0f0;font-family:Consolas,monospace;padding:12px;}
+textarea{
+width:100%;height:260px;background:#111;border:1px solid #333;
+color:#0f0;padding:10px;border-radius:6px;
+font-size:14px;resize:none;margin-bottom:10px;
+}
+button{
+width:100%;padding:14px 0;margin:6px 0;
+background:#0066ff;color:#fff;
+border:none;border-radius:6px;font-size:16px;font-weight:bold;
+}
+#copyBtn{background:#00b853;}
+#downloadBtn{background:#ff5500;}
 </style>
 </head>
 <body>
+
 <textarea id="input" placeholder="粘贴你的 Lua 脚本"></textarea>
-<br>
-<button id="obfBtn" onclick="startObf()">生成混淆（内置BS防封壳）</button>
-<button id="copyBtn" onclick="copyCode()">一键复制</button>
-<button id="downloadBtn" onclick="downloadLua()">下载 .lua 文件</button>
-<br>
-<textarea id="output" readonly></textarea>
+
+<button onclick="startObf()">生成混淆 </button>
+<button onclick="copyCode()" id="copyBtn">一键复制结果</button>
+<button onclick="downloadLua()" id="downloadBtn">下载 .lua 文件</button>
+
+<textarea id="output" readonly placeholder="生成结果在这里"></textarea>
 
 <script>
+// 随机变量名
 function randVar() {
-    let ch = "abcdefghijklmnoprstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    let ch = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
     let res = ch[Math.floor(Math.random()*52)];
     for(let i=0;i<14;i++) res += ch[Math.floor(Math.random()*ch.length)];
     return res;
 }
 
+// 专属随机乱码
 function randSpecialJunk() {
     const pool = `LPHV7Spkh%nLO9hjWKD,PR+8a3=#U2o8KGr*Y?Nd/29<OU!g/tljq=fX$rkD/SGD`;
     let res = "";
-    for(let i=0;i<1500;i++) res += pool[Math.floor(Math.random()*pool.length)];
+    for(let i=0;i<3800;i++) res += pool[Math.floor(Math.random()*pool.length)];
     return res;
 }
 
+// 主混淆
 function startObf() {
-    const userCode = document.getElementById("input").value.trim();
-    if(!userCode) return alert("请输入代码！");
+    const input = document.getElementById("input").value.trim();
+    if(!input) return alert("请输入代码！");
 
-    const BS_SHELL = `local BS_ProtectedExecute = function(BS_protectedCode, ...)
-    if game.Close ~= game.Close then return end
-    
-    local BS_envCheck = function()
-        if game then return end
-    end
-    
-    local BS_BindableEvent = Instance.new("BindableEvent")
-    local BS_SecretStatusCode
-    
-    task.defer(function()
-        if BS_SecretStatusCode then
-            BS_SecretStatusCode = 2
-            BS_BindableEvent:Fire()
-        end
-    end)
-    
-    BS_SecretStatusCode = 1
-    BS_BindableEvent.Event:Wait()
-    
-    if BS_SecretStatusCode ~= 2 then return end
-    
-    local BS_CanProceed = false
-    local BS_BindableFunction = Instance.new("BindableFunction")
-    
-    function BS_BindableFunction.OnInvoke(BS_Num, ...)
-        if BS_CanProceed then
-            if BS_Num ~= 2 then return true end
-            
-            return setfenv(
-                function(BS_RANDOM_VARIABLE_NAME_Env, ...)
-                    local BS_RANDOM_VARIABLE_NAME = nil
-                    
-                    return BS_RANDOM_VARIABLE_NAME_Env.setfenv(function(...)
-                        return BS_protectedCode(...)
-                    end, BS_RANDOM_VARIABLE_NAME_Env)(...)
-                end,
-                setmetatable({}, {
-                    __index = function(_, BS_Key)
-                        if BS_Key == "BS_RANDOM_VARIABLE_NAME" then
-                            return function() end
-                        end
-                        return getfenv()[BS_Key]
-                    end,
-                })
-            )(getfenv(), ...)
-        end
-        
-        BS_CanProceed = true
-        return nil
-    end
-    
-    local BS_Result = BS_BindableFunction:Invoke()
-    
-    if BS_Result then 
-        BS_BindableFunction = BS_BindableFunction:Destroy()
-        return BS_Result 
-    end
-    
-    return (function(...)
-        BS_BindableFunction = BS_BindableFunction:Destroy()
-        return ...
-    end)(BS_BindableFunction:Invoke(2, ...))
-end
-
-return BS_ProtectedExecute(function(...)
-    local function BS_probeArith()
-        local BS_chunk, _ = loadstring([[
-            local a = "hello"
-            local b = 2
-            return a - b
-        ]])
-        if not BS_chunk then return false end
-
-        local BS_ok, _ = pcall(BS_chunk)
-        return not BS_ok        
-    end
-
-    local function BS_probeCall()
-        local BS_ok, _ = pcall(function() (nil)() end)
-        return not BS_ok
-    end
-
-    local function BS_probeFS()
-        local BS_ok, _ = pcall(function()
-            if not isfolder("BS_script") then makefolder("BS_script") end
-            if not isfolder("BS_script/Music") then makefolder("BS_script/Music") end
-        end)
-        return BS_ok and isfolder("BS_script/Music")
-    end
-
-    local function BS_coreLogic()
-${userCode}
-    end
-
-    local function BS_safeEntry()
-        if not BS_probeArith() then return nil, "block:arith" end
-        if not BS_probeCall()  then return nil, "block:call"  end
-        if not BS_probeFS()    then return nil, "block:fs"    end
-        return BS_coreLogic()
-    end
-
-    local BS_success, BS_tag = BS_safeEntry()
-    if not BS_success then
-        warn("BS最强防御：已拦截 (" .. tostring(BS_tag) .. ")")
-        script:ClearAllChildren()
-        script.Source = ""
-        return
-    end
-end, ...)`;
-
-    const numArray = [];
-    for(let i=0;i<BS_SHELL.length;i++){
-        numArray.push(BS_SHELL.charCodeAt(i));
-        for(let j=0;j<120;j++) numArray.push(Math.floor(Math.random()*255));
+    let numArray = [];
+    for(let i=0;i<input.length;i++){
+        numArray.push(input.charCodeAt(i));
+        for(let j=0;j<180;j++) numArray.push(Math.floor(Math.random()*255));
     }
 
-    const junk = randSpecialJunk();
-    const len = BS_SHELL.length;
+    const v1=randVar(),v2=randVar(),v3=randVar(),v4=randVar(),v5=randVar();
+    const junkCode = randSpecialJunk();
 
-    const finalCode = `-- This file was protected using Luraph Style Obfuscator
-return(function()local r,D,s,E,F,G,I,B,P,f,d,O,m=string.gsub,string.sub,string.char,setmetatable,tostring,string.byte,{[0]=1,2,4,8,16,32,64,128,256,512,1024,2048,4096,8192,16384,32768,65536,131072,262144,524288,1048576,2097152,4194304,8388608,16777216,33554432,67108864,134217728,268435456,536870912,1073741824,2147483648,4294967296},5,pcall,loadstring or load,{},string.pack,unpack;for M=0,255 do d[M]=s(M);end;do d={47618,{0x1B,0x4C,0x75,0x61,0x50},F(f)};for M,u in d do local g={P(f,M%2==0 and s(m(u))or u,nil,nil)};if g[1]and P(g[2])~=not g[3]then B=20.0;end;end;end;d=function(M)M=D(M,B);M=r(M,"z","!!!!!");return r(M,".....",E({},{__index=function(r,D)local B,M,u,g,C=G(D,1,5);local a=(C-33)+(g-33)*85+(u-33)*7225+(M-33)*614125+(B-33)*52200625;g=O("<I4",a);r[D]=g;return g;end}));end;local r,D,B=d([=[${junk}]=]);local dat={${numArray.join(",")}};local res="";for i=1,${len} do res=res..s(dat[i*121-120]);end;local ok,fn=pcall(B,res);if ok then fn();end;end)()`;
+    const finalCode = `-- This file was protected using HB Script Obfuscator v1
+return (function()
+local ${v1},${v2},${v3},${v4}=string.byte,string.sub,string.gsub,string.char
+local ${v5}=loadstring or load
+local safe=[=[${junkCode}]=]
+local code_data={${numArray.join(",")}}
+local result=""
+for i=1,${input.length} do
+    result=result..${v4}(code_data[i*181-180])
+end
+local ok,func=pcall(${v5},result)
+if ok then func() end
+end)()`;
 
     document.getElementById("output").value = finalCode;
 }
 
+// 复制
 function copyCode() {
     const out = document.getElementById("output");
     if(!out.value) return alert("请先生成混淆代码！");
@@ -174,23 +88,18 @@ function copyCode() {
     alert("✅ 复制成功！");
 }
 
-// 一键下载 .lua 脚本（新增功能）
+// 下载（新增）
 function downloadLua() {
-    const content = document.getElementById("output").value;
-    if(!content) return alert("请先生成混淆代码！");
-    
-    const blob = new Blob([content], { type: "text/lua" });
+    const txt = document.getElementById("output").value;
+    if(!txt) return alert("先生成代码");
+    const blob = new Blob([txt], {type:"text/lua"});
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
-    
+    a.download = "protected.lua";
     a.href = url;
-    a.download = "protected_script.lua";
-    document.body.appendChild(a);
     a.click();
-    document.body.removeChild(a);
     URL.revokeObjectURL(url);
-    
-    alert("✅ 下载成功！文件：protected_script.lua");
+    alert("✅ 下载完成");
 }
 </script>
 </body>
