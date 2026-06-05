@@ -12727,17 +12727,17 @@ F=true
 au:SetToTheCenter()
 au:Dialog{
 
-Title="Close Window",
-Content="Do you want to close this window? You will not be able to open it again.",
+Title="关闭窗口",
+Content="您想关闭此窗口吗？您将无法再次打开它。",
 Buttons={
 {
-Title="Cancel",
+Title="取消",
 
 Callback=function()F=false end,
 Variant="Secondary",
 },
 {
-Title="Close Window",
+Title="关闭窗头",
 
 Callback=function()
 F=false
