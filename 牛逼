@@ -10956,7 +10956,7 @@ elseif au~=""then
 ah("TextLabel",{
 Size=UDim2.new(1,0,0,70),
 BackgroundTransparency=1,
-Text="No results found",
+Text="未找到结果",
 TextSize=16,
 ThemeTag={
 TextColor3="Text",
@@ -10965,7 +10965,7 @@ TextTransparency=.2,
 BackgroundTransparency=1,
 FontFace=Font.new(af.Font,Enum.FontWeight.Medium),
 Parent=aq,
-Name="NotFound",
+Name="未找到",
 })
 else
 aq.Visible=false
@@ -12884,7 +12884,7 @@ local N=false
 
 
 
-local O=ao("Search","search",au.UIElements.SideBarContainer,true)
+local O=ao("搜索","search",au.UIElements.SideBarContainer,true)
 O.Size=UDim2.new(1,-au.UIPadding/2,0,39)
 O.Position=UDim2.new(0,au.UIPadding/2,0,0)
 
