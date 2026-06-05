@@ -12737,7 +12737,7 @@ Callback=function()F=false end,
 Variant="Secondary",
 },
 {
-Title="关闭窗头",
+Title="关闭窗口",
 
 Callback=function()
 F=false
@@ -12884,7 +12884,7 @@ local N=false
 
 
 
-local O=ao("搜索","搜索",au.UIElements.SideBarContainer,true)
+local O=ao("Search","search",au.UIElements.SideBarContainer,true)
 O.Size=UDim2.new(1,-au.UIPadding/2,0,39)
 O.Position=UDim2.new(0,au.UIPadding/2,0,0)
 
