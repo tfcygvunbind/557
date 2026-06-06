@@ -7389,7 +7389,7 @@ an.Tabs={}
 
 if an.SearchBarEnabled then
 if not as then
-as=ai("Search...","search",an.UIElements.Menu,nil,function(av)
+as=ai("搜索...","搜索",an.UIElements.Menu,nil,function(av)
 for aw,ax in next,an.Tabs do
 if string.find(string.lower(ax.Name),string.lower(av),1,true)then
 ax.UIElements.TabItem.Visible=true
@@ -10527,7 +10527,7 @@ Icons=a.load'Y'
 
 local ao=ah("TextBox",{
 Text="",
-PlaceholderText="Search...",
+PlaceholderText="搜索...",
 ThemeTag={
 PlaceholderColor3="Placeholder",
 TextColor3="Text",
@@ -10956,7 +10956,7 @@ elseif au~=""then
 ah("TextLabel",{
 Size=UDim2.new(1,0,0,70),
 BackgroundTransparency=1,
-Text="No results found",
+Text="未找到结果",
 TextSize=16,
 ThemeTag={
 TextColor3="Text",
@@ -10965,7 +10965,7 @@ TextTransparency=.2,
 BackgroundTransparency=1,
 FontFace=Font.new(af.Font,Enum.FontWeight.Medium),
 Parent=aq,
-Name="NotFound",
+Name="未找到",
 })
 else
 aq.Visible=false
@@ -12727,17 +12727,17 @@ F=true
 au:SetToTheCenter()
 au:Dialog{
 
-Title="Close Window",
-Content="Do you want to close this window? You will not be able to open it again.",
+Title="关闭窗口",
+Content="您想关闭此窗口吗？您将无法再次打开它。",
 Buttons={
 {
-Title="Cancel",
+Title="取消",
 
 Callback=function()F=false end,
 Variant="Secondary",
 },
 {
-Title="Close Window",
+Title="关闭窗口",
 
 Callback=function()
 F=false
@@ -12884,7 +12884,7 @@ local N=false
 
 
 
-local O=ao("Search","search",au.UIElements.SideBarContainer,true)
+local O=ao("搜索","search",au.UIElements.SideBarContainer,true)
 O.Size=UDim2.new(1,-au.UIPadding/2,0,39)
 O.Position=UDim2.new(0,au.UIPadding/2,0,0)
 
